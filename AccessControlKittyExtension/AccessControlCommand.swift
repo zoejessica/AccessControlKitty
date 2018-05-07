@@ -42,7 +42,7 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
             changeAccessLevel(.internal, invocation.buffer)
         case bundleName + ".MakePrivate":
             changeAccessLevel(.private, invocation.buffer)
-        case bundleName + ".MakeFilePrivate":
+        case bundleName + ".MakeFileprivate":
             changeAccessLevel(.fileprivate, invocation.buffer)
             
         default: break
