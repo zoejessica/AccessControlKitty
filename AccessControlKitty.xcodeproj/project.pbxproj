@@ -10,7 +10,82 @@
 		ED18F7FF2094886B002BD062 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F7FE2094886B002BD062 /* AppDelegate.swift */; };
 		ED18F8012094886C002BD062 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED18F8002094886C002BD062 /* Assets.xcassets */; };
 		ED18F8042094886C002BD062 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED18F8022094886C002BD062 /* MainMenu.xib */; };
+		ED18F8132094889C002BD062 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED18F8122094889C002BD062 /* Cocoa.framework */; };
+		ED18F81D2094889C002BD062 /* AccessControlKittyExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = ED18F8102094889C002BD062 /* AccessControlKittyExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		ED18F82B209488C1002BD062 /* SwiftLineParser.h in Headers */ = {isa = PBXBuildFile; fileRef = ED18F829209488C1002BD062 /* SwiftLineParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED18F82E209488C1002BD062 /* SwiftLineParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED18F827209488C1002BD062 /* SwiftLineParser.framework */; };
+		ED18F82F209488C1002BD062 /* SwiftLineParser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED18F827209488C1002BD062 /* SwiftLineParser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ED18F83D209488D5002BD062 /* SwiftLineParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED18F827209488C1002BD062 /* SwiftLineParser.framework */; };
+		ED18F845209488FA002BD062 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F843209488FA002BD062 /* ParserTests.swift */; };
+		ED18F846209488FA002BD062 /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F844209488FA002BD062 /* LexerTests.swift */; };
+		ED18F84F2094890D002BD062 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F8472094890C002BD062 /* Token.swift */; };
+		ED18F8502094890D002BD062 /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F8482094890C002BD062 /* Comments.swift */; };
+		ED18F8512094890D002BD062 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F8492094890C002BD062 /* Strings.swift */; };
+		ED18F8522094890D002BD062 /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84A2094890C002BD062 /* Lexer.swift */; };
+		ED18F8532094890D002BD062 /* Tagged.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84B2094890C002BD062 /* Tagged.swift */; };
+		ED18F8542094890D002BD062 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84C2094890C002BD062 /* Parser.swift */; };
+		ED18F8552094890D002BD062 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84D2094890C002BD062 /* Logging.swift */; };
+		ED18F8562094890D002BD062 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84E2094890C002BD062 /* Regex.swift */; };
+		ED18F85820948921002BD062 /* AccessControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F85720948921002BD062 /* AccessControlCommand.swift */; };
+		ED18F85A209494CB002BD062 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F859209494CB002BD062 /* SourceEditorExtension.swift */; };
+		ED784B5A209FCDC4001C06FB /* PropertyListParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED784B59209FCDC4001C06FB /* PropertyListParser.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ED18F81B2094889C002BD062 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED18F7F32094886B002BD062 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED18F80F2094889C002BD062;
+			remoteInfo = AccessControlKittyExtension;
+		};
+		ED18F82C209488C1002BD062 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED18F7F32094886B002BD062 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED18F826209488C1002BD062;
+			remoteInfo = SwiftLineParser;
+		};
+		ED18F83E209488D5002BD062 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED18F7F32094886B002BD062 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED18F826209488C1002BD062;
+			remoteInfo = SwiftLineParser;
+		};
+		ED18F85B2094A35A002BD062 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED18F7F32094886B002BD062 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED18F826209488C1002BD062;
+			remoteInfo = SwiftLineParser;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ED18F8212094889C002BD062 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				ED18F81D2094889C002BD062 /* AccessControlKittyExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F833209488C1002BD062 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ED18F82F209488C1002BD062 /* SwiftLineParser.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		ED18F7FB2094886B002BD062 /* AccessControlKitty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccessControlKitty.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -19,6 +94,28 @@
 		ED18F8032094886C002BD062 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		ED18F8052094886C002BD062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED18F8062094886C002BD062 /* AccessControlKitty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AccessControlKitty.entitlements; sourceTree = "<group>"; };
+		ED18F8102094889C002BD062 /* AccessControlKittyExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AccessControlKittyExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED18F8122094889C002BD062 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		ED18F8192094889C002BD062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED18F81A2094889C002BD062 /* AccessControlKittyExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AccessControlKittyExtension.entitlements; sourceTree = "<group>"; };
+		ED18F827209488C1002BD062 /* SwiftLineParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftLineParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED18F829209488C1002BD062 /* SwiftLineParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftLineParser.h; sourceTree = "<group>"; };
+		ED18F82A209488C1002BD062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED18F838209488D5002BD062 /* SwiftLineParserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftLineParserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED18F83C209488D5002BD062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED18F843209488FA002BD062 /* ParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
+		ED18F844209488FA002BD062 /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
+		ED18F8472094890C002BD062 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		ED18F8482094890C002BD062 /* Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
+		ED18F8492094890C002BD062 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		ED18F84A2094890C002BD062 /* Lexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
+		ED18F84B2094890C002BD062 /* Tagged.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tagged.swift; sourceTree = "<group>"; };
+		ED18F84C2094890C002BD062 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		ED18F84D2094890C002BD062 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		ED18F84E2094890C002BD062 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		ED18F85720948921002BD062 /* AccessControlCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlCommand.swift; sourceTree = "<group>"; };
+		ED18F859209494CB002BD062 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
+		ED784B59209FCDC4001C06FB /* PropertyListParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyListParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +123,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED18F82E209488C1002BD062 /* SwiftLineParser.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F80D2094889C002BD062 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED18F8132094889C002BD062 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F823209488C1002BD062 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F835209488D5002BD062 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED18F83D209488D5002BD062 /* SwiftLineParser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,6 +157,10 @@
 			isa = PBXGroup;
 			children = (
 				ED18F7FD2094886B002BD062 /* AccessControlKitty */,
+				ED18F8142094889C002BD062 /* AccessControlKittyExtension */,
+				ED18F828209488C1002BD062 /* SwiftLineParser */,
+				ED18F839209488D5002BD062 /* SwiftLineParserTests */,
+				ED18F8112094889C002BD062 /* Frameworks */,
 				ED18F7FC2094886B002BD062 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -44,6 +169,9 @@
 			isa = PBXGroup;
 			children = (
 				ED18F7FB2094886B002BD062 /* AccessControlKitty.app */,
+				ED18F8102094889C002BD062 /* AccessControlKittyExtension.appex */,
+				ED18F827209488C1002BD062 /* SwiftLineParser.framework */,
+				ED18F838209488D5002BD062 /* SwiftLineParserTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,7 +188,65 @@
 			path = AccessControlKitty;
 			sourceTree = "<group>";
 		};
+		ED18F8112094889C002BD062 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED18F8122094889C002BD062 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ED18F8142094889C002BD062 /* AccessControlKittyExtension */ = {
+			isa = PBXGroup;
+			children = (
+				ED18F859209494CB002BD062 /* SourceEditorExtension.swift */,
+				ED18F85720948921002BD062 /* AccessControlCommand.swift */,
+				ED18F8192094889C002BD062 /* Info.plist */,
+				ED18F81A2094889C002BD062 /* AccessControlKittyExtension.entitlements */,
+			);
+			path = AccessControlKittyExtension;
+			sourceTree = "<group>";
+		};
+		ED18F828209488C1002BD062 /* SwiftLineParser */ = {
+			isa = PBXGroup;
+			children = (
+				ED18F829209488C1002BD062 /* SwiftLineParser.h */,
+				ED18F8482094890C002BD062 /* Comments.swift */,
+				ED784B59209FCDC4001C06FB /* PropertyListParser.swift */,
+				ED18F84A2094890C002BD062 /* Lexer.swift */,
+				ED18F84D2094890C002BD062 /* Logging.swift */,
+				ED18F84C2094890C002BD062 /* Parser.swift */,
+				ED18F84E2094890C002BD062 /* Regex.swift */,
+				ED18F8492094890C002BD062 /* Strings.swift */,
+				ED18F84B2094890C002BD062 /* Tagged.swift */,
+				ED18F8472094890C002BD062 /* Token.swift */,
+				ED18F82A209488C1002BD062 /* Info.plist */,
+			);
+			path = SwiftLineParser;
+			sourceTree = "<group>";
+		};
+		ED18F839209488D5002BD062 /* SwiftLineParserTests */ = {
+			isa = PBXGroup;
+			children = (
+				ED18F844209488FA002BD062 /* LexerTests.swift */,
+				ED18F843209488FA002BD062 /* ParserTests.swift */,
+				ED18F83C209488D5002BD062 /* Info.plist */,
+			);
+			path = SwiftLineParserTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		ED18F824209488C1002BD062 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED18F82B209488C1002BD062 /* SwiftLineParser.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		ED18F7FA2094886B002BD062 /* AccessControlKitty */ = {
@@ -70,15 +256,73 @@
 				ED18F7F72094886B002BD062 /* Sources */,
 				ED18F7F82094886B002BD062 /* Frameworks */,
 				ED18F7F92094886B002BD062 /* Resources */,
+				ED18F8212094889C002BD062 /* Embed App Extensions */,
+				ED18F833209488C1002BD062 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				ED18F81C2094889C002BD062 /* PBXTargetDependency */,
+				ED18F82D209488C1002BD062 /* PBXTargetDependency */,
 			);
 			name = AccessControlKitty;
 			productName = AccessControlKitty;
 			productReference = ED18F7FB2094886B002BD062 /* AccessControlKitty.app */;
 			productType = "com.apple.product-type.application";
+		};
+		ED18F80F2094889C002BD062 /* AccessControlKittyExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED18F81E2094889C002BD062 /* Build configuration list for PBXNativeTarget "AccessControlKittyExtension" */;
+			buildPhases = (
+				ED18F80C2094889C002BD062 /* Sources */,
+				ED18F80D2094889C002BD062 /* Frameworks */,
+				ED18F80E2094889C002BD062 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED18F85C2094A35A002BD062 /* PBXTargetDependency */,
+			);
+			name = AccessControlKittyExtension;
+			productName = AccessControlKittyExtension;
+			productReference = ED18F8102094889C002BD062 /* AccessControlKittyExtension.appex */;
+			productType = "com.apple.product-type.xcode-extension";
+		};
+		ED18F826209488C1002BD062 /* SwiftLineParser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED18F830209488C1002BD062 /* Build configuration list for PBXNativeTarget "SwiftLineParser" */;
+			buildPhases = (
+				ED18F822209488C1002BD062 /* Sources */,
+				ED18F823209488C1002BD062 /* Frameworks */,
+				ED18F824209488C1002BD062 /* Headers */,
+				ED18F825209488C1002BD062 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftLineParser;
+			productName = SwiftLineParser;
+			productReference = ED18F827209488C1002BD062 /* SwiftLineParser.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		ED18F837209488D5002BD062 /* SwiftLineParserTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED18F840209488D5002BD062 /* Build configuration list for PBXNativeTarget "SwiftLineParserTests" */;
+			buildPhases = (
+				ED18F834209488D5002BD062 /* Sources */,
+				ED18F835209488D5002BD062 /* Frameworks */,
+				ED18F836209488D5002BD062 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ED18F83F209488D5002BD062 /* PBXTargetDependency */,
+			);
+			name = SwiftLineParserTests;
+			productName = SwiftLineParserTests;
+			productReference = ED18F838209488D5002BD062 /* SwiftLineParserTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -91,6 +335,16 @@
 				ORGANIZATIONNAME = "Hot Beverage";
 				TargetAttributes = {
 					ED18F7FA2094886B002BD062 = {
+						CreatedOnToolsVersion = 9.3;
+					};
+					ED18F80F2094889C002BD062 = {
+						CreatedOnToolsVersion = 9.3;
+					};
+					ED18F826209488C1002BD062 = {
+						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 0930;
+					};
+					ED18F837209488D5002BD062 = {
 						CreatedOnToolsVersion = 9.3;
 					};
 				};
@@ -109,6 +363,9 @@
 			projectRoot = "";
 			targets = (
 				ED18F7FA2094886B002BD062 /* AccessControlKitty */,
+				ED18F80F2094889C002BD062 /* AccessControlKittyExtension */,
+				ED18F826209488C1002BD062 /* SwiftLineParser */,
+				ED18F837209488D5002BD062 /* SwiftLineParserTests */,
 			);
 		};
 /* End PBXProject section */
@@ -123,6 +380,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED18F80E2094889C002BD062 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F825209488C1002BD062 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F836209488D5002BD062 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -134,7 +412,64 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ED18F80C2094889C002BD062 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED18F85820948921002BD062 /* AccessControlCommand.swift in Sources */,
+				ED18F85A209494CB002BD062 /* SourceEditorExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F822209488C1002BD062 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED18F8532094890D002BD062 /* Tagged.swift in Sources */,
+				ED18F8562094890D002BD062 /* Regex.swift in Sources */,
+				ED784B5A209FCDC4001C06FB /* PropertyListParser.swift in Sources */,
+				ED18F84F2094890D002BD062 /* Token.swift in Sources */,
+				ED18F8542094890D002BD062 /* Parser.swift in Sources */,
+				ED18F8552094890D002BD062 /* Logging.swift in Sources */,
+				ED18F8512094890D002BD062 /* Strings.swift in Sources */,
+				ED18F8522094890D002BD062 /* Lexer.swift in Sources */,
+				ED18F8502094890D002BD062 /* Comments.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED18F834209488D5002BD062 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED18F845209488FA002BD062 /* ParserTests.swift in Sources */,
+				ED18F846209488FA002BD062 /* LexerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ED18F81C2094889C002BD062 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED18F80F2094889C002BD062 /* AccessControlKittyExtension */;
+			targetProxy = ED18F81B2094889C002BD062 /* PBXContainerItemProxy */;
+		};
+		ED18F82D209488C1002BD062 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED18F826209488C1002BD062 /* SwiftLineParser */;
+			targetProxy = ED18F82C209488C1002BD062 /* PBXContainerItemProxy */;
+		};
+		ED18F83F209488D5002BD062 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED18F826209488C1002BD062 /* SwiftLineParser */;
+			targetProxy = ED18F83E209488D5002BD062 /* PBXContainerItemProxy */;
+		};
+		ED18F85C2094A35A002BD062 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED18F826209488C1002BD062 /* SwiftLineParser */;
+			targetProxy = ED18F85B2094A35A002BD062 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		ED18F8022094886C002BD062 /* MainMenu.xib */ = {
@@ -264,6 +599,7 @@
 		ED18F80A2094886C002BD062 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AccessControlKitty/AccessControlKitty.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -283,6 +619,7 @@
 		ED18F80B2094886C002BD062 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = AccessControlKitty/AccessControlKitty.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -294,6 +631,147 @@
 					"@executable_path/../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.AccessControlKitty;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		ED18F81F2094889C002BD062 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AccessControlKittyExtension/AccessControlKittyExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				INFOPLIST_FILE = AccessControlKittyExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.AccessControlKitty.AccessKitty;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		ED18F8202094889C002BD062 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AccessControlKittyExtension/AccessControlKittyExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				INFOPLIST_FILE = AccessControlKittyExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.AccessControlKitty.AccessKitty;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		ED18F831209488C1002BD062 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = SwiftLineParser/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.SwiftLineParser;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		ED18F832209488C1002BD062 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = SwiftLineParser/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.SwiftLineParser;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		ED18F841209488D5002BD062 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				INFOPLIST_FILE = SwiftLineParserTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.SwiftLineParserTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		ED18F842209488D5002BD062 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				INFOPLIST_FILE = SwiftLineParserTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.SwiftLineParserTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 			};
@@ -316,6 +794,33 @@
 			buildConfigurations = (
 				ED18F80A2094886C002BD062 /* Debug */,
 				ED18F80B2094886C002BD062 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED18F81E2094889C002BD062 /* Build configuration list for PBXNativeTarget "AccessControlKittyExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED18F81F2094889C002BD062 /* Debug */,
+				ED18F8202094889C002BD062 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED18F830209488C1002BD062 /* Build configuration list for PBXNativeTarget "SwiftLineParser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED18F831209488C1002BD062 /* Debug */,
+				ED18F832209488C1002BD062 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED18F840209488D5002BD062 /* Build configuration list for PBXNativeTarget "SwiftLineParserTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ED18F841209488D5002BD062 /* Debug */,
+				ED18F842209488D5002BD062 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
