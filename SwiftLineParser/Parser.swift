@@ -126,7 +126,14 @@ public class Parser {
     private func changeAccessLevel(_ change: (LineChangeType, String), in line: String, with substitution: String) -> String? {
         var line = line
         let (changeType, word) = change
-        guard let range = line.range(of: word) else { return nil }
+        
+        var searchWord = word
+        if case .substitute = changeType, substitution == "" {
+            searchWord = searchWord + " "
+        }
+        
+        guard let range = line.range(of: searchWord) else { return nil }
+        
         switch changeType {
         case .none: return nil
         case .substitute:

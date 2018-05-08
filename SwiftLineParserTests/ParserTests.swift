@@ -161,6 +161,22 @@ class ParserTests: XCTestCase {
         XCTAssertEqual(newLines, expectedNewLine)
         
     }
+    
+    func testRemoval() {
+        let lines = ["public let strings: [Highlight<NSAttributedString>] = markdown()",
+                                "public final class ViewController: NSViewController {",
+                                "@IBOutlet public var textView: NSTextView!",
+                                "public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
+        let expectedNewLines = ["let strings: [Highlight<NSAttributedString>] = markdown()",
+                                                               "final class ViewController: NSViewController {",
+                                                               "@IBOutlet var textView: NSTextView!",
+                                                               "func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
+        let parser = Parser(lines: lines)
+        let newLines = parser.newLines(at: [0, 1, 2, 3], level: .remove)
+        for (index, expectedline) in expectedNewLines.enumerated() {
+            XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
+        }
+    }
 }
 
 
