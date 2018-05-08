@@ -15,6 +15,7 @@ public class Parser {
         case `private` = "private"
         case `internal` = "internal"
         case `fileprivate` = "fileprivate"
+        case remove = ""
     }
     
     public init(lines: [String]) {
@@ -29,6 +30,7 @@ public class Parser {
     }
     
     public func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
+        
         var newLines: [Int : String] = [:]
         for i in lineNumbers where isPrefixable[i] == true {
             let currentLine = lines[i]
@@ -65,7 +67,14 @@ public class Parser {
         
         switch firstToken {
         case .keyword(let keyword) where accessKeywords.contains(keyword): lineChangeType[line] = (.substitute, keyword.rawValue)
-        case .attribute(let attribute): lineChangeType[line] = (.postfix, attribute)
+        case .attribute(let attribute):
+            if let secondToken = lineTokens.dropFirst().first,
+                case let .keyword(keyword) = secondToken,
+                accessKeywords.contains(keyword) {
+                lineChangeType[line] = (.substitute, keyword.rawValue)
+            } else {
+                lineChangeType[line] = (.postfix, attribute)
+            }
         case .keyword(let keyword): lineChangeType[line] = (.prefix, keyword.rawValue)
         default: break
         }
@@ -90,39 +99,8 @@ public class Parser {
         if tokenSequenceIsExtensionWithConformance(lineTokens) {
             isPrefixable[line] = false
         }
- 
-    
-    
     }
- 
-        
-        
-        
-//        for (position, token) in lineTokens.enumerated() {
-//
-//            if position == 0, !prefixableInFirstPosition(token) {
-//                isPrefixable[line] = isPrefixable[line] && false
-//            }
-//
-//            switch token {
-//            case .keyword(let keyword) where functionKeywords.contains(keyword) && structure.starts(with: [Keyword.protocol]) == false:
-//                structure.append(keyword)
-//            case .singleCharacter(let char) where char == .bracketClose && structure.starts(with: [.protocol]) == false:
-//                structure = Array(structure.dropLast())
-//            default: break
-//            }
-//
-//            if position == 0 {
-//                switch token {
-//                case .keyword(let keyword) where accessKeywords.contains(keyword): lineChangeType[line] = (.substitute, keyword.rawValue)
-//                case .attribute(let attribute): lineChangeType[line] = (.postfix, attribute)
-//                case .keyword(let keyword): lineChangeType[line] = (.prefix, keyword.rawValue)
-//                default: break
-//                }
-//            }
-//        }
 
-    
     private func structurePermitsPrefix(_ lineNumber: Int) -> Bool {
         if structure.starts(with: [Token.keyword(.func)]) { return false }
         if structure.starts(with: [Token.keyword(.protocol)]) { return false }
@@ -153,11 +131,13 @@ public class Parser {
         case .none: return nil
         case .substitute:
             return line.replacingCharacters(in: range, with: substitution)
-        case .postfix:
+        case .postfix where substitution != "":
             line.insert(contentsOf: " \(substitution)", at: range.upperBound)
             return line
-        case .prefix:
+        case .prefix where substitution != "":
             line.insert(contentsOf: "\(substitution) ", at: range.lowerBound)
+            return line
+        default:
             return line
         }
     }

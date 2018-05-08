@@ -149,6 +149,18 @@ class ParserTests: XCTestCase {
             XCTAssertEqual(line.1, parser.isPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
         }
     }
+    
+    func testDoubleAttributeMarking() {
+        let lines = [("@IBOutlet private var Thing : UISwitch", true)]
+        let parser = Parser(lines: lines.map { $0.0} )
+        for (index, line) in lines.enumerated() {
+            XCTAssertEqual(line.1, parser.isPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
+        }
+        let expectedNewLine = [0 : "@IBOutlet public var Thing : UISwitch"]
+        let newLines = parser.newLines(at: [0], level: .public)
+        XCTAssertEqual(newLines, expectedNewLine)
+        
+    }
 }
 
 

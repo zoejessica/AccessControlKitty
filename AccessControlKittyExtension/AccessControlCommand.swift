@@ -28,25 +28,13 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
             return
         }
         
-        guard let plist = try? PListFile<SourceKitExtensionPlist>() else {
+        guard let accessLevel = Parser.Access.init(commandIdentifier: invocation.commandIdentifier) else {
             completionHandler(nil)
             return
-        }
-        
-        let bundleName = plist.data.CFBundleIdentifier
-        
-        switch invocation.commandIdentifier {
-        case bundleName + ".MakePublic":
-            changeAccessLevel(.public, invocation.buffer)
-        case bundleName + ".MakeInternal":
-            changeAccessLevel(.internal, invocation.buffer)
-        case bundleName + ".MakePrivate":
-            changeAccessLevel(.private, invocation.buffer)
-        case bundleName + ".MakeFileprivate":
-            changeAccessLevel(.fileprivate, invocation.buffer)
             
-        default: break
         }
+        
+        changeAccessLevel(accessLevel, invocation.buffer)
         completionHandler(nil)
     }
     
@@ -75,4 +63,21 @@ public func |> <A, B>(_ a: A, _ f: (A) -> B) -> B {
 
 struct SourceKitExtensionPlist : Codable {
     let CFBundleIdentifier: String
+}
+
+extension Parser.Access {
+    init?(commandIdentifier: String) {
+        guard let plist = try? PListFile<SourceKitExtensionPlist>() else {
+            return nil
+        }
+        let bundleName = plist.data.CFBundleIdentifier
+        switch commandIdentifier {
+        case bundleName + ".MakePublic": self = .public
+        case bundleName + ".MakeInternal": self = .internal
+        case bundleName + ".MakePrivate": self = .private
+        case bundleName + ".MakeFileprivate": self = .fileprivate
+        case bundleName + ".Remove": self = .remove
+        default: return nil
+        }
+    }
 }
