@@ -177,6 +177,35 @@ class ParserTests: XCTestCase {
             XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
         }
     }
+    
+    func testRequiredInitKeyword() {
+        let lines = [
+         "required init?(coder aDecoder: NSCoder) {",
+         "super.init(style: .grouped)",
+        " }"]
+        let expectedNewLines = [
+            "required public init?(coder aDecoder: NSCoder) {",
+            "super.init(style: .grouped)",
+            " }"]
+        let parser = Parser(lines: lines)
+        let newLines = parser.newLines(at: [0, 1, 2], level: .public)
+        for (index, expectedline) in expectedNewLines.enumerated() {
+            XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
+        }
+    }
+    
+    func testTypeAliasDecoration() {
+        let lines = [
+         "typealias WriteToState<State> = ((inout State) -> ()) -> ()"
+         ]
+        let expectedNewLines  = [
+            "public typealias WriteToState<State> = ((inout State) -> ()) -> ()"
+        ]
+        let parser = Parser(lines: lines)
+        let newLines = parser.newLines(at: [0], level: .public)
+        for (index, expectedline) in expectedNewLines.enumerated() {
+            XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
+        }
 }
-
+}
 
