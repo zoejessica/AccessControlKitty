@@ -5,7 +5,7 @@ Xcode extension to change the access control level of Swift code selection
 - Change or remove access control level of the currently selected Swift code
 - Supports `public`, `private`, `fileprivate`, `internal` and removing any annotation. 
 
-![Demo of changing access level](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Demo of changing access level](https://media.giphy.com/media/7zxZhrrxurVXg1oh5m/giphy.gif)
 
 ### Unfeatures
 - It’s not particularly smart, so for example it doesn’t know if a function /can’t/ be made public because it relies on an internal type.  And it certainly doesn’t know about anything going on in any other file.
