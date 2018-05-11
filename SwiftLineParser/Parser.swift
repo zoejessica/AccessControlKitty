@@ -51,6 +51,7 @@ public class Parser {
     
     private let functionKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
+    private let postfixableFunctionKeywords: [Keyword] = [.required]
     var structure: [Token] = []
     
     private func parseLine(_ line: Int, _ lineTokens: [Token]) {
@@ -66,7 +67,12 @@ public class Parser {
         }
         
         switch firstToken {
-        case .keyword(let keyword) where accessKeywords.contains(keyword): lineChangeType[line] = (.substitute, keyword.rawValue)
+        case .keyword(let keyword) where accessKeywords.contains(keyword):
+            lineChangeType[line] = (.substitute, keyword.rawValue)
+            
+        case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
+            lineChangeType[line] = (.postfix, keyword.rawValue)
+            
         case .attribute(let attribute):
             if let secondToken = lineTokens.dropFirst().first,
                 case let .keyword(keyword) = secondToken,

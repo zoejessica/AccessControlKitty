@@ -184,9 +184,7 @@ class ParserTests: XCTestCase {
          "super.init(style: .grouped)",
         " }"]
         let expectedNewLines = [
-            "required public init?(coder aDecoder: NSCoder) {",
-            "super.init(style: .grouped)",
-            " }"]
+            "required public init?(coder aDecoder: NSCoder) {", nil, nil]
         let parser = Parser(lines: lines)
         let newLines = parser.newLines(at: [0, 1, 2], level: .public)
         for (index, expectedline) in expectedNewLines.enumerated() {
@@ -206,6 +204,19 @@ class ParserTests: XCTestCase {
         for (index, expectedline) in expectedNewLines.enumerated() {
             XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
         }
+    }
+    
+    func testMutatingDecoration() {
+    let lines = ["mutating func nest<X>(_ element: FormElement<X, State>) {",
+                 "strongReferences.append(contentsOf: element.strongReferences)"]
+    let expectedNewLines = ["public mutating func nest<X>(_ element: FormElement<X, State>) {", nil]
+        let parser = Parser(lines: lines)
+        let newLines = parser.newLines(at: [0], level: .public)
+        for (index, expectedline) in expectedNewLines.enumerated() {
+            XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
+        }
+    }
 }
-}
+
+
 

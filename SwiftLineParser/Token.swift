@@ -24,8 +24,8 @@ enum SingleCharacter: String, TokenType {
 enum Keyword: String, TokenType {
     case `protocol`, `extension`, `struct`, `class`, `let`, `var`,
     `public`, `private`, `open`, `fileprivate`, `internal`, `override`, `func`,
-    `final`, `enum`, `case`, _init = "init", `static`
-    static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate, .internal, .override, .func, .final, .enum, .case, ._init, .static]
+    `final`, `enum`, `case`, _init = "init", `static`, `typealias`, `required`, `mutating`, `nonmutating`
+    static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate, .internal, .override, .func, .final, .enum, .case, ._init, .static, .typealias, .required, .mutating, .nonmutating]
 }
 
 
