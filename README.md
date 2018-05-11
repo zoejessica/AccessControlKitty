@@ -18,8 +18,8 @@ I'll get it on the Mac app store once I've used it for a while longer. In the me
 - Archive the Mac app target
 - Export the created archive using the option `Export App without resigning` to use locally
 - Launch the app
-- The extension will now be available in System Preferences, under the Extensions pane, listed as an Xcode Source Editor extension
-- Find it under the Editor menu in Xcode - it only works on selected Swift code 
+- The extension will now be available in System Preferences, under the Extensions pane, listed as an Xcode Source Editor extension. Activate!
+- After an Xcode restart, find it under the Editor menu - it only works on selected Swift code 
 - For even more radness, you can bind keyboard shortcuts to the menu commands
 
 ### If you find a bug:
