@@ -51,7 +51,7 @@ class ParserTests: XCTestCase {
            " }",
        " }",
    " }"]
-        let prefixable = [true, true, true, true, true, false, false, false, false, false, false, false]
+        let prefixable = [true, false, false, false, true, false, false, false, false, false, false, false]
         let parser = Parser(lines: lines)
         XCTAssertEqual(prefixable, parser.isPrefixable)
     }
@@ -216,7 +216,116 @@ class ParserTests: XCTestCase {
             XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
         }
     }
+    
+    func testLastLineOfStructWithoutParens() {
+        let lines = [
+        "@testable import Parser",
+        "",
+        "struct CloudKitIdentifiers {",
+        "let container: String",
+        "let placesZone : String",
+        "let databaseSubscriptionID: String",
+        "let placesZoneSubscriptionID  : String",
+        "}"]
+        let expectedNewLines = [
+            nil, "",
+            "public struct CloudKitIdentifiers {",
+            "public let container: String",
+            "public let placesZone : String",
+            "public let databaseSubscriptionID: String",
+            "public let placesZoneSubscriptionID  : String"]
+        let parser = Parser(lines: lines)
+        let newLines = parser.newLines(at: [1 , 2, 3 ,4, 5, 6], level: .public)
+        for (index, expectedline) in expectedNewLines.enumerated() {
+            XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
+        }
+        
+    }
+    
+    func testEnumCases() {
+        
+        let test = """
+                 enum Reps {
+                    case count(Int)
+                     case range(ClosedRange<Int>)
+                     case amrap
+                     case dropset(count: Int)
+                     case rpe(Int)
+                     case max(Int)
+                     case time(Int)
+                     case ladder([Int])
+                }
+                """
+        let lines = test.components(separatedBy: .newlines)
+        let prefixable: [Bool] = {
+            var a = Array.init(repeating: false, count: lines.count)
+            a[0] = true
+            return a
+        }()
+        let parser = Parser(lines: lines)
+        
+        for (index, line) in lines.enumerated() {
+            XCTAssertEqual(prefixable[index], parser.isPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
+        }
+    }
+    
+    func testBlankLineReturnsNil() {
+        let lines = [""]
+        let expectedNewLines: [String?] = [nil]
+        let parser = Parser(lines: lines)
+        XCTAssertEqual(parser.newLines(at: [0], level: .public)[0], expectedNewLines[0])
+    }
 }
+
+
+/*
+ struct CloudKitIdentifiers {
+ let container: String
+ let placesZone : String
+ let databaseSubscriptionID: String
+ public let placesZoneSubscriptionID : String   // -----> the last line doesn not get publicized
+ appears to be an issue that the closing brace is not selected ???????
+ 
+ 
+ 
+ */
+
+/*
+ private let wales = countries[0].regions.first { $0.name == "Wales" }!
+ private let england = countries[0].regions.first { $0.name == "England" }!
+ private let english = england.languages.first { $0.name == "English" }!
+ */
+
+/* last in list wasn't publicised 
+ public let range = curry({ from, _, to in return RepStyle.range(from...to) }) <^> digits <*> hyphen <*> digits //8-12
+ public let dropset = curry({ _, _, count in return RepStyle.dropset(count: count) }) <^> string("dropset") <*> hyphen <*> digits //dropset-4
+ public let count = { RepStyle.count($0) } <^> digits <* character { $0 == "x" } //15
+ public let amrap = { _ in RepStyle.amrap } <^> string("AMRAP")
+ public let time = { RepStyle.time($0) } <^> digits <* character { $0 == "s" } //30s
+ public let rpe = { RepStyle.rpe($0) } <^> (string("rpe") *> digits)  //rpe8
+ public let ladder = { RepStyle.ladder($0) } <^> (digits <* character { $0 == "," }).oneOrMore // 12,10,8,6,8,10,12
+ public let max = { RepStyle.max($0) } <^> digits <* character { $0 == "%" } //30%
+ let repStyle = ladder <|> dropset <|> range <|> time <|> rpe <|> amrap <|> max <|> count
+ */
+
+/*
+Access control kitty test cases
+
+computed variables
+
+
+public var oneOrMore: Parser<[A]> {
+    // prepend the single result + remainder many result
+    public let transform: (A, [A]) -> [A] = { single, array in return [single] + array }
+    public let curried = curry(transform)
+    public let intermediate = curried <^> self  // Parser<([A]) -> [A]>
+    public let final = intermediate <*> self.many // Parser<[A]>
+    return final
+}
+*/
+
+
+
 
 
 

@@ -67,6 +67,7 @@ public class Parser {
         }
         
         switch firstToken {
+            
         case .keyword(let keyword) where accessKeywords.contains(keyword):
             lineChangeType[line] = (.substitute, keyword.rawValue)
             
@@ -118,6 +119,7 @@ public class Parser {
         switch token {
         case .singleCharacter: return false
         case .identifier: return false
+        case .keyword(let keyword) where keyword == .case: return false 
         default: return true
         }
     }
