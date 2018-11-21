@@ -275,57 +275,103 @@ class ParserTests: XCTestCase {
         let parser = Parser(lines: lines)
         XCTAssertEqual(parser.newLines(at: [0], level: .public)[0], expectedNewLines[0])
     }
+    
+    func testComputedVariables() {
+        let test = """
+var oneOrMore: Parser<[A]> {
+// prepend the single result + remainder many result
+let transform: (A, [A]) -> [A] = { single, array in return [single] + array }
+let curried = curry(transform)
+let intermediate = curried <^> self  // Parser<([A]) -> [A]>
+let final = intermediate <*> self.many // Parser<[A]>
+return final
 }
-
-
-/*
- struct CloudKitIdentifiers {
- let container: String
- let placesZone : String
- let databaseSubscriptionID: String
- public let placesZoneSubscriptionID : String   // -----> the last line doesn not get publicized
- appears to be an issue that the closing brace is not selected ???????
- 
- 
- 
- */
-
-/*
- private let wales = countries[0].regions.first { $0.name == "Wales" }!
- private let england = countries[0].regions.first { $0.name == "England" }!
- private let english = england.languages.first { $0.name == "English" }!
- */
-
-/* last in list wasn't publicised 
- public let range = curry({ from, _, to in return RepStyle.range(from...to) }) <^> digits <*> hyphen <*> digits //8-12
- public let dropset = curry({ _, _, count in return RepStyle.dropset(count: count) }) <^> string("dropset") <*> hyphen <*> digits //dropset-4
- public let count = { RepStyle.count($0) } <^> digits <* character { $0 == "x" } //15
- public let amrap = { _ in RepStyle.amrap } <^> string("AMRAP")
- public let time = { RepStyle.time($0) } <^> digits <* character { $0 == "s" } //30s
- public let rpe = { RepStyle.rpe($0) } <^> (string("rpe") *> digits)  //rpe8
- public let ladder = { RepStyle.ladder($0) } <^> (digits <* character { $0 == "," }).oneOrMore // 12,10,8,6,8,10,12
- public let max = { RepStyle.max($0) } <^> digits <* character { $0 == "%" } //30%
- let repStyle = ladder <|> dropset <|> range <|> time <|> rpe <|> amrap <|> max <|> count
- */
-
-/*
-Access control kitty test cases
-
-computed variables
-
-
+"""
+        let expected = """
 public var oneOrMore: Parser<[A]> {
-    // prepend the single result + remainder many result
-    public let transform: (A, [A]) -> [A] = { single, array in return [single] + array }
-    public let curried = curry(transform)
-    public let intermediate = curried <^> self  // Parser<([A]) -> [A]>
-    public let final = intermediate <*> self.many // Parser<[A]>
-    return final
+// prepend the single result + remainder many result
+let transform: (A, [A]) -> [A] = { single, array in return [single] + array }
+let curried = curry(transform)
+let intermediate = curried <^> self  // Parser<([A]) -> [A]>
+let final = intermediate <*> self.many // Parser<[A]>
+return final
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testComplexAssignmentsWithCurlyBraces() {
+        let test = """
+private let wales = countries[0].regions.first { $0.name == "Wales" }!
+private let england = countries[0].regions.first { $0.name == "England" }!
+private let english = england.languages.first { $0.name == "English" }!
+
+"""
+        let expected = """
+public let wales = countries[0].regions.first { $0.name == "Wales" }!
+public let england = countries[0].regions.first { $0.name == "England" }!
+public let english = england.languages.first { $0.name == "English" }!
+
+"""
+    multilineTest(test: test, expected: expected)
+    }
+    
+    func testComplexAssignmentListWithFancyOperators() {
+        let test = """
+let range = curry({ from, _, to in return RepStyle.range(from...to) }) <^> digits <*> hyphen <*> digits //8-12
+let dropset = curry({ _, _, count in return RepStyle.dropset(count: count) }) <^> string("dropset") <*> hyphen <*> digits //dropset-4
+let count = { RepStyle.count($0) } <^> digits <* character { $0 == "x" } //15
+let amrap = { _ in RepStyle.amrap } <^> string("AMRAP")
+let time = { RepStyle.time($0) } <^> digits <* character { $0 == "s" } //30s
+let rpe = { RepStyle.rpe($0) } <^> (string("rpe") *> digits)  //rpe8
+let ladder = { RepStyle.ladder($0) } <^> (digits <* character { $0 == "," }).oneOrMore // 12,10,8,6,8,10,12
+let max = { RepStyle.max($0) } <^> digits <* character { $0 == "%" } //30%
+let repStyle = ladder <|> dropset <|> range <|> time <|> rpe <|> amrap <|> max <|> count
+"""
+        let expected = """
+public let range = curry({ from, _, to in return RepStyle.range(from...to) }) <^> digits <*> hyphen <*> digits //8-12
+public let dropset = curry({ _, _, count in return RepStyle.dropset(count: count) }) <^> string("dropset") <*> hyphen <*> digits //dropset-4
+public let count = { RepStyle.count($0) } <^> digits <* character { $0 == "x" } //15
+public let amrap = { _ in RepStyle.amrap } <^> string("AMRAP")
+public let time = { RepStyle.time($0) } <^> digits <* character { $0 == "s" } //30s
+public let rpe = { RepStyle.rpe($0) } <^> (string("rpe") *> digits)  //rpe8
+public let ladder = { RepStyle.ladder($0) } <^> (digits <* character { $0 == "," }).oneOrMore // 12,10,8,6,8,10,12
+public let max = { RepStyle.max($0) } <^> digits <* character { $0 == "%" } //30%
+public let repStyle = ladder <|> dropset <|> range <|> time <|> rpe <|> amrap <|> max <|> count
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testIncompleteBraceSelection() {
+        let test = """
+struct CloudKitIdentifiers {
+let container: String
+let placesZone : String
+let databaseSubscriptionID: String
+let placesZoneSubscriptionID : String
+"""
+         let expected = """
+public struct CloudKitIdentifiers {
+public let container: String
+public let placesZone : String
+public let databaseSubscriptionID: String
+public let placesZoneSubscriptionID : String
+"""
+        multilineTest(test: test, expected: expected)
+    }
+        
+    func multilineTest(test: String, expected: String, file: StaticString = #file, line: UInt = #line) {
+        let lines = test.components(separatedBy: .newlines)
+        let expectedLines = expected.components(separatedBy: .newlines)
+        let parser = Parser(lines: lines)
+        let parsedLines = parser.newLines(at: 0..<lines.count, level: .public)
+        for (index, expectedline) in expectedLines.enumerated() {
+            XCTAssertEqual(parsedLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed", file: file, line: line)
+        }
+    }
 }
-*/
 
-
-
-
-
-
+extension Parser {
+    func newLines(at lineNumbers: Range<Int>, level: Access) -> [Int : String] {
+        return newLines(at: Array(lineNumbers), level: level)
+    }
+}
