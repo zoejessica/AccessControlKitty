@@ -28,6 +28,7 @@
 		ED18F8562094890D002BD062 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84E2094890C002BD062 /* Regex.swift */; };
 		ED18F85820948921002BD062 /* AccessControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F85720948921002BD062 /* AccessControlCommand.swift */; };
 		ED18F85A209494CB002BD062 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F859209494CB002BD062 /* SourceEditorExtension.swift */; };
+		ED4042EA21D6E7A6007FA9E9 /* TestForXcodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4042E921D6E7A6007FA9E9 /* TestForXcodeExtension.swift */; };
 		ED784B5A209FCDC4001C06FB /* PropertyListParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED784B59209FCDC4001C06FB /* PropertyListParser.swift */; };
 /* End PBXBuildFile section */
 
@@ -115,6 +116,7 @@
 		ED18F84E2094890C002BD062 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		ED18F85720948921002BD062 /* AccessControlCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlCommand.swift; sourceTree = "<group>"; };
 		ED18F859209494CB002BD062 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
+		ED4042E921D6E7A6007FA9E9 /* TestForXcodeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestForXcodeExtension.swift; sourceTree = "<group>"; };
 		ED784B59209FCDC4001C06FB /* PropertyListParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyListParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -230,6 +232,7 @@
 			children = (
 				ED18F844209488FA002BD062 /* LexerTests.swift */,
 				ED18F843209488FA002BD062 /* ParserTests.swift */,
+				ED4042E921D6E7A6007FA9E9 /* TestForXcodeExtension.swift */,
 				ED18F83C209488D5002BD062 /* Info.plist */,
 			);
 			path = SwiftLineParserTests;
@@ -443,6 +446,7 @@
 			files = (
 				ED18F845209488FA002BD062 /* ParserTests.swift in Sources */,
 				ED18F846209488FA002BD062 /* LexerTests.swift in Sources */,
+				ED4042EA21D6E7A6007FA9E9 /* TestForXcodeExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,7 +653,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.accesskitty.accesscontrol;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.accesskitty.accesscontroldebug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -669,7 +673,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.accesskitty.accesscontrol;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.accesskitty.accesscontroldebug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;

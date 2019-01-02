@@ -16,7 +16,7 @@ I'll get it on the Mac app store once I've used it for a while longer. In the me
 
 - Download the Xcode project
 - Archive the Mac app target
-- Export the created archive using the option `Export App without resigning` to use locally
+- From the Organizer window, which should open automatically, click `Distribute` and export the created archive using the option `Copy` to use locally. Save wherever you like.
 - Launch the app
 - The extension will now be available in System Preferences, under the Extensions pane, listed as an Xcode Source Editor extension. Activate!
 - After an Xcode restart, find it under the Editor menu - it only works on selected Swift code 

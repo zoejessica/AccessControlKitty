@@ -2,7 +2,7 @@
 //  Token.swift
 //  Temporary
 //
-//  Created by Zoe Smith on 4/20/18.
+//  Created by Zoe Smith on 4/20/18.`while` 'repeat`
 //  Copyright © 2018 Hot Beverage. All rights reserved.
 //
 
@@ -18,14 +18,15 @@ enum Token: Equatable {
 enum SingleCharacter: String, TokenType {
     case bracketOpen = "{", bracketClose = "}"
     case colon = ":"
+    case equals = "="
     static let allCases = [SingleCharacter.bracketOpen, .bracketClose, .colon]
 }
 
-enum Keyword: String, TokenType {
+enum Keyword: String, TokenType, CaseIterable {
     case `protocol`, `extension`, `struct`, `class`, `let`, `var`,
     `public`, `private`, `open`, `fileprivate`, `internal`, `override`, `func`,
-    `final`, `enum`, `case`, _init = "init", `static`, `typealias`, `required`, `mutating`, `nonmutating`
-    static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate, .internal, .override, .func, .final, .enum, .case, ._init, .static, .typealias, .required, .mutating, .nonmutating]
+    `final`, `enum`, `case`, _init = "init", `static`, `typealias`, `required`, `mutating`, `nonmutating`, `for`, `while`, `repeat`
+    static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate, .internal, .override, .func, .final, .enum, .case, ._init, .static, .typealias, .required, .mutating, .nonmutating, .for, .while, .repeat]
 }
 
 

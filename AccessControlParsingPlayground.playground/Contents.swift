@@ -12,12 +12,10 @@ public let time = { RepStyle.time($0) } <^> digits <* character { $0 == "s" } //
 public let rpe = { RepStyle.rpe($0) } <^> (string("rpe") *> digits)  //rpe8
 public let ladder = { RepStyle.ladder($0) } <^> (digits <* character { $0 == "," }).oneOrMore // 12,10,8,6,8,10,12
 public let max = { RepStyle.max($0) } <^> digits <* character { $0 == "%" } //30%
-let repStyle = ladder <|> dropset <|> range <|> time <|> rpe <|> amrap <|> max <|> count
-
-
-
-
+let repStyle = ladder <|> dropset <|> range <|> time <|> rpe <|> amrap <|> max <|> count\n
 """
+
+print(testString.last!)
 
 
 let lines = testString.components(separatedBy: .newlines)

@@ -40,7 +40,10 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
     
     func changeAccessLevel(_ access: Parser.Access, _ buffer: XCSourceTextBuffer) {
         guard let lines = buffer.lines as? [String] else { return }
-        let selectedLineNumbers = selectedLines(in: buffer).dropLast()
+        // When text is selected in the actual app, if it doesn't end with a \n the parser gets confused
+        // I add an extra one in just in case
+        
+        let selectedLineNumbers = selectedLines(in: buffer)
         let parser = Parser(lines: lines)
         let changedSelections = parser.newLines(at: Array(selectedLineNumbers), level: access)
         for lineNumber in selectedLineNumbers {
@@ -52,7 +55,7 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
 }
 
 func lines(_ range: XCSourceTextRange) -> [Int] {
-    return Array(range.start.line...range.end.line)
+    return Array(range.start.line..<range.end.line)
 }
 
 precedencegroup PipeForward { associativity: left }

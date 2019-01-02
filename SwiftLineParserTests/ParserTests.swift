@@ -34,7 +34,7 @@ class ParserTests: XCTestCase {
         
         let prefixable = [true, true, true, false, false, false, false, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.isPrefixable)
+        XCTAssertEqual(parser.isPrefixable, prefixable)
     }
     
     func testEnum() {
@@ -86,6 +86,24 @@ class ParserTests: XCTestCase {
         }
     }
     
+    func testPrePostSubstitutionFixingVars() {
+        let lines = ["public var strings: [Highlight<NSAttributedString>] = markdown()",
+                     "final class ViewController: NSViewController {",
+                     "@IBOutlet var textView: NSTextView!",
+                     "func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
+        let prefixable = [true, true, true, true]
+        let parser = Parser(lines: lines)
+        let newLines = parser.newLines(at: [0, 1, 2, 3], level: .public)
+        let expectedNewLines = ["public var strings: [Highlight<NSAttributedString>] = markdown()",
+                                "public final class ViewController: NSViewController {",
+                                "@IBOutlet public var textView: NSTextView!",
+                                "public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
+        XCTAssertEqual(prefixable, parser.isPrefixable)
+        for (lineNumber, expectedLine) in expectedNewLines.enumerated() {
+            XCTAssertEqual(expectedLine, newLines[lineNumber])
+        }
+    }
+    
     func testPropertiesInsideStruct() {
         let lines = ["struct Highlight<Result> where Result: Block & HighlightedCode {",
             "let rendered: Result"]
@@ -108,8 +126,22 @@ class ParserTests: XCTestCase {
         "var another { get set }"]
         let prefixable = [true, false, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.isPrefixable)
-        XCTAssertEqual(parser.structure, [Token.keyword(.protocol), Token.singleCharacter(.bracketOpen)])
+        XCTAssertEqual(parser.isPrefixable, prefixable)
+        XCTAssertEqual(parser.structure.declarations, [Declaration.init(keyword: .protocol, openBrace: true)])
+    }
+    
+    func testPropertiesMethodsInsideProtocolWithClosingBrace() {
+        let lines = ["protocol HighlightedCode {",
+                     "static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self",
+                     "var whatever { get }",
+                     "var whatever { get }",
+                     "var whatever { get }",
+                     "var another { get set }",
+                     "}"]
+        let prefixable = [true, false, false, false, false, false, false]
+        let parser = Parser(lines: lines)
+        XCTAssertEqual(parser.isPrefixable, prefixable)
+        XCTAssertEqual(parser.structure.declarations, [])
     }
     
     func testExtensionWithConformance() {
@@ -146,7 +178,7 @@ class ParserTests: XCTestCase {
                      ("  }", false)]
         let parser = Parser(lines: lines.map { $0.0 })
         for (index, line) in lines.enumerated() {
-            XCTAssertEqual(line.1, parser.isPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
+            XCTAssertEqual(parser.isPrefixable[index], line.1, "Line no.: \(index) \(line) was incorrectly parsed")
         }
     }
     
@@ -269,12 +301,12 @@ class ParserTests: XCTestCase {
         }
     }
     
-    func testBlankLineReturnsNil() {
-        let lines = [""]
-        let expectedNewLines: [String?] = [nil]
-        let parser = Parser(lines: lines)
-        XCTAssertEqual(parser.newLines(at: [0], level: .public)[0], expectedNewLines[0])
-    }
+//    func testBlankLineReturnsNil() {
+//        let lines = [""]
+//        let expectedNewLines: [String?] = [nil]
+//        let parser = Parser(lines: lines)
+//        XCTAssertEqual(parser.newLines(at: [0], level: .public)[0], expectedNewLines[0])
+//    }
     
     func testComputedVariables() {
         let test = """
@@ -358,14 +390,73 @@ public let placesZoneSubscriptionID : String
 """
         multilineTest(test: test, expected: expected)
     }
-        
+    
+    func testVariablesDefinedWithLocalScopeInVarDontGetAccessNotation() {
+        let test = """
+var patchMark: String {
+let fstMark = "yo"
+let sndMark = "beef"
+return "@@@@"
+}
+"""
+        let expected = """
+public var patchMark: String {
+let fstMark = "yo"
+let sndMark = "beef"
+return "@@@@"
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testComplexAssignmentsVarsWithCurlyBraces() {
+        let test = """
+private var wales = countries[0].regions.first { $0.name == "Wales" }!
+private var england = countries[0].regions.first { $0.name == "England" }!
+private var english = england.languages.first { $0.name == "English" }!
+
+"""
+        let expected = """
+public var wales = countries[0].regions.first { $0.name == "Wales" }!
+public var england = countries[0].regions.first { $0.name == "England" }!
+public var english = england.languages.first { $0.name == "English" }!
+
+"""
+        multilineTest(test: test, expected: expected)
+    }
+
+    func testVariablesDefinedWithLocalScopeInLetDontGetAccessNotation() {
+        let test = """
+let patchMark: String {
+let fstMark = "yo"
+let sndMark = "beef"
+return "@@@@"
+}()
+"""
+        let expected = """
+public let patchMark: String {
+let fstMark = "yo"
+let sndMark = "beef"
+return "@@@@"
+}()
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    
     func multilineTest(test: String, expected: String, file: StaticString = #file, line: UInt = #line) {
         let lines = test.components(separatedBy: .newlines)
         let expectedLines = expected.components(separatedBy: .newlines)
         let parser = Parser(lines: lines)
         let parsedLines = parser.newLines(at: 0..<lines.count, level: .public)
         for (index, expectedline) in expectedLines.enumerated() {
-            XCTAssertEqual(parsedLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed", file: file, line: line)
+            if expectedline != lines[index] {
+                // Parsed line should exist if the expected line is different
+                XCTAssertNotNil(parsedLines[index])
+            }
+            if let parsedLine = parsedLines[index] {
+                XCTAssertEqual(expectedline, parsedLine, "Line no.: \(index) \(lines[index]) was incorrectly parsed", file: file, line: line)
+            }
         }
     }
 }

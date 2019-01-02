@@ -24,7 +24,7 @@ public class Parser {
         tokens = lines.map { lexer.analyse($0) }
         isPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
         for (lineNumber, linetokens) in tokens.enumerated() {
-            isPrefixable[lineNumber] = structurePermitsPrefix(lineNumber)
+            isPrefixable[lineNumber] = currentStructurePermitsPrefix(lineNumber)
             parseLine(lineNumber, linetokens)
         }
     }
@@ -49,20 +49,20 @@ public class Parser {
     var isPrefixable: [Bool]
     private var lineChangeType: [Int : (LineChangeType, String)] = [:]
     
-    private let functionKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init]
+    private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
     private let postfixableFunctionKeywords: [Keyword] = [.required]
-    var structure: [Token] = []
+    var structure: Structure = Structure(declarations: [])
     
     private func parseLine(_ line: Int, _ lineTokens: [Token]) {
         
         guard let firstToken = lineTokens.first else { return }
         
         if !prefixableInFirstPosition(firstToken) {
-            isPrefixable[line] = isPrefixable[line] && false
+            isPrefixable[line] = false
         }
         
-        if tokenSequenceIsExtensionWithConformance(structure) {
+        if tokenSequenceIsExtensionWithConformance(structure.tokens) {
             isPrefixable[line] = false
         }
         
@@ -86,19 +86,17 @@ public class Parser {
         default: break
         }
         
-        for token in lineTokens {
+        for (index, token) in lineTokens.enumerated() {
             switch token {
-            case .keyword(let keyword) where functionKeywords.contains(keyword) && structure.starts(with: [Token(Keyword.protocol)!]) == false:
-                structure.append(token)
+            
+            
+                
+            case .keyword(let keyword) where structureKeywords.contains(keyword) && !structure.starts(with: Keyword.protocol):
+                structure.append(.init(keyword: keyword, openBrace: false))
             case .singleCharacter(let char) where char == .bracketOpen:
-                structure.append(token)
+                structure.openBrace()
             case .singleCharacter(let char) where char == .bracketClose:
-                structure = Array(structure.dropLast())
-                if let lastStructureToken = structure.last {
-                    if case let Token.keyword(keyword) = lastStructureToken, functionKeywords.contains(keyword) {
-                        structure = Array(structure.dropLast())
-                    }
-                }
+                structure.closeBrace()
             default: break
             }
         }
@@ -108,11 +106,13 @@ public class Parser {
         }
     }
 
-    private func structurePermitsPrefix(_ lineNumber: Int) -> Bool {
-        if structure.starts(with: [Token.keyword(.func)]) { return false }
-        if structure.starts(with: [Token.keyword(.protocol)]) { return false }
-        
-        return structure.count < 4 ?  true : false
+    private func currentStructurePermitsPrefix(_ lineNumber: Int) -> Bool {
+        if structure.starts(with: Keyword.func) { return false }
+        if structure.starts(with: Keyword.protocol) { return false }
+        if structure.starts(with: Declaration.init(keyword: .var, openBrace: true)) { return false }
+        if structure.starts(with: Declaration.init(keyword: .let, openBrace: true)) { return false }
+
+        return structure.openStructures < 2 ?  true : false
     }
     
     private func prefixableInFirstPosition(_ token: Token) -> Bool {
@@ -171,14 +171,73 @@ public class Parser {
     }
 }
 
+struct Structure: Equatable {
+    var declarations: [Declaration]
+    
+    var openStructures: Int {
+        return declarations.filter { $0.openBrace == true }.count
+    }
+    
+    var tokens: [Token] {
+        return declarations.compactMap {
+            if let keyword = $0.keyword {
+                return Token.keyword(keyword)
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    func starts(with keyword: Keyword) -> Bool {
+        if let first = declarations.first, first.keyword == keyword  {
+            return true
+        } else {
+            return false
+        }
+    }
 
+    func starts(with declaration: Declaration) -> Bool {
+        if let first = declarations.first, first == declaration  {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    mutating func append(_ declaration: Declaration) {
+        if let last = declarations.last,
+            last == .init(keyword: .var, openBrace: false) || last == .init(keyword: .let, openBrace: false) {
+           _ = declarations.popLast()
+        }
+        declarations.append(declaration)
+    }
+    
+    mutating func openBrace() {
+        guard var last = declarations.last, last.openBrace == false else {
+            declarations.append(.init(keyword: nil, openBrace: true))
+            return
+        }
+        last.openBrace = true
+        _ = declarations.popLast()
+        declarations.append(last)
+    }
+    
+    mutating func closeBrace() {
+        if let last = declarations.last {
+            if last.openBrace == true  {
+                _ = declarations.popLast()
+            } else {
+                _ = declarations.popLast()
+                closeBrace()
+            }
+        }
+    }
+}
 
-
-
-
-
-
-
+struct Declaration: Equatable {
+    let keyword: Keyword?
+    var openBrace: Bool
+}
 
 
 
