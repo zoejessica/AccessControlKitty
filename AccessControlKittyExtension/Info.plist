@@ -40,9 +40,9 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakePrivate</string>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeInternal</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>private</string>
+					<string>internal</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -56,9 +56,9 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
-					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeInternal</string>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakePrivate</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>internal</string>
+					<string>private</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
