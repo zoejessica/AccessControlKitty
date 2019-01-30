@@ -543,12 +543,6 @@ public static var null: JSON { return JSON(NSNull()) }
 """
         multilineTest(test: test, expected: expected)
     }
-    
-    func testOneLiner() {
-        let test = "private static var nullJSON: JSON { return null "
-        let expected = "public static var nullJSON: JSON { return null "
-        multilineTest(test: test, expected: expected)
-    }
 
     func testObjcModifierIgnored() {
         let test = """
