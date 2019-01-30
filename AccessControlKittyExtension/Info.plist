@@ -70,7 +70,7 @@
 				</dict>
 			</array>
 			<key>XCSourceEditorExtensionPrincipalClass</key>
-			<string>$(PRODUCT_MODULE_NAME).SourceEditorExtension</string>
+			<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.dt.Xcode.extension.source-editor</string>
