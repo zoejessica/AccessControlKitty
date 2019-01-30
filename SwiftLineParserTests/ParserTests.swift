@@ -443,6 +443,144 @@ return "@@@@"
         multilineTest(test: test, expected: expected)
     }
     
+    func testAccessModifierAfterStaticKeywordIsRecognized() {
+        let test = """
+static private func == (lhs: Index, rhs: Index) -> Bool {
+switch (lhs, rhs) {
+case (.array(let left), .array(let right)):
+return left == right
+case (.dictionary(let left), .dictionary(let right)):
+return left == right
+case (.null, .null): return true
+default:
+return false
+}
+}
+"""
+        
+        let expected = """
+static public func == (lhs: Index, rhs: Index) -> Bool {
+switch (lhs, rhs) {
+case (.array(let left), .array(let right)):
+return left == right
+case (.dictionary(let left), .dictionary(let right)):
+return left == right
+case (.null, .null): return true
+default:
+return false
+}
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testStaticKeywordRecognizedCorrectly() {
+        let test = """
+        static var playing: [PlayerCore] {
+        return playerCores.filter { !$0.info.isIdle }
+        }
+        
+        static var playerCores: [PlayerCore] = []
+        static private var playerCoreCounter = 0
+        
+        static private func findIdlePlayerCore() -> PlayerCore? {
+        return playerCores.first { $0.info.isIdle && !$0.info.fileLoading }
+        }
+        
+        static private func createPlayerCore() -> PlayerCore {
+        let pc = PlayerCore()
+        playerCores.append(pc)
+        pc.startMPV()
+        playerCoreCounter += 1
+        return pc
+        }
+        
+        static func activeOrNewForMenuAction(isAlternative: Bool) -> PlayerCore {
+        let useNew = Preference.bool(for: .alwaysOpenInNewWindow) != isAlternative
+        return useNew ? newPlayerCore : active
+        }
+"""
+        let expected = """
+        static public var playing: [PlayerCore] {
+        return playerCores.filter { !$0.info.isIdle }
+        }
+        
+        static public var playerCores: [PlayerCore] = []
+        static public var playerCoreCounter = 0
+        
+        static public func findIdlePlayerCore() -> PlayerCore? {
+        return playerCores.first { $0.info.isIdle && !$0.info.fileLoading }
+        }
+        
+        static public func createPlayerCore() -> PlayerCore {
+        let pc = PlayerCore()
+        playerCores.append(pc)
+        pc.startMPV()
+        playerCoreCounter += 1
+        return pc
+        }
+        
+        static public func activeOrNewForMenuAction(isAlternative: Bool) -> PlayerCore {
+        let useNew = Preference.bool(for: .alwaysOpenInNewWindow) != isAlternative
+        return useNew ? newPlayerCore : active
+        }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testIgnoreAvailableModifier() {
+        let test = """
+/// The static null JSON
+@available(*, unavailable, renamed:"null")
+private static var nullJSON: JSON { return null }
+private static var null: JSON { return JSON(NSNull()) }
+"""
+        let expected = """
+/// The static null JSON
+@available(*, unavailable, renamed:"null")
+public static var nullJSON: JSON { return null }
+public static var null: JSON { return JSON(NSNull()) }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testOneLiner() {
+        let test = "private static var nullJSON: JSON { return null "
+        let expected = "public static var nullJSON: JSON { return null "
+        multilineTest(test: test, expected: expected)
+    }
+
+    func testObjcModifierIgnored() {
+        let test = """
+  @objc
+  private func droppedText(_ pboard: NSPasteboard, userData:String, error: NSErrorPointer) {
+    if let url = pboard.string(forType: .string) {
+      openFileCalled = true
+      PlayerCore.active.openURLString(url)
+    }
+  }
+"""
+        let expected = """
+  @objc
+  public func droppedText(_ pboard: NSPasteboard, userData:String, error: NSErrorPointer) {
+    if let url = pboard.string(forType: .string) {
+      openFileCalled = true
+      PlayerCore.active.openURLString(url)
+    }
+  }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testSomething() {
+        let test = """
+
+"""
+        let expected = """
+
+"""
+        multilineTest(test: test, expected: expected)
+    }
     
     func multilineTest(test: String, expected: String, file: StaticString = #file, line: UInt = #line) {
         let lines = test.components(separatedBy: .newlines)

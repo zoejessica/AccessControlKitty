@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftLineParserTests/ParserTests.swift"
-            timestampString = "570064514.751757"
+            timestampString = "570506987.6731271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "452"
-            endingLineNumber = "452"
+            startingLineNumber = "590"
+            endingLineNumber = "590"
             landmarkName = "multilineTest(test:expected:file:line:)"
             landmarkType = "7">
          </BreakpointContent>
