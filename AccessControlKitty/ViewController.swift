@@ -22,4 +22,6 @@ class ViewController: NSViewController {
         let url = URL(string: "x-apple.systempreferences:com.apple.preferences")!
         NSWorkspace.shared.open(url)
     }
+    
+    
 }
