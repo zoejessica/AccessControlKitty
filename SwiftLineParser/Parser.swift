@@ -75,22 +75,33 @@ public class Parser {
             lineChangeType[line] = (.postfix, keyword.rawValue)
             
         case .attribute(let attribute):
+
             if let secondToken = lineTokens.dropFirst().first,
                 case let .keyword(keyword) = secondToken,
                 accessKeywords.contains(keyword) {
                 lineChangeType[line] = (.substitute, keyword.rawValue)
-            } else {
+            }
+            
+            else if lineTokens.dropFirst().first(where: {
+                    if case .keyword(_) = $0 {
+                        return true
+                    } else {
+                        return false
+                    }
+                }) == nil {
+                    // no keywords found, so this is just e.g. an @ attribute on a line by itself
+                    lineChangeType[line] = (LineChangeType.none, "")
+                }
+            else {
                 lineChangeType[line] = (.postfix, attribute)
             }
+            
         case .keyword(let keyword): lineChangeType[line] = (.prefix, keyword.rawValue)
         default: break
         }
         
-        for (index, token) in lineTokens.enumerated() {
-            switch token {
-            
-            
-                
+        for token in lineTokens {
+            switch token {                
             case .keyword(let keyword) where structureKeywords.contains(keyword) && !structure.starts(with: Keyword.protocol):
                 structure.append(.init(keyword: keyword, openBrace: false))
             case .singleCharacter(let char) where char == .bracketOpen:
