@@ -11,9 +11,11 @@
                 <windowController id="7m1-jh-TMi" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="e6F-3q-XlY">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="1111" y="688" width="480" height="270"/>
+                        <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
+                        <rect key="contentRect" x="790" y="548" width="813" height="345"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="813" height="345"/>
+                        <value key="maxSize" type="size" width="813" height="345"/>
                         <connections>
                             <outlet property="delegate" destination="7m1-jh-TMi" id="iOE-XS-YMg"/>
                         </connections>
@@ -31,65 +33,86 @@
             <objects>
                 <viewController id="8Dz-TX-uco" customClass="ViewController" customModule="AccessControlKitty" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="P0q-Hw-jzT">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="408"/>
+                        <rect key="frame" x="0.0" y="0.0" width="813" height="355"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1PT-wc-OKc">
-                                <rect key="frame" x="18" y="357" width="125" height="31"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Installation" id="B4H-9M-vaN">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1PT-wc-OKc">
+                                <rect key="frame" x="18" y="304" width="209" height="31"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="2-Step Installation" id="B4H-9M-vaN">
                                     <font key="font" size="26" name=".AppleSystemUIFont"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BpS-xC-AUp">
-                                <rect key="frame" x="18" y="306" width="373" height="43"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" selectable="YES" title="Open the Extensions panel of System Preferences and find AccessControlKitty in the Xcode Source Editor section.  " id="6Hj-LF-FvR">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="BpS-xC-AUp">
+                                <rect key="frame" x="18" y="255" width="417" height="34"/>
+                                <textFieldCell key="cell" selectable="YES" title="1. Open the Extensions panel of System Preferences and activate AccessControlKitty in the Xcode Source Editor section.  " id="6Hj-LF-FvR">
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a1K-vd-MwS">
-                                <rect key="frame" x="18" y="255" width="373" height="43"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <textFieldCell key="cell" selectable="YES" title="Check the box to activate AccessControlKitty." id="tr2-Kx-AtU">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xwg-QT-Lyf">
-                                <rect key="frame" x="18" y="137" width="370" height="85"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="xwg-QT-Lyf">
+                                <rect key="frame" x="18" y="57" width="315" height="102"/>
                                 <textFieldCell key="cell" selectable="YES" id="DZl-pY-R0p">
                                     <font key="font" metaFont="system"/>
-                                    <string key="title">Restart Xcode to get started.  
+                                    <string key="title">2. Restart Xcode.
 
-When working with a Swift file, find the new menu item Change Access Level at the bottom of the Editor menu. Run a command on selected code. </string>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+When working with a Swift file, you'll find the new menu item Change Access Level at the bottom of the Editor menu. Run a command on selected code. </string>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QGu-Ka-SQo">
-                                <rect key="frame" x="14" y="233" width="198" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QGu-Ka-SQo">
+                                <rect key="frame" x="14" y="213" width="208" height="32"/>
                                 <buttonCell key="cell" type="push" title="Open System Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PEF-eW-oy5">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="system" size="14"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="openExtensions:" target="8Dz-TX-uco" id="Oel-FI-jAV"/>
                                 </connections>
                             </button>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="txI-KJ-qaT">
+                                <rect key="frame" x="459" y="187" width="334" height="102"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="334" id="2YV-PZ-T2T"/>
+                                    <constraint firstAttribute="height" constant="102" id="MCU-a3-ZOx"/>
+                                </constraints>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="extension" id="vPV-RK-I14"/>
+                            </imageView>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yaL-7M-3vL">
+                                <rect key="frame" x="339" y="20" width="454" height="139"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="454" id="1gg-WO-gzr"/>
+                                    <constraint firstAttribute="height" constant="139" id="PyP-2q-SIc"/>
+                                </constraints>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="menuselection" id="VRG-1e-gG5"/>
+                            </imageView>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="1PT-wc-OKc" firstAttribute="leading" secondItem="P0q-Hw-jzT" secondAttribute="leading" constant="20" id="3sv-R4-zad"/>
+                            <constraint firstItem="txI-KJ-qaT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QGu-Ka-SQo" secondAttribute="trailing" constant="8" symbolic="YES" id="7hE-9H-0mK"/>
+                            <constraint firstItem="xwg-QT-Lyf" firstAttribute="leading" secondItem="BpS-xC-AUp" secondAttribute="leading" id="8J7-hl-bqs"/>
+                            <constraint firstAttribute="trailing" secondItem="txI-KJ-qaT" secondAttribute="trailing" constant="20" id="Aiu-PV-ydu"/>
+                            <constraint firstItem="txI-KJ-qaT" firstAttribute="leading" secondItem="BpS-xC-AUp" secondAttribute="trailing" constant="26" id="Cni-U1-ezZ"/>
+                            <constraint firstItem="yaL-7M-3vL" firstAttribute="top" secondItem="txI-KJ-qaT" secondAttribute="bottom" constant="28" id="Glg-kl-wff"/>
+                            <constraint firstItem="yaL-7M-3vL" firstAttribute="trailing" secondItem="txI-KJ-qaT" secondAttribute="trailing" id="Jiw-Ka-tq3"/>
+                            <constraint firstItem="QGu-Ka-SQo" firstAttribute="top" secondItem="BpS-xC-AUp" secondAttribute="bottom" constant="14" id="N9t-n5-lPR"/>
+                            <constraint firstItem="BpS-xC-AUp" firstAttribute="top" secondItem="1PT-wc-OKc" secondAttribute="bottom" constant="15" id="QxI-YZ-YlF"/>
+                            <constraint firstItem="yaL-7M-3vL" firstAttribute="top" secondItem="xwg-QT-Lyf" secondAttribute="top" id="XmW-4c-fws"/>
+                            <constraint firstItem="txI-KJ-qaT" firstAttribute="top" secondItem="BpS-xC-AUp" secondAttribute="top" id="dMb-ij-NGP"/>
+                            <constraint firstItem="yaL-7M-3vL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xwg-QT-Lyf" secondAttribute="trailing" constant="8" symbolic="YES" id="fww-4l-efQ"/>
+                            <constraint firstItem="QGu-Ka-SQo" firstAttribute="leading" secondItem="BpS-xC-AUp" secondAttribute="leading" id="gvS-vG-oUw"/>
+                            <constraint firstItem="1PT-wc-OKc" firstAttribute="top" secondItem="P0q-Hw-jzT" secondAttribute="top" constant="20" id="x3x-3o-nMq"/>
+                            <constraint firstItem="BpS-xC-AUp" firstAttribute="leading" secondItem="1PT-wc-OKc" secondAttribute="leading" id="yuP-Yg-1G9"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1PT-wc-OKc" secondAttribute="trailing" constant="20" symbolic="YES" id="zBL-Rh-Jop"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="mSA-2U-wex" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="622"/>
+            <point key="canvasLocation" x="305.5" y="654.5"/>
         </scene>
         <!--Application-->
         <scene sceneID="pzA-1T-Pvw">
@@ -471,4 +494,8 @@ When working with a Swift file, find the new menu item Change Access Level at th
             <point key="canvasLocation" x="75" y="0.0"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="extension" width="334" height="102"/>
+        <image name="menuselection" width="445" height="125"/>
+    </resources>
 </document>
