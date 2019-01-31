@@ -32,16 +32,16 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
             
         }
         
-        changeAccessLevel(accessLevel, invocation.buffer)
+        changeAccessLevel(.singleLevel(accessLevel), invocation.buffer)
         completionHandler(nil)
     }
     
-    func changeAccessLevel(_ access: Parser.Access, _ buffer: XCSourceTextBuffer) {
+    func changeAccessLevel(_ access: Parser.AccessChange, _ buffer: XCSourceTextBuffer) {
         guard let lines = buffer.lines as? [String] else { return }
         
         let selectedLineNumbers = selectedLines(in: buffer)
         let parser = Parser(lines: lines)
-        let changedSelections = parser.newLines(at: Array(selectedLineNumbers), level: access)
+        let changedSelections = parser.newLines(at: Array(selectedLineNumbers), accessChange: access)
         for lineNumber in selectedLineNumbers {
             if let line = changedSelections[lineNumber] {
                 buffer.lines[lineNumber] = line

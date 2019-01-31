@@ -10,6 +10,14 @@ import Foundation
 
 public class Parser {
     
+    public enum AccessChange {
+        case singleLevel(Access)
+        case increaseAccess
+        case decreaseAccess
+        case makeAPI
+        case removeAPI
+    }
+    
     public enum Access: String {
         case `public` = "public"
         case `private` = "private"
@@ -29,7 +37,14 @@ public class Parser {
         }
     }
     
-    public func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
+    public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int: String] {
+        switch accessChange {
+        case .singleLevel(let level): return newLines(at: lineNumbers, level: level)
+        default: fatalError()
+        }
+    }
+    
+    func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
         
         var newLines: [Int : String] = [:]
         for i in lineNumbers where isPrefixable[i] == true {
@@ -47,7 +62,8 @@ public class Parser {
     private var lines: [String]
     private var tokens: [[Token]]
     var isPrefixable: [Bool]
-    private var lineChangeType: [Int : (LineChangeType, String)] = [:]
+    
+    private var lineChangeType: [Int : LineChange] = [:]
     
     private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
@@ -69,16 +85,16 @@ public class Parser {
         switch firstToken {
             
         case .keyword(let keyword) where accessKeywords.contains(keyword):
-            lineChangeType[line] = (.substitute, keyword.rawValue)
+            lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
             
         case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
             // Check to see if there is an access token next in the line, to catch static private func etc.
             if lineTokens.count > 1,
                 case .keyword(let keyword) = lineTokens[1],
                 accessKeywords.contains(keyword) {
-                    lineChangeType[line] = (.substitute, keyword.rawValue)
+                    lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
             } else {
-                lineChangeType[line] = (.postfix, keyword.rawValue)
+                lineChangeType[line] = LineChange(.postfix, keyword.rawValue, nil)
             }
             
         case .attribute(let attribute):
@@ -86,7 +102,7 @@ public class Parser {
             if let secondToken = lineTokens.dropFirst().first,
                 case let .keyword(keyword) = secondToken,
                 accessKeywords.contains(keyword) {
-                lineChangeType[line] = (.substitute, keyword.rawValue)
+                lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
             }
             
             else if lineTokens.dropFirst().first(where: {
@@ -97,13 +113,14 @@ public class Parser {
                     }
                 }) == nil {
                     // no keywords found, so this is just e.g. an @ attribute on a line by itself
-                    lineChangeType[line] = (LineChangeType.none, "")
+                    lineChangeType[line] = LineChange(.none, "", nil)
                 }
             else {
-                lineChangeType[line] = (.postfix, attribute)
+                lineChangeType[line] = LineChange(.postfix, attribute, nil)
             }
             
-        case .keyword(let keyword): lineChangeType[line] = (.prefix, keyword.rawValue)
+        case .keyword(let keyword): lineChangeType[line] = LineChange(.prefix, keyword.rawValue, nil)
+        
         default: break
         }
         
@@ -142,25 +159,21 @@ public class Parser {
         }
     }
     
-    private enum LineChangeType {
-        case substitute
-        case prefix
-        case postfix
-        case none
-    }
-    
-    private func changeAccessLevel(_ change: (LineChangeType, String), in line: String, with substitution: String) -> String? {
+    private func changeAccessLevel(_ change: LineChange, in line: String, with substitution: String) -> String? {
+
         var line = line
-        let (changeType, word) = change
         
-        var searchWord = word
-        if case .substitute = changeType, substitution == "" {
+        var searchWord = change.cursor
+        
+        if case .substitute = change.type, substitution == "" {
             searchWord = searchWord + " "
         }
         
-        guard let range = line.range(of: searchWord) else { return nil }
+        guard let range = line.range(of: searchWord) else {
+            return nil            
+        }
         
-        switch changeType {
+        switch change.type {
         case .none: return nil
         case .substitute:
             return line.replacingCharacters(in: range, with: substitution)
@@ -257,7 +270,24 @@ struct Declaration: Equatable {
     var openBrace: Bool
 }
 
+private struct LineChange {
+    let type: LineChangeType
+    let cursor: String
+    let current: Keyword?
+}
 
+extension LineChange {
+    init(_ type: LineChangeType, _ cursor: String, _ current: Keyword?) {
+        self = LineChange.init(type: type, cursor: cursor, current: current)
+    }
+}
+
+private enum LineChangeType {
+    case substitute
+    case prefix
+    case postfix
+    case none
+}
 
 
 
