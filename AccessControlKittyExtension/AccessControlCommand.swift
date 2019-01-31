@@ -14,11 +14,9 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
 
     func selectedLines(in buffer: XCSourceTextBuffer) -> [Int] {
         guard let selections = buffer.selections as? [XCSourceTextRange] else { return [] }
-        let selectedLineNumbers = selections
-            .map(lines)
-            .flatMap { $0 }
-            |> Set.init
-        return Array.init(selectedLineNumbers).sorted()
+        let selectedLines = selections.flatMap { lines($0, totalLines: buffer.lines.count) }
+        let set = Set.init(selectedLines)
+        return Array(set).sorted()
     }
     
     func perform(with invocation: XCSourceEditorCommandInvocation, completionHandler: @escaping (Error?) -> Void ) -> Void {
@@ -52,10 +50,12 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
     }
 }
 
-func lines(_ range: XCSourceTextRange) -> [Int] {
+func lines(_ range: XCSourceTextRange, totalLines: Int) -> [Int] {
     // Always include the whole line UNLESS the start and end positions are exactly the same, in which return an empty array
     if range.start.line == range.end.line && range.start.column == range.end.column {
         return []
+    } else if totalLines == range.end.line {
+        return Array(range.start.line..<range.end.line)
     } else {
         return Array(range.start.line...range.end.line)
     }

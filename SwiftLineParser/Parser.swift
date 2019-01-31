@@ -51,7 +51,7 @@ public class Parser {
     
     private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
-    private let postfixableFunctionKeywords: [Keyword] = [.required, .static, .class]
+    private let postfixableFunctionKeywords: [Keyword] = [.required, .static]
     var structure: Structure = Structure(declarations: [])
     
     private func parseLine(_ line: Int, _ lineTokens: [Token]) {

@@ -566,6 +566,12 @@ public static var null: JSON { return JSON(NSNull()) }
         multilineTest(test: test, expected: expected)
     }
     
+    func testUnownedKeyword() {
+        let test = "unowned let player: PlayerCore"
+        let expected = "unowned public let player: PlayerCore"
+        multilineTest(test: test, expected: expected)
+    }
+    
     func testSomething() {
         let test = """
 
