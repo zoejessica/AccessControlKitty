@@ -34,5 +34,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let url = URL(string: "https://twitter.com/zoejessica")!
         NSWorkspace.shared.open(url)
     }
+    
+    @IBAction func githubProject(_ sender: Any) {
+        let url = URL(string: "https://github.com/zoejessica/AccessControlKitty")!
+        NSWorkspace.shared.open(url)
+    }
 }
 

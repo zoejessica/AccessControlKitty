@@ -9,7 +9,7 @@
         <scene sceneID="JdK-Wd-DSB">
             <objects>
                 <windowController id="7m1-jh-TMi" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="e6F-3q-XlY">
+                    <window key="window" title="AccessControlKitty Installation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="e6F-3q-XlY">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
                         <rect key="contentRect" x="790" y="548" width="813" height="345"/>
@@ -154,13 +154,19 @@ When working with a Swift file, you'll find the new menu item Change Access Leve
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="KWA-Pm-wCO">
                                     <items>
-                                        <menuItem title="Tweet at Zoë..." id="vgU-Ia-jIH" userLabel="Tweet at Zoë...">
+                                        <menuItem title="Feedback" id="vgU-Ia-jIH" userLabel="Feedback">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="feedback:" target="suA-cX-fko" id="f2g-UJ-lIf"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Open a Github Issue..." id="dI5-Jj-bWe" userLabel="Open a Github Issue...">
+                                        <menuItem title="Github Project" id="oyB-ID-lPb" userLabel="Github">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="githubProject:" target="suA-cX-fko" id="AOU-W4-E4E"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Open a Github Issue..." id="dI5-Jj-bWe" userLabel="Open a Github Issue">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openAGithubIssue:" target="suA-cX-fko" id="h9m-rT-RNi"/>

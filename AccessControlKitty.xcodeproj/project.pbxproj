@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		ED18F7FF2094886B002BD062 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F7FE2094886B002BD062 /* AppDelegate.swift */; };
 		ED18F8012094886C002BD062 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED18F8002094886C002BD062 /* Assets.xcassets */; };
-		ED18F8042094886C002BD062 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED18F8022094886C002BD062 /* MainMenu.xib */; };
 		ED18F8132094889C002BD062 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED18F8122094889C002BD062 /* Cocoa.framework */; };
 		ED18F81D2094889C002BD062 /* AccessControlKittyExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = ED18F8102094889C002BD062 /* AccessControlKittyExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		ED18F82B209488C1002BD062 /* SwiftLineParser.h in Headers */ = {isa = PBXBuildFile; fileRef = ED18F829209488C1002BD062 /* SwiftLineParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -93,7 +92,6 @@
 		ED18F7FB2094886B002BD062 /* AccessControlKitty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccessControlKitty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED18F7FE2094886B002BD062 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED18F8002094886C002BD062 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		ED18F8032094886C002BD062 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		ED18F8052094886C002BD062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED18F8062094886C002BD062 /* AccessControlKitty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AccessControlKitty.entitlements; sourceTree = "<group>"; };
 		ED18F8102094889C002BD062 /* AccessControlKittyExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AccessControlKittyExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -186,7 +184,6 @@
 				ED18F7FE2094886B002BD062 /* AppDelegate.swift */,
 				ED9CA45421F945F2004898AD /* ViewController.swift */,
 				ED18F8002094886C002BD062 /* Assets.xcassets */,
-				ED18F8022094886C002BD062 /* MainMenu.xib */,
 				ED9CA47221FA7B97004898AD /* Main.storyboard */,
 				ED18F8052094886C002BD062 /* Info.plist */,
 				ED18F8062094886C002BD062 /* AccessControlKitty.entitlements */,
@@ -383,7 +380,6 @@
 			files = (
 				ED9CA47421FA7B97004898AD /* Main.storyboard in Resources */,
 				ED18F8012094886C002BD062 /* Assets.xcassets in Resources */,
-				ED18F8042094886C002BD062 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,14 +476,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		ED18F8022094886C002BD062 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				ED18F8032094886C002BD062 /* Base */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
 		ED9CA47221FA7B97004898AD /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
