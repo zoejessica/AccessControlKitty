@@ -24,6 +24,8 @@ public class Parser {
         case `internal` = "internal"
         case `fileprivate` = "fileprivate"
         case remove = ""
+        
+        var ordered: [Access] { return [.public, .internal, .fileprivate, .private] }
     }
     
     public init(lines: [String]) {
@@ -37,26 +39,65 @@ public class Parser {
         }
     }
     
-    public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int: String] {
-        switch accessChange {
-        case .singleLevel(let level): return newLines(at: lineNumbers, level: level)
-        default: fatalError()
-        }
-    }
-    
-    func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
-        
+    public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int : String] {
         var newLines: [Int : String] = [:]
         for i in lineNumbers where isPrefixable[i] == true {
             let currentLine = lines[i]
-            if let change = lineChangeType[i],
-                let changedLine = changeAccessLevel(change, in: currentLine, with: level.rawValue) {
+            if let lineChange = lineChangeType[i],
+                case let (newLineChange, substitution) = substitution(for: lineChange, accessChange),
+                let changedLine = changeAccessLevel(newLineChange, in: currentLine, with: substitution) {
                 newLines[i] = changedLine
             } else {
                 newLines[i] = currentLine
             }
         }
         return newLines
+    }
+    
+    private func substitution(for line: LineChange, _ accessChange: AccessChange) -> (LineChange, String) {
+        
+        let noSubstitution = (LineChange(type: .none, cursor: "", current: nil), "")
+        let internalString = ""
+        
+        switch accessChange {
+        case .singleLevel(let level): return (line, level.rawValue)
+        
+        case .makeAPI:
+            switch line.current {
+            case nil, .internal?: return (line, Keyword.public.rawValue)
+            default: return noSubstitution
+            }
+        
+        case .removeAPI:
+            switch line.current {
+            case .public?: return (line, internalString)
+            default: return noSubstitution
+            }
+            
+        case .increaseAccess:
+            switch line.current {
+            case .public?: return noSubstitution
+            case .internal?, nil: return (line, Keyword.public.rawValue)
+            case .fileprivate?: return (line, internalString)
+            case .private?: return (line, internalString)
+            default: fatalError()
+            }
+            
+        case .decreaseAccess:
+            switch line.current {
+            case .public?: return (line, internalString)
+            case .internal?, nil: return (line, Keyword.private.rawValue)
+            case .fileprivate?: return (line, Keyword.private.rawValue)
+            case .private?: return noSubstitution
+            default: fatalError()
+            }            
+        }
+    }
+    
+    
+    // Left here for testing
+    func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
+        return newLines(at: lineNumbers, accessChange: .singleLevel(level))
     }
     
     private var lines: [String]

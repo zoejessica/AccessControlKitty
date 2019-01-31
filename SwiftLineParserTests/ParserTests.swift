@@ -581,12 +581,100 @@ public static var null: JSON { return JSON(NSNull()) }
 """
         multilineTest(test: test, expected: expected)
     }
+
+    func testMakeAPI() {
+        let test = """
+struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    let property = "A bit hush hush"
+    internal let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+"""
+        let expected = """
+public struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    public let property = "A bit hush hush"
+    public let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .makeAPI)
+    }
+
+    func testRemoveAPI() {
+        let test = """
+struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    let property = "A bit hush hush"
+    internal let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+"""
+        let expected = """
+struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    let property = "A bit hush hush"
+    internal let property = "Exactly the same amount of hush"
+    let property "Open secret"
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .removeAPI)
+    }
     
-    func multilineTest(test: String, expected: String, file: StaticString = #file, line: UInt = #line) {
+    func testIncreaseAccess() {
+        let test = """
+struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    let property = "A bit hush hush"
+    internal let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+"""
+        let expected = """
+public struct TestStruct {
+    let privateProperty = "Ooh la la"
+    let fileprivateProperty = "Not so secret"
+    public let property = "A bit hush hush"
+    public let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .increaseAccess)
+    }
+    
+    func testDecreaseAccess() {
+        let test = """
+struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    let property = "A bit hush hush"
+    internal let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+"""
+        let expected = """
+private struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    private let fileprivateProperty = "Not so secret"
+    private let property = "A bit hush hush"
+    private let property = "Exactly the same amount of hush"
+    let property "Open secret"
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .decreaseAccess)
+    }
+    
+    func multilineTest(test: String, expected: String, accessChange: Parser.AccessChange = .singleLevel(.public), file: StaticString = #file, line: UInt = #line) {
         let lines = test.components(separatedBy: .newlines)
         let expectedLines = expected.components(separatedBy: .newlines)
         let parser = Parser(lines: lines)
-        let parsedLines = parser.newLines(at: 0..<lines.count, level: .public)
+        let parsedLines = parser.newLines(at: Array(0..<lines.count), accessChange: accessChange)
         for (index, expectedline) in expectedLines.enumerated() {
             if expectedline != lines[index] {
                 // Parsed line should exist if the expected line is different
@@ -604,3 +692,50 @@ extension Parser {
         return newLines(at: Array(lineNumbers), level: level)
     }
 }
+
+/*
+
+struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    let property = "A bit hush hush"
+    internal let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+
+// Make api
+public struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    public let property = "A bit hush hush"
+    public let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+
+// Remove api
+struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    fileprivate let fileprivateProperty = "Not so secret"
+    let property = "A bit hush hush"
+    internal let property = "Exactly the same amount of hush"
+    let property "Open secret"
+}
+
+// Increase access
+public struct TestStruct {
+    let privateProperty = "Ooh la la"
+    let fileprivateProperty = "Not so secret"
+    public let property = "A bit hush hush"
+    public let property = "Exactly the same amount of hush"
+    public let property "Open secret"
+}
+
+// Decrease access
+private struct TestStruct {
+    private let privateProperty = "Ooh la la"
+    private let fileprivateProperty = "Not so secret"
+    private let property = "A bit hush hush"
+    private let property = "Exactly the same amount of hush"
+    let property "Open secret"
+}
+*/
