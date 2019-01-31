@@ -32,9 +32,41 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).IncreaseAccess</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Increment Access Levels</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).DecreaseAccess</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Decrement Access Levels</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeAPI</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Create API (internal → public)</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
+					<string>$(PRODUCT_BUNDLE_IDENTIFIER).RemoveAPI</string>
+					<key>XCSourceEditorCommandName</key>
+					<string>Remove API (public → internal)</string>
+				</dict>
+				<dict>
+					<key>XCSourceEditorCommandClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).AccessControlCommand</string>
+					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakePublic</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>public</string>
+					<string>Set to public</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -42,7 +74,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeInternal</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>internal</string>
+					<string>Set to internal</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -50,7 +82,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeFileprivate</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>fileprivate</string>
+					<string>Set to fileprivate</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -58,7 +90,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakePrivate</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>private</string>
+					<string>Set to private</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>

@@ -26,13 +26,13 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
             return
         }
         
-        guard let accessLevel = Parser.Access.init(commandIdentifier: invocation.commandIdentifier) else {
+        guard let accessLevel = Parser.AccessChange.init(commandIdentifier: invocation.commandIdentifier) else {
             completionHandler(nil)
             return
             
         }
         
-        changeAccessLevel(.singleLevel(accessLevel), invocation.buffer)
+        changeAccessLevel(accessLevel, invocation.buffer)
         completionHandler(nil)
     }
     
@@ -71,19 +71,29 @@ struct SourceKitExtensionPlist : Codable {
     let CFBundleIdentifier: String
 }
 
-extension Parser.Access {
+extension Parser.AccessChange {
     init?(commandIdentifier: String) {
-        guard let plist = try? PListFile<SourceKitExtensionPlist>() else {
+//        guard let plist = try? PListFile<SourceKitExtensionPlist>() else {
+//            return nil
+//        }
+        // let bundleName = plist.data.CFBundleIdentifier
+        guard let id = commandIdentifier.split(separator: ".").last,
+            case let idString = String(id),
+            let accessChange = Parser.AccessChange.commandIdentifiers[idString] else {
             return nil
         }
-        let bundleName = plist.data.CFBundleIdentifier
-        switch commandIdentifier {
-        case bundleName + ".MakePublic": self = .public
-        case bundleName + ".MakeInternal": self = .internal
-        case bundleName + ".MakePrivate": self = .private
-        case bundleName + ".MakeFileprivate": self = .fileprivate
-        case bundleName + ".Remove": self = .remove
-        default: return nil
-        }
+        self = accessChange
+    }
+    
+    static var commandIdentifiers: [String : Parser.AccessChange] {
+        return [ "DecreaseAccess" : .decreaseAccess ,
+                 "IncreaseAccess" : .increaseAccess,
+                 "MakeAPI" : .makeAPI,
+                 "RemoveAPI" : .removeAPI,
+                 "MakePublic": .singleLevel(.public),
+                 "MakeInternal": .singleLevel(.internal),
+                 "MakePrivate": .singleLevel(.private),
+                 "MakeFileprivate": .singleLevel(.fileprivate),
+                 "Remove": .singleLevel(.remove)]
     }
 }
