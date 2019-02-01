@@ -776,7 +776,7 @@ public struct TopLevelStruct {
                 return localScope
             }()
             public struct NestedStruct {
-                 let nested: String = {
+                public let nested: String = {
                     let localScope = "Nested"
                     return localScope
                 }()
@@ -809,7 +809,7 @@ public class ViewController: NSViewController {
 }
 
 """
-        multilineTest(test: test, expected: expected)
+        multilineTest(test: test, expected: expected, accessChange: .makeAPI)
     }
     
     func testSomething() {

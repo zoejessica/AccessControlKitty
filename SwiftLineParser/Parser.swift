@@ -90,7 +90,7 @@ public class Parser {
             case .fileprivate?: return (line, Keyword.private.rawValue)
             case .private?: return noSubstitution
             default: fatalError()
-            }            
+            }
         }
     }
     
@@ -183,12 +183,13 @@ public class Parser {
     }
 
     private func currentStructurePermitsPrefix(_ lineNumber: Int) -> Bool {
-        if structure.starts(with: Keyword.func) { return false }
-        if structure.starts(with: Keyword.protocol) { return false }
-        if structure.starts(with: Declaration.init(keyword: .var, openBrace: true)) { return false }
-        if structure.starts(with: Declaration.init(keyword: .let, openBrace: true)) { return false }
-
-        return structure.openStructures < 2 ?  true : false
+        if structure.contains(Keyword.func) { return false }
+        if structure.contains(Keyword.protocol) { return false }
+        if structure.contains(Declaration.init(keyword: .var, openBrace: true)) { return false }
+        if structure.contains(Declaration.init(keyword: .let, openBrace: true)) { return false }
+        
+        return true
+//        return structure.openStructures < 2 ?  true : false
     }
     
     private func prefixableInFirstPosition(_ token: Token) -> Bool {
@@ -258,6 +259,14 @@ struct Structure: Equatable {
                 return nil
             }
         }
+    }
+    
+    func contains(_ element: Keyword) -> Bool {
+        return declarations.contains(where: { $0.keyword == element })
+    }
+    
+    func contains(_ declaration: Declaration) -> Bool {
+        return declarations.contains(declaration)
     }
     
     func starts(with keyword: Keyword) -> Bool {
