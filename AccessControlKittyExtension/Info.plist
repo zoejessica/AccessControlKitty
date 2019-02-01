@@ -34,7 +34,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).IncreaseAccess</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Increment</string>
+					<string>Increment Access Level</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -42,7 +42,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).DecreaseAccess</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Decrement</string>
+					<string>Decrement Access Level</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
