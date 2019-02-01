@@ -95,7 +95,7 @@ public class Parser {
     }
     
     
-    // Left here for testing
+    // Left here for existing tests
     func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
         return newLines(at: lineNumbers, accessChange: .singleLevel(level))
     }

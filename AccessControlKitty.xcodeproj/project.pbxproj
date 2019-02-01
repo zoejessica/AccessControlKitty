@@ -26,8 +26,6 @@
 		ED18F8552094890D002BD062 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84D2094890C002BD062 /* Logging.swift */; };
 		ED18F8562094890D002BD062 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F84E2094890C002BD062 /* Regex.swift */; };
 		ED18F85820948921002BD062 /* AccessControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F85720948921002BD062 /* AccessControlCommand.swift */; };
-		ED4042EA21D6E7A6007FA9E9 /* TestForXcodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4042E921D6E7A6007FA9E9 /* TestForXcodeExtension.swift */; };
-		ED784B5A209FCDC4001C06FB /* PropertyListParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED784B59209FCDC4001C06FB /* PropertyListParser.swift */; };
 		ED9CA45521F945F2004898AD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9CA45421F945F2004898AD /* ViewController.swift */; };
 		ED9CA47421FA7B97004898AD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED9CA47221FA7B97004898AD /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -114,8 +112,6 @@
 		ED18F84D2094890C002BD062 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		ED18F84E2094890C002BD062 /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		ED18F85720948921002BD062 /* AccessControlCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlCommand.swift; sourceTree = "<group>"; };
-		ED4042E921D6E7A6007FA9E9 /* TestForXcodeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestForXcodeExtension.swift; sourceTree = "<group>"; };
-		ED784B59209FCDC4001C06FB /* PropertyListParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyListParser.swift; sourceTree = "<group>"; };
 		ED9CA45421F945F2004898AD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		ED9CA47321FA7B97004898AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,7 +210,6 @@
 			children = (
 				ED18F829209488C1002BD062 /* SwiftLineParser.h */,
 				ED18F8482094890C002BD062 /* Comments.swift */,
-				ED784B59209FCDC4001C06FB /* PropertyListParser.swift */,
 				ED18F84A2094890C002BD062 /* Lexer.swift */,
 				ED18F84D2094890C002BD062 /* Logging.swift */,
 				ED18F84C2094890C002BD062 /* Parser.swift */,
@@ -232,7 +227,6 @@
 			children = (
 				ED18F844209488FA002BD062 /* LexerTests.swift */,
 				ED18F843209488FA002BD062 /* ParserTests.swift */,
-				ED4042E921D6E7A6007FA9E9 /* TestForXcodeExtension.swift */,
 				ED18F83C209488D5002BD062 /* Info.plist */,
 			);
 			path = SwiftLineParserTests;
@@ -430,7 +424,6 @@
 			files = (
 				ED18F8532094890D002BD062 /* Tagged.swift in Sources */,
 				ED18F8562094890D002BD062 /* Regex.swift in Sources */,
-				ED784B5A209FCDC4001C06FB /* PropertyListParser.swift in Sources */,
 				ED18F84F2094890D002BD062 /* Token.swift in Sources */,
 				ED18F8542094890D002BD062 /* Parser.swift in Sources */,
 				ED18F8552094890D002BD062 /* Logging.swift in Sources */,
@@ -446,7 +439,6 @@
 			files = (
 				ED18F845209488FA002BD062 /* ParserTests.swift in Sources */,
 				ED18F846209488FA002BD062 /* LexerTests.swift in Sources */,
-				ED4042EA21D6E7A6007FA9E9 /* TestForXcodeExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

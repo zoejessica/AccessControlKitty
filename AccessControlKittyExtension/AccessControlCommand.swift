@@ -61,22 +61,8 @@ func lines(_ range: XCSourceTextRange, totalLines: Int) -> [Int] {
     }
 }
 
-precedencegroup PipeForward { associativity: left }
-infix operator |> : PipeForward
-public func |> <A, B>(_ a: A, _ f: (A) -> B) -> B {
-    return f(a)
-}
-
-struct SourceKitExtensionPlist : Codable {
-    let CFBundleIdentifier: String
-}
-
 extension Parser.AccessChange {
     init?(commandIdentifier: String) {
-//        guard let plist = try? PListFile<SourceKitExtensionPlist>() else {
-//            return nil
-//        }
-        // let bundleName = plist.data.CFBundleIdentifier
         guard let id = commandIdentifier.split(separator: ".").last,
             case let idString = String(id),
             let accessChange = Parser.AccessChange.commandIdentifiers[idString] else {
