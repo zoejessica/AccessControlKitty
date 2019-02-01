@@ -14,6 +14,7 @@ class ParserTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        continueAfterFailure = true
     }
     
     override func tearDown() {
@@ -571,16 +572,6 @@ public static var null: JSON { return JSON(NSNull()) }
         let expected = "unowned public let player: PlayerCore"
         multilineTest(test: test, expected: expected)
     }
-    
-    func testSomething() {
-        let test = """
-
-"""
-        let expected = """
-
-"""
-        multilineTest(test: test, expected: expected)
-    }
 
     func testMakeAPI() {
         let test = """
@@ -670,6 +661,169 @@ private struct TestStruct {
         multilineTest(test: test, expected: expected, accessChange: .decreaseAccess)
     }
     
+    func testMakeAPIWithSpaces() {
+        let test = """
+    class ViewController: NSViewController {
+    
+    struct ThisShouldHaveBeenPublic {
+
+        internal var foo: String?
+
+    }
+    
+    
+    
+    
+    }
+"""
+        let expected = """
+    public class ViewController: NSViewController {
+    
+    public struct ThisShouldHaveBeenPublic {
+
+        public var foo: String?
+
+    }
+    
+    
+    
+    
+    }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testLocalScope() {
+        
+        let test = """
+protocol TopLevelProtocol {
+    func functionOne()
+    var propertyOne: String { get set }
+}
+
+extension TopLevelProtocol {
+    func newFunction() {
+    }
+    var extensionDefinedVariable: String {
+        let hello = "hello"
+        return hello
+    }
+}
+
+struct TopLevelStruct {
+    class ViewController: NSViewController {
+        let topLevel = "Top level"
+        struct InternalStruct {
+            let internalProperty: String = {
+                let localScope = "Internal"
+                return localScope
+            }()
+            struct NestedStruct {
+                let nested: String = {
+                    let localScope = "Nested"
+                    return localScope
+                }()
+                struct DoublyNestedStruct {
+                    let double = "Double"
+                }
+            }
+        }
+    }
+}
+
+extension TopLevelStruct: Equatable {
+    var extraProperty: String {
+        let thing = "thing"
+        return thing
+    }
+}
+
+class ViewController: NSViewController {
+    let topLevel = "Top level"
+    struct InternalStruct {
+        let internalProperty = "Internal"
+        struct NestedStruct {
+            let nested = "Nested"
+            struct DoublyNestedStruct {
+                let double = "Double"
+            }
+        }
+    }
+}
+
+"""
+        let expected = """
+public protocol TopLevelProtocol {
+    func functionOne()
+    var propertyOne: String { get set }
+}
+
+public extension TopLevelProtocol {
+    public func newFunction() {
+    }
+    public var extensionDefinedVariable: String {
+        let hello = "hello"
+        return hello
+    }
+}
+
+public struct TopLevelStruct {
+    public class ViewController: NSViewController {
+        public let topLevel = "Top level"
+        public struct InternalStruct {
+            public let internalProperty: String = {
+                let localScope = "Internal"
+                return localScope
+            }()
+            public struct NestedStruct {
+                 let nested: String = {
+                    let localScope = "Nested"
+                    return localScope
+                }()
+                public struct DoublyNestedStruct {
+                    public let double = "Double"
+                }
+            }
+        }
+    }
+}
+
+extension TopLevelStruct: Equatable {
+    public var extraProperty: String {
+        let thing = "thing"
+        return thing
+    }
+}
+
+public class ViewController: NSViewController {
+    public let topLevel = "Top level"
+    public struct InternalStruct {
+        public let internalProperty = "Internal"
+        public struct NestedStruct {
+            public let nested = "Nested"
+            public struct DoublyNestedStruct {
+                public let double = "Double"
+            }
+        }
+    }
+}
+
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testSomething() {
+        let test = """
+
+"""
+        let expected = """
+
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    
+    
     func multilineTest(test: String, expected: String, accessChange: Parser.AccessChange = .singleLevel(.public), file: StaticString = #file, line: UInt = #line) {
         let lines = test.components(separatedBy: .newlines)
         let expectedLines = expected.components(separatedBy: .newlines)
@@ -678,7 +832,7 @@ private struct TestStruct {
         for (index, expectedline) in expectedLines.enumerated() {
             if expectedline != lines[index] {
                 // Parsed line should exist if the expected line is different
-                XCTAssertNotNil(parsedLines[index])
+                XCTAssertNotNil(parsedLines[index], "Line \(index) incorrectly ignored (\"\(lines[index])\")", file: file, line: line)
             }
             if let parsedLine = parsedLines[index] {
                 XCTAssertEqual(expectedline, parsedLine, "Line no.: \(index) \(lines[index]) was incorrectly parsed", file: file, line: line)

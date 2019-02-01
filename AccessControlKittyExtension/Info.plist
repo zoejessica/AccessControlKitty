@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Change Access Level</string>
+	<string>Access Level of Selection</string>
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,7 +34,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).IncreaseAccess</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Increment Access Level</string>
+					<string>Increment Access Levels</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -42,7 +42,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).DecreaseAccess</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Decrement Access Level</string>
+					<string>Decrement Access Levels</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -50,7 +50,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeAPI</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Create API (internal → public)</string>
+					<string>Create API (internal &gt; public)</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -58,7 +58,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).RemoveAPI</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Remove API (public → internal)</string>
+					<string>Remove API (public &gt; internal)</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -66,7 +66,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakePublic</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Set to public</string>
+					<string>All public</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -74,7 +74,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeInternal</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Set to internal</string>
+					<string>All internal</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -82,7 +82,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakeFileprivate</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Set to fileprivate</string>
+					<string>All fileprivate</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -90,7 +90,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).MakePrivate</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Set to private</string>
+					<string>All private</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
@@ -98,7 +98,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>$(PRODUCT_BUNDLE_IDENTIFIER).Remove</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Remove Access Notation</string>
+					<string>Remove Access Levels</string>
 				</dict>
 			</array>
 			<key>XCSourceEditorExtensionPrincipalClass</key>
