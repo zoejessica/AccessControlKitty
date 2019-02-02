@@ -826,6 +826,8 @@ public class ViewController: NSViewController {
         multilineTest(test: test, expected: expected)
     }
     
+    
+    
     func testFunctionAfterDiscardableResult() {
         let test = """
    @discardableResult
@@ -901,7 +903,7 @@ extension NSBezierPath {
 """
         let expected = """
 public extension NSBezierPath {
-    convenience init(roundedRect rect: NSRect, topLeftRadius: CGFloat, topRightRadius: CGFloat,
+    convenience public init(roundedRect rect: NSRect, topLeftRadius: CGFloat, topRightRadius: CGFloat,
                      bottomLeftRadius: CGFloat, bottomRightRadius: CGFloat)
     {
         self.init()
@@ -952,6 +954,93 @@ public extension NSImage {
         multilineTest(test: test, expected: expected)
     }
 
+    func testControlFlowStructures() {
+        let test = """
+while things.isEmpty {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        }
+for thing in things {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        }
+        
+        repeat {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        } while things.isEmpty
+        
+        while things.isEmpty {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        }
+"""
+        let expected = """
+while things.isEmpty {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        }
+for thing in things {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        }
+        
+        repeat {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        } while things.isEmpty
+        
+        while things.isEmpty {
+            var forLocalProperty: String = "hello"
+            func forLocalFunc() {
+                var forEvenMoreLocalVar: String = "ooh ah mrs"
+            }
+        }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testErrorHandling() {
+        let test = """
+        do {
+            try Int.init("1234")
+            let localScope = "Local scope"
+        } catch SpecificError
+            return
+        } catch {
+            let localScope = "Local scope"
+            fatalError()
+        }
+"""
+        let expected = """
+        do {
+            try Int.init("1234")
+            let localScope = "Local scope"
+        } catch SpecificError
+            return
+        } catch {
+            let localScope = "Local scope"
+            fatalError()
+        }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    
     func testSomething() {
         let test = """
 

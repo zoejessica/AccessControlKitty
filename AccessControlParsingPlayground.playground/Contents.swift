@@ -23,7 +23,7 @@ let lines = testString.components(separatedBy: .newlines)
 let allLineNumbers = (0..<lines.count).map { $0 }
 
 let p = Parser(lines: lines)
-dump(p.newLines(at: allLineNumbers, level: .public)[8])
+dump(p.newLines(at: allLineNumbers, accessChange: .singleLevel(.public))[8])
 
 
 

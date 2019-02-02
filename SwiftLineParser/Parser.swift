@@ -104,9 +104,10 @@ public class Parser {
     
     private var lineChangeType: [Int : LineChange] = [:]
     
-    private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat]
+    private let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch]
+    private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
-    private let postfixableFunctionKeywords: [Keyword] = [.required, .static, .unowned]
+    private let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .required, .convenience]
     var structure: Structure = Structure(declarations: [])
     
     private func parseLine(_ line: Int, _ lineTokens: [Token]) {
@@ -181,10 +182,14 @@ public class Parser {
     }
 
     private func currentStructurePermitsPrefix(_ lineNumber: Int) -> Bool {
-        if structure.contains(Keyword.func) { return false }
-        if structure.contains(Keyword.protocol) { return false }
-        if structure.contains(Declaration.init(keyword: .var, openBrace: true)) { return false }
-        if structure.contains(Declaration.init(keyword: .let, openBrace: true)) { return false }
+        
+        if structure.contains(oneOf: localScopeKeywords) { return false }
+        
+//        if structure.contains(Keyword.func) { return false }
+//        if structure.contains(Keyword.protocol) { return false }
+//        if structure.contains(Keyword._init) { return false }
+        if structure.contains(Declaration(keyword: .var, openBrace: true)) { return false }
+        if structure.contains(Declaration(keyword: .let, openBrace: true)) { return false }
         
         return true
 //        return structure.openStructures < 2 ?  true : false
@@ -194,7 +199,13 @@ public class Parser {
         switch token {
         case .singleCharacter: return false
         case .identifier: return false
-        case .keyword(let keyword) where keyword == .case: return false 
+        case .keyword(let keyword) where keyword == .case: return false
+            case .keyword(let keyword) where keyword == .for: return false
+            case .keyword(let keyword) where keyword == .while: return false
+            case .keyword(let keyword) where keyword == .repeat: return false
+        case .keyword(let keyword) where keyword == .do: return false
+        case .keyword(let keyword) where keyword == .catch: return false
+
         default: return true
         }
     }
@@ -240,82 +251,6 @@ public class Parser {
         guard case Token.identifier = third else { return false }
         return true
     }
-}
-
-struct Structure: Equatable {
-    var declarations: [Declaration]
-    
-    var openStructures: Int {
-        return declarations.filter { $0.openBrace == true }.count
-    }
-    
-    var tokens: [Token] {
-        return declarations.compactMap {
-            if let keyword = $0.keyword {
-                return Token.keyword(keyword)
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    func contains(_ element: Keyword) -> Bool {
-        return declarations.contains(where: { $0.keyword == element })
-    }
-    
-    func contains(_ declaration: Declaration) -> Bool {
-        return declarations.contains(declaration)
-    }
-    
-    func starts(with keyword: Keyword) -> Bool {
-        if let first = declarations.first, first.keyword == keyword  {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    func starts(with declaration: Declaration) -> Bool {
-        if let first = declarations.first, first == declaration  {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    mutating func append(_ declaration: Declaration) {
-        if let last = declarations.last,
-            last == .init(keyword: .var, openBrace: false) || last == .init(keyword: .let, openBrace: false) {
-           _ = declarations.popLast()
-        }
-        declarations.append(declaration)
-    }
-    
-    mutating func openBrace() {
-        guard var last = declarations.last, last.openBrace == false else {
-            declarations.append(.init(keyword: nil, openBrace: true))
-            return
-        }
-        last.openBrace = true
-        _ = declarations.popLast()
-        declarations.append(last)
-    }
-    
-    mutating func closeBrace() {
-        if let last = declarations.last {
-            if last.openBrace == true  {
-                _ = declarations.popLast()
-            } else {
-                _ = declarations.popLast()
-                closeBrace()
-            }
-        }
-    }
-}
-
-struct Declaration: Equatable {
-    let keyword: Keyword?
-    var openBrace: Bool
 }
 
 private struct LineChange {

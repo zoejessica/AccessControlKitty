@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED03E642220610D100957094 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED03E641220610D100957094 /* Structure.swift */; };
 		ED18F7FF2094886B002BD062 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F7FE2094886B002BD062 /* AppDelegate.swift */; };
 		ED18F8012094886C002BD062 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED18F8002094886C002BD062 /* Assets.xcassets */; };
 		ED18F8132094889C002BD062 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED18F8122094889C002BD062 /* Cocoa.framework */; };
@@ -87,6 +88,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		ED03E641220610D100957094 /* Structure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structure.swift; sourceTree = "<group>"; };
 		ED18F7FB2094886B002BD062 /* AccessControlKitty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccessControlKitty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED18F7FE2094886B002BD062 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED18F8002094886C002BD062 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				ED18F84A2094890C002BD062 /* Lexer.swift */,
 				ED18F84D2094890C002BD062 /* Logging.swift */,
 				ED18F84C2094890C002BD062 /* Parser.swift */,
+				ED03E641220610D100957094 /* Structure.swift */,
 				ED18F84E2094890C002BD062 /* Regex.swift */,
 				ED18F8492094890C002BD062 /* Strings.swift */,
 				ED18F84B2094890C002BD062 /* Tagged.swift */,
@@ -424,6 +427,7 @@
 			files = (
 				ED18F8532094890D002BD062 /* Tagged.swift in Sources */,
 				ED18F8562094890D002BD062 /* Regex.swift in Sources */,
+				ED03E642220610D100957094 /* Structure.swift in Sources */,
 				ED18F84F2094890D002BD062 /* Token.swift in Sources */,
 				ED18F8542094890D002BD062 /* Parser.swift in Sources */,
 				ED18F8552094890D002BD062 /* Logging.swift in Sources */,

@@ -25,8 +25,8 @@ enum SingleCharacter: String, TokenType {
 enum Keyword: String, TokenType, CaseIterable {
     case `protocol`, `extension`, `struct`, `class`, `let`, `var`,
     `public`, `private`, `open`, `fileprivate`, `internal`, `override`, `func`,
-    `final`, `enum`, `case`, _init = "init", `static`, `typealias`, `required`, `mutating`, `nonmutating`, `for`, `while`, `repeat`, `unowned`
-    static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate, .internal, .override, .func, .final, .enum, .case, ._init, .static, .typealias, .required, .mutating, .nonmutating, .for, .while, .repeat, .unowned]
+    `final`, `enum`, `case`, _init = "init", `static`, `typealias`, `required`, `mutating`, `nonmutating`, `for`, `while`, `repeat`, `unowned`, `convenience`, `do`, `catch`
+    static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate, .internal, .override, .func, .final, .enum, .case, ._init, .static, .typealias, .required, .mutating, .nonmutating, .for, .while, .repeat, .unowned, .convenience, .do, .catch]
 }
 
 
