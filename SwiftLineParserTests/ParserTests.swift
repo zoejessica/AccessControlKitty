@@ -812,6 +812,146 @@ public class ViewController: NSViewController {
         multilineTest(test: test, expected: expected, accessChange: .makeAPI)
     }
     
+    func testForLoop() {
+        let test = """
+        for option in info {
+            switch option {
+            case .targetCache(let value): targetCache = value
+"""
+        let expected = """
+        for option in info {
+            switch option {
+            case .targetCache(let value): targetCache = value
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testFunctionAfterDiscardableResult() {
+        let test = """
+   @discardableResult
+    func setImage(
+        with resource: Resource?,
+        for state: UIControl.State,
+        placeholder: UIImage? = nil,
+        options: KingfisherOptionsInfo? = nil,
+        progressBlock: DownloadProgressBlock? = nil,
+        completionHandler: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) -> DownloadTask?
+    {
+        return setImage(
+            with: resource.map { Source.network($0) },
+            for: state,
+            placeholder: placeholder,
+            options: options,
+            progressBlock: progressBlock,
+            completionHandler: completionHandler)
+    }
+"""
+        let expected = """
+   @discardableResult
+    public func setImage(
+        with resource: Resource?,
+        for state: UIControl.State,
+        placeholder: UIImage? = nil,
+        options: KingfisherOptionsInfo? = nil,
+        progressBlock: DownloadProgressBlock? = nil,
+        completionHandler: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) -> DownloadTask?
+    {
+        return setImage(
+            with: resource.map { Source.network($0) },
+            for: state,
+            placeholder: placeholder,
+            options: options,
+            progressBlock: progressBlock,
+            completionHandler: completionHandler)
+    }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testConvenienceInit() {
+        let test = """
+extension NSBezierPath {
+    convenience init(roundedRect rect: NSRect, topLeftRadius: CGFloat, topRightRadius: CGFloat,
+                     bottomLeftRadius: CGFloat, bottomRightRadius: CGFloat)
+    {
+        self.init()
+        
+        let maxCorner = min(rect.width, rect.height) / 2
+        
+        let radiusTopLeft = min(maxCorner, max(0, topLeftRadius))
+        let radiusTopRight = min(maxCorner, max(0, topRightRadius))
+        let radiusBottomLeft = min(maxCorner, max(0, bottomLeftRadius))
+        let radiusBottomRight = min(maxCorner, max(0, bottomRightRadius))
+        
+        guard !rect.isEmpty else {
+            return
+        }
+        
+        let topLeft = NSPoint(x: rect.minX, y: rect.maxY)
+        let topRight = NSPoint(x: rect.maxX, y: rect.maxY)
+        let bottomRight = NSPoint(x: rect.maxX, y: rect.minY)
+        
+        move(to: NSPoint(x: rect.midX, y: rect.maxY))
+        appendArc(from: topLeft, to: rect.origin, radius: radiusTopLeft)
+        appendArc(from: rect.origin, to: bottomRight, radius: radiusBottomLeft)
+        appendArc(from: bottomRight, to: topRight, radius: radiusBottomRight)
+        appendArc(from: topRight, to: topLeft, radius: radiusTopRight)
+        close()
+    }
+"""
+        let expected = """
+public extension NSBezierPath {
+    convenience init(roundedRect rect: NSRect, topLeftRadius: CGFloat, topRightRadius: CGFloat,
+                     bottomLeftRadius: CGFloat, bottomRightRadius: CGFloat)
+    {
+        self.init()
+        
+        let maxCorner = min(rect.width, rect.height) / 2
+        
+        let radiusTopLeft = min(maxCorner, max(0, topLeftRadius))
+        let radiusTopRight = min(maxCorner, max(0, topRightRadius))
+        let radiusBottomLeft = min(maxCorner, max(0, bottomLeftRadius))
+        let radiusBottomRight = min(maxCorner, max(0, bottomRightRadius))
+        
+        guard !rect.isEmpty else {
+            return
+        }
+        
+        let topLeft = NSPoint(x: rect.minX, y: rect.maxY)
+        let topRight = NSPoint(x: rect.maxX, y: rect.maxY)
+        let bottomRight = NSPoint(x: rect.maxX, y: rect.minY)
+        
+        move(to: NSPoint(x: rect.midX, y: rect.maxY))
+        appendArc(from: topLeft, to: rect.origin, radius: radiusTopLeft)
+        appendArc(from: rect.origin, to: bottomRight, radius: radiusBottomLeft)
+        appendArc(from: bottomRight, to: topRight, radius: radiusBottomRight)
+        appendArc(from: topRight, to: topLeft, radius: radiusTopRight)
+        close()
+    }
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testConvenienceInitRecognizedAsAccessModifiable() {
+        let test = """
+private extension NSImage {
+    // macOS does not support scale. This is just for code compatibility across platforms.
+    private convenience init?(data: Data, scale: CGFloat) {
+        self.init(data: data)
+    }
+}
+"""
+        let expected = """
+public extension NSImage {
+    // macOS does not support scale. This is just for code compatibility across platforms.
+    public convenience init?(data: Data, scale: CGFloat) {
+        self.init(data: data)
+    }
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+
     func testSomething() {
         let test = """
 
@@ -821,7 +961,6 @@ public class ViewController: NSViewController {
 """
         multilineTest(test: test, expected: expected)
     }
-    
     
     
     func multilineTest(test: String, expected: String, accessChange: Parser.AccessChange = .singleLevel(.public), file: StaticString = #file, line: UInt = #line) {

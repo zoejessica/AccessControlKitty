@@ -24,8 +24,6 @@ public class Parser {
         case `internal` = "internal"
         case `fileprivate` = "fileprivate"
         case remove = ""
-        
-        var ordered: [Access] { return [.public, .internal, .fileprivate, .private] }
     }
     
     public init(lines: [String]) {
