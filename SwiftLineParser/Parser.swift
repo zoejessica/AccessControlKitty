@@ -107,7 +107,7 @@ public class Parser {
     private let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch, .defer, .subscript]
     private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch, .defer, .subscript]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
-    private let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .required, .convenience]
+    private let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .unownedsafe, .unownedunsafe, .required, .convenience]
     
     var structure: Structure = Structure(declarations: [])
     

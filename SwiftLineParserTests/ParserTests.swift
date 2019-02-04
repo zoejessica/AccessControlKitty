@@ -1208,7 +1208,7 @@ public class ViewController: NSViewController {
     @objc public dynamic let things: [String] = []
     
     public final class MyFinalClass {
-        let internalProperty: String = "Hello world!"
+        public let internalProperty: String = "Hello world!"
     }
     
     public lazy var internalLazyThing: String = "Hello"
