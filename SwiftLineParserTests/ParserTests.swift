@@ -1097,10 +1097,16 @@ let localPropertyC = "Local"
 
 #endif
 
-if #available(1.0, 1.0, 1.0) {
-let localPropertyD = "Local"
-} else {
-let localPropertyE = "Local"
+struct Thingie {
+    
+    init() {
+        if #available(*, *) {
+           let localPropertyD = "Local"
+        } else {
+           let localPropertyE = "Local"
+        }
+    }
+    
 }
 
 """
@@ -1116,10 +1122,16 @@ public let localPropertyC = "Local"
 
 #endif
 
-if #available(1.0, 1.0, 1.0) {
-public let localPropertyD = "Local"
-} else {
-public let localPropertyE = "Local"
+public struct Thingie {
+    
+    public init() {
+        if #available(*, *) {
+           let localPropertyD = "Local"
+        } else {
+           let localPropertyE = "Local"
+        }
+    }
+    
 }
 """
         multilineTest(test: test, expected: expected)
@@ -1237,8 +1249,8 @@ public class ViewController: NSViewController {
     
     @objc public dynamic let things: [String] = []
     
-    public final class MyFinalClass {
-        let internalProperty: String = "Hello world!"
+    public class MyFinalClass {
+        public let internalProperty: String = "Hello world!"
     }
     
     public lazy var internalLazyThing: String = "Hello"
