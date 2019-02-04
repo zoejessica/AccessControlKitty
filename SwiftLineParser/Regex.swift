@@ -37,9 +37,9 @@ func matches(_ slice: Substring, regex: NSRegularExpression) -> Bool {
 
 typealias TokenGenerator = (String) -> Token?
 let tokenList: [(String, TokenGenerator)] = [
-    ("^[^a-zA-Z0-9]", { Token(SingleCharacter.matches[$0]) }),
+    ("^[^a-zA-Z0-9]", { Token(SingleCharacter.init(rawValue: $0)) }),
     ("^@[a-zA-Z0-9]*", { .attribute($0) }),
-    ("^[a-zA-Z0-9]*", { Token(Keyword.matches[$0]) ?? .identifier($0) }),
+    ("^[a-zA-Z0-9]*", { Token(Keyword.init(rawValue: $0)) ?? .identifier($0) }),
     ("[.]init", { Token.identifier($0) })
     ]
 

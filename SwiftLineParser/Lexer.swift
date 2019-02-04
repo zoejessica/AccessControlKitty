@@ -67,7 +67,7 @@ public class Lexer {
 
     func tokenise(_ word: Word) throws -> [Token] {
         let s = word.rawValue
-        if !insideMultilineComment, let token = Token(SingleCharacter.matches[s]) ?? Token(Keyword.matches[s]) {
+        if !insideMultilineComment, let token = Token(SingleCharacter.init(rawValue: s)) ?? Token(Keyword.init(rawValue: s)) {
             return [token]
         } else {
             return try readByCharacters(word)

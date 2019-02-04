@@ -15,40 +15,25 @@ enum Token: Equatable {
     case identifier(String)
 }
 
-enum SingleCharacter: String, TokenType {
+enum SingleCharacter: String, CaseIterable {
     case bracketOpen = "{", bracketClose = "}"
     case colon = ":"
     case equals = "="
-    static let allCases = [SingleCharacter.bracketOpen, .bracketClose, .colon]
 }
 
-enum Keyword: String, TokenType, CaseIterable {
+enum Keyword: String, CaseIterable {
     case `protocol`, `extension`, `struct`, `class`, `let`, `var`,
-    `public`, `private`, `open`, `fileprivate`, `internal`, `override`, `func`,
-    `final`, `enum`, `case`, _init = "init", `static`, `typealias`, `required`, `mutating`, `nonmutating`,
-    `for`, `while`, `repeat`, `unowned`, unownedsafe = "unowned(safe)", unownedunsafe = "unowned(unsafe)",
+    `public`, `private`, `open`, `fileprivate`, `internal`,
+    `override`, `func`,
+    `final`, `enum`, `case`,
+    _init = "init",
+    `static`, `typealias`, `required`,
+    `mutating`, `nonmutating`,
+    `for`, `while`, `repeat`,
+    `unowned`, unownedsafe = "unowned(safe)", unownedunsafe = "unowned(unsafe)",
     `convenience`, `do`, `catch`, `defer`, `subscript`,
-    `prefix`, `postfix`, `infix`, `lazy`, `weak`
-    
-    static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate,
-                           .internal, .override, .func, .final, .enum, .case, ._init, .static, .typealias, .required, .mutating,
-                           .nonmutating, .for, .while, .repeat, .unowned, .unownedsafe, .unownedunsafe, .convenience, .do, .catch, .defer, .subscript,
-                           .prefix, .postfix, .infix, .lazy, .weak]
-}
-
-
-
-protocol TokenType {
-    associatedtype T: Equatable, RawRepresentable where T.RawValue == String
-    static var allCases: [T] { get }
-    static var matches: [String : T] { get }
-}
-
-extension TokenType {
-    static var matches: [String : T] {
-        let zipped = zip(allCases.map { $0.rawValue }, allCases )
-        return Dictionary(uniqueKeysWithValues: zipped)
-    }
+    `prefix`, `postfix`, `infix`,
+    `lazy`, `weak`
 }
 
 extension Token {
