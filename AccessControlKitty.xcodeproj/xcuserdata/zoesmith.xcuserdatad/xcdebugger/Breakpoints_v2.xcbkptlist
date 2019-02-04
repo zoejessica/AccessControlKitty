@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftLineParser/Parser.swift"
-            timestampString = "570988133.288703"
+            timestampString = "571011584.506531"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "207"
-            endingLineNumber = "207"
-            landmarkName = "changeAccessLevel(_:in:with:)"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
+            landmarkName = "currentStructureAllowsInternalAccessControlModifiers(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

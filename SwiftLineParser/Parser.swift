@@ -228,7 +228,7 @@ public class Parser {
     }
     
     private func currentStructureAllowsInternalAccessControlModifiers(_ lineNumber: Int) -> Bool {
-        if structure.contains(oneOf: localScopeKeywords) { return false }
+        if structure.contains(any: localScopeKeywords) { return false }
         if structure.contains(Declaration(keyword: .var, openBrace: true)) { return false }
         if structure.contains(Declaration(keyword: .let, openBrace: true)) { return false }
         return true

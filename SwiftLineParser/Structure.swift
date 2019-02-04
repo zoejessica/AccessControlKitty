@@ -29,7 +29,7 @@ struct Structure: Equatable {
         return declarations.contains(where: { $0.keyword == element })
     }
     
-    func contains(oneOf elements: [Keyword]) -> Bool {
+    func contains(any elements: [Keyword]) -> Bool {
         for keyword in elements {
             if contains(keyword) {
                 return true

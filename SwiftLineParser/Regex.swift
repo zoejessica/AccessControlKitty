@@ -42,24 +42,3 @@ let tokenList: [(String, TokenGenerator)] = [
     ("^[a-zA-Z0-9]*", { Token(Keyword.init(rawValue: $0)) ?? .identifier($0) }),
     ("[.]init", { Token.identifier($0) })
     ]
-
-
-
-
-
-
-
-//    let regex = try! NSRegularExpression(pattern: "(protocol)", options: [])
-//    if let range = match(string, with: regex) {
-//        print(range)
-//        let next = string[range.upperBound...]
-//        print(next)
-//    }
-//    return []
-
-//func leadingCharacter(in slice: Substring, from range: Range<Substring.Index>) -> Unicode.Scalar? {
-//    return slice[range].first?.unicodeScalars.first
-//}
-
-
-
