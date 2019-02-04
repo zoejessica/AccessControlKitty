@@ -30,16 +30,16 @@ public class Parser {
         self.lines = lines
         let lexer = Lexer()
         tokens = lines.map { lexer.analyse($0) }
-        isPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
+        lineIsPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
         for (lineNumber, linetokens) in tokens.enumerated() {
-            isPrefixable[lineNumber] = currentStructureAllowsInternalAccessControlModifiers(lineNumber)
+            lineIsPrefixable[lineNumber] = currentStructureAllowsInternalAccessControlModifiers(lineNumber)
             parseLine(lineNumber, linetokens)
         }
     }
     
     public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int : String] {
         var newLines: [Int : String] = [:]
-        for i in lineNumbers where isPrefixable[i] == true {
+        for i in lineNumbers where lineIsPrefixable[i] == true {
             let currentLine = lines[i]
             if let lineChange = lineChangeType[i],
                 case let (newLineChange, substitution) = substitution(for: lineChange, accessChange),
@@ -99,13 +99,13 @@ public class Parser {
     
     private var lines: [String]
     private var tokens: [[Token]]
-    var isPrefixable: [Bool]
+    var lineIsPrefixable: [Bool]
     
     private var lineChangeType: [Int : LineChange] = [:]
     
-    private let nonAccessKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch]
-    private let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch]
-    private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch]
+    private let nonAccessModifiableKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch, .defer]
+    private let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch, .defer, .subscript]
+    private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch, .defer, .subscript]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
     private let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .required, .convenience]
     
@@ -116,11 +116,11 @@ public class Parser {
         guard let firstToken = lineTokens.first else { return }
         
         if !tokenIsAccessControlModifiableInFirstPosition(firstToken) {
-            isPrefixable[line] = false
+            lineIsPrefixable[line] = false
         }
         
         if tokenSequenceIsExtensionWithConformance(structure.tokens) {
-            isPrefixable[line] = false
+            lineIsPrefixable[line] = false
         }
         
         switch firstToken {
@@ -178,7 +178,7 @@ public class Parser {
         }
         
         if tokenSequenceIsExtensionWithConformance(lineTokens) {
-            isPrefixable[line] = false
+            lineIsPrefixable[line] = false
         }
     }
     
@@ -222,7 +222,7 @@ public class Parser {
         switch token {
         case .singleCharacter: return false
         case .identifier: return false
-        case .keyword(let keyword) where nonAccessKeywords.contains(keyword): return false
+        case .keyword(let keyword) where nonAccessModifiableKeywords.contains(keyword): return false
         default: return true
         }
     }

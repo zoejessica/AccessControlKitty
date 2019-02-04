@@ -35,7 +35,7 @@ class ParserTests: XCTestCase {
         
         let prefixable = [true, true, true, false, false, false, false, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(parser.isPrefixable, prefixable)
+        XCTAssertEqual(parser.lineIsPrefixable, prefixable)
     }
     
     func testEnum() {
@@ -54,7 +54,7 @@ class ParserTests: XCTestCase {
    " }"]
         let prefixable = [true, false, false, false, true, false, false, false, false, false, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.isPrefixable)
+        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
     }
     
     func testFunc() {
@@ -65,7 +65,7 @@ class ParserTests: XCTestCase {
         "return (range, Kind(sourceKitType: dict[\"type\"] as! String)!)"]
         let prefixable = [true, false, false, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.isPrefixable)
+        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
     }
 
     
@@ -81,7 +81,7 @@ class ParserTests: XCTestCase {
                                 "public final class ViewController: NSViewController {",
                                 "@IBOutlet public var textView: NSTextView!",
                                 "public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
-        XCTAssertEqual(prefixable, parser.isPrefixable)
+        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
         for (lineNumber, expectedLine) in expectedNewLines.enumerated() {
             XCTAssertEqual(expectedLine, newLines[lineNumber])
         }
@@ -99,7 +99,7 @@ class ParserTests: XCTestCase {
                                 "public final class ViewController: NSViewController {",
                                 "@IBOutlet public var textView: NSTextView!",
                                 "public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
-        XCTAssertEqual(prefixable, parser.isPrefixable)
+        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
         for (lineNumber, expectedLine) in expectedNewLines.enumerated() {
             XCTAssertEqual(expectedLine, newLines[lineNumber])
         }
@@ -114,7 +114,7 @@ class ParserTests: XCTestCase {
 
         let parser = Parser(lines: lines)
         let newLines = parser.newLines(at: [0, 1], level: .public)
-        XCTAssertEqual(prefixable, parser.isPrefixable)
+        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
         for (lineNumber, expectedLine) in expectedNewLines.enumerated() {
             XCTAssertEqual(expectedLine, newLines[lineNumber])
         }
@@ -127,7 +127,7 @@ class ParserTests: XCTestCase {
         "var another { get set }"]
         let prefixable = [true, false, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(parser.isPrefixable, prefixable)
+        XCTAssertEqual(parser.lineIsPrefixable, prefixable)
         XCTAssertEqual(parser.structure.declarations, [Declaration.init(keyword: .protocol, openBrace: true)])
     }
     
@@ -141,7 +141,7 @@ class ParserTests: XCTestCase {
                      "}"]
         let prefixable = [true, false, false, false, false, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(parser.isPrefixable, prefixable)
+        XCTAssertEqual(parser.lineIsPrefixable, prefixable)
         XCTAssertEqual(parser.structure.declarations, [])
     }
     
@@ -152,7 +152,7 @@ class ParserTests: XCTestCase {
         "}"]
         let prefixable = [false, true, false, false]
         let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.isPrefixable)
+        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
     }
     
     func testInitAsMethodNotRecognized() {
@@ -179,7 +179,7 @@ class ParserTests: XCTestCase {
                      ("  }", false)]
         let parser = Parser(lines: lines.map { $0.0 })
         for (index, line) in lines.enumerated() {
-            XCTAssertEqual(parser.isPrefixable[index], line.1, "Line no.: \(index) \(line) was incorrectly parsed")
+            XCTAssertEqual(parser.lineIsPrefixable[index], line.1, "Line no.: \(index) \(line) was incorrectly parsed")
         }
     }
     
@@ -187,7 +187,7 @@ class ParserTests: XCTestCase {
         let lines = [("@IBOutlet private var Thing : UISwitch", true)]
         let parser = Parser(lines: lines.map { $0.0} )
         for (index, line) in lines.enumerated() {
-            XCTAssertEqual(line.1, parser.isPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
+            XCTAssertEqual(line.1, parser.lineIsPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
         }
         let expectedNewLine = [0 : "@IBOutlet public var Thing : UISwitch"]
         let newLines = parser.newLines(at: [0], level: .public)
@@ -298,7 +298,7 @@ class ParserTests: XCTestCase {
         let parser = Parser(lines: lines)
         
         for (index, line) in lines.enumerated() {
-            XCTAssertEqual(prefixable[index], parser.isPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
+            XCTAssertEqual(prefixable[index], parser.lineIsPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
         }
     }
     

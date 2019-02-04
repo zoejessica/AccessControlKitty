@@ -26,10 +26,10 @@ enum Keyword: String, TokenType, CaseIterable {
     case `protocol`, `extension`, `struct`, `class`, `let`, `var`,
     `public`, `private`, `open`, `fileprivate`, `internal`, `override`, `func`,
     `final`, `enum`, `case`, _init = "init", `static`, `typealias`, `required`, `mutating`, `nonmutating`,
-    `for`, `while`, `repeat`, `unowned`, `convenience`, `do`, `catch`
+    `for`, `while`, `repeat`, `unowned`, `convenience`, `do`, `catch`, `defer`, `subscript`
     static let allCases = [Keyword.protocol, .extension, .struct, .class, .let, .var, .public, .private, .open, .fileprivate,
                            .internal, .override, .func, .final, .enum, .case, ._init, .static, .typealias, .required, .mutating,
-                           .nonmutating, .for, .while, .repeat, .unowned, .convenience, .do, .catch]
+                           .nonmutating, .for, .while, .repeat, .unowned, .convenience, .do, .catch, .defer, .subscript]
 }
 
 
