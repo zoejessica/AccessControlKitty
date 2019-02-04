@@ -1186,38 +1186,28 @@ precedencegroup SpecialPrecedence {
     func testMoreModifiers() {
         let test = """
 class ViewController: NSViewController {
-
-    @objc dynamic let things: [String] = []
-
-    final class MyFinalClass {
-        let internalProperty: String = "Hello world!"
-    }
-
-    lazy var internalLazyThing: String = "Hello"
-
-    weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+@objc dynamic let things: [String] = []
+final class MyFinalClass {
+let internalProperty: String = "Hello world!"
+}
+lazy var internalLazyThing: String = "Hello"
+weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+override func viewDidLoad() {
+super.viewDidLoad()
+}
 }
 """
         let expected = """
 public class ViewController: NSViewController {
-    
-    @objc public dynamic let things: [String] = []
-    
-    public final class MyFinalClass {
-        public let internalProperty: String = "Hello world!"
-    }
-    
-    public lazy var internalLazyThing: String = "Hello"
-    
-    public weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
-    
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+@objc public dynamic let things: [String] = []
+public final class MyFinalClass {
+public let internalProperty: String = "Hello world!"
+}
+public lazy var internalLazyThing: String = "Hello"
+public weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+public override func viewDidLoad() {
+super.viewDidLoad()
+}
 }
 """
         multilineTest(test: test, expected: expected)
