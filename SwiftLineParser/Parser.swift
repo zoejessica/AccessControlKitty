@@ -99,8 +99,8 @@ public class Parser {
     
     private var lines: [String]
     private var tokens: [[Token]]
-    var lineIsPrefixable: [Bool]
-    
+  
+    var lineIsPrefixable: [Bool] // Overrides lineChangeType: if lineIsPrefixable == false, lineChangeType is ignored
     private var lineChangeType: [Int : LineChange] = [:]
     
     private let nonAccessModifiableKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch, .defer]
@@ -111,62 +111,9 @@ public class Parser {
     
     var structure: Structure = Structure(declarations: [])
     
-    private func parseLine(_ line: Int, _ lineTokens: [Token]) {
-        
-        guard let firstToken = lineTokens.first else { return }
-        
-        if !tokenIsAccessControlModifiableInFirstPosition(firstToken) {
-            lineIsPrefixable[line] = false
-        }
-        
-        if tokenSequenceIsExtensionWithConformance(structure.tokens) {
-            lineIsPrefixable[line] = false
-        }
-        
-        switch firstToken {
-            
-        case .keyword(let keyword) where accessKeywords.contains(keyword):
-            lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
-            
-        case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
-            // Check to see if there is an access token next in the line, to catch static private func etc.
-            if lineTokens.count > 1,
-                case .keyword(let keyword) = lineTokens[1],
-                accessKeywords.contains(keyword) {
-                    lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
-            } else {
-                lineChangeType[line] = LineChange(.postfix, keyword.rawValue, nil)
-            }
-            
-        case .attribute(let attribute):
-
-            if let secondToken = lineTokens.dropFirst().first,
-                case let .keyword(keyword) = secondToken,
-                accessKeywords.contains(keyword) {
-                lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
-            }
-            
-            else if lineTokens.dropFirst().first(where: {
-                    if case .keyword(_) = $0 {
-                        return true
-                    } else {
-                        return false
-                    }
-                }) == nil {
-                    // no keywords found, so this is just e.g. an @ attribute on a line by itself
-                    lineChangeType[line] = LineChange(.none, "", nil)
-                }
-            else {
-                lineChangeType[line] = LineChange(.postfix, attribute, nil)
-            }
-            
-        case .keyword(let keyword): lineChangeType[line] = LineChange(.prefix, keyword.rawValue, nil)
-        
-        default: break
-        }
-        
+    fileprivate func buildStructure(_ lineTokens: [Token]) {
         for token in lineTokens {
-            switch token {                
+            switch token {
             case .keyword(let keyword) where structureKeywords.contains(keyword) && !structure.starts(with: Keyword.protocol):
                 structure.append(.init(keyword: keyword, openBrace: false))
             case .singleCharacter(let char) where char == .bracketOpen:
@@ -176,10 +123,79 @@ public class Parser {
             default: break
             }
         }
+    }
+    
+    private func parseLine(_ line: Int, _ lineTokens: [Token]) {
         
-        if tokenSequenceIsExtensionWithConformance(lineTokens) {
-            lineIsPrefixable[line] = false
+        guard let firstToken = lineTokens.first else { return }
+        
+        defer {
+            buildStructure(lineTokens)
+            
+            if tokenSequenceIsExtensionWithConformance(lineTokens) {
+                lineIsPrefixable[line] = false
+            }
         }
+        
+        if !tokenIsAccessControlModifiableInFirstPosition(firstToken) {
+            lineIsPrefixable[line] = false
+            return
+        }
+        
+        if tokenSequenceIsExtensionWithConformance(structure.tokens) {
+            lineIsPrefixable[line] = false
+            return
+        }
+        
+        // If any token on the line contains an access keyword, it's a substution:
+        if let accessKeyword = tokensContainsAccessKeyword(lineTokens) {
+
+            lineChangeType[line] = LineChange(.substitute, accessKeyword.rawValue, accessKeyword)
+        
+        } else {
+        
+            switch firstToken {
+                
+            case .keyword(let keyword) where accessKeywords.contains(keyword):
+
+                lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
+                
+            case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
+
+                lineChangeType[line] = LineChange(.postfix, keyword.rawValue, nil)
+                
+            case .attribute(let attribute):
+                
+                if tokensContainAnyKeyword(lineTokens.dropFirst()) == false {
+                    lineChangeType[line] = LineChange(.none, "", nil)
+                } else {
+                    lineChangeType[line] = LineChange(.postfix, attribute, nil)
+                }
+                
+            case .keyword(let keyword): lineChangeType[line] = LineChange(.prefix, keyword.rawValue, nil)
+            
+            default: break
+            
+            }
+        }        
+    }
+    
+    private func tokensContainAnyKeyword(_ tokens: ArraySlice<Token>) -> Bool {
+        for token in tokens {
+            if case Token.keyword(_) = token {
+                return true
+            }
+        }
+        return false
+    }
+    
+    private func tokensContainsAccessKeyword(_ tokens: [Token]) -> Keyword? {
+        for token in tokens {
+            if case let Token.keyword(keyword) = token, accessKeywords.contains(keyword) {
+                return keyword
+            }
+        }
+        return nil
     }
     
     private func changeAccessLevel(_ change: LineChange, in line: String, with substitution: String) -> String? {
