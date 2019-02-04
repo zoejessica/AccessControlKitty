@@ -32,7 +32,7 @@ public class Parser {
         tokens = lines.map { lexer.analyse($0) }
         isPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
         for (lineNumber, linetokens) in tokens.enumerated() {
-            isPrefixable[lineNumber] = currentStructurePermitsPrefix(lineNumber)
+            isPrefixable[lineNumber] = currentStructureAllowsInternalAccessControlModifiers(lineNumber)
             parseLine(lineNumber, linetokens)
         }
     }
@@ -50,6 +50,11 @@ public class Parser {
             }
         }
         return newLines
+    }
+    
+    // Left here for existing tests
+    func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
+        return newLines(at: lineNumbers, accessChange: .singleLevel(level))
     }
     
     private func substitution(for line: LineChange, _ accessChange: AccessChange) -> (LineChange, String) {
@@ -92,29 +97,25 @@ public class Parser {
         }
     }
     
-    
-    // Left here for existing tests
-    func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
-        return newLines(at: lineNumbers, accessChange: .singleLevel(level))
-    }
-    
     private var lines: [String]
     private var tokens: [[Token]]
     var isPrefixable: [Bool]
     
     private var lineChangeType: [Int : LineChange] = [:]
     
+    private let nonAccessKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch]
     private let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch]
     private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch]
     private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
     private let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .required, .convenience]
+    
     var structure: Structure = Structure(declarations: [])
     
     private func parseLine(_ line: Int, _ lineTokens: [Token]) {
         
         guard let firstToken = lineTokens.first else { return }
         
-        if !prefixableInFirstPosition(firstToken) {
+        if !tokenIsAccessControlModifiableInFirstPosition(firstToken) {
             isPrefixable[line] = false
         }
         
@@ -180,35 +181,6 @@ public class Parser {
             isPrefixable[line] = false
         }
     }
-
-    private func currentStructurePermitsPrefix(_ lineNumber: Int) -> Bool {
-        
-        if structure.contains(oneOf: localScopeKeywords) { return false }
-        
-//        if structure.contains(Keyword.func) { return false }
-//        if structure.contains(Keyword.protocol) { return false }
-//        if structure.contains(Keyword._init) { return false }
-        if structure.contains(Declaration(keyword: .var, openBrace: true)) { return false }
-        if structure.contains(Declaration(keyword: .let, openBrace: true)) { return false }
-        
-        return true
-//        return structure.openStructures < 2 ?  true : false
-    }
-    
-    private func prefixableInFirstPosition(_ token: Token) -> Bool {
-        switch token {
-        case .singleCharacter: return false
-        case .identifier: return false
-        case .keyword(let keyword) where keyword == .case: return false
-            case .keyword(let keyword) where keyword == .for: return false
-            case .keyword(let keyword) where keyword == .while: return false
-            case .keyword(let keyword) where keyword == .repeat: return false
-        case .keyword(let keyword) where keyword == .do: return false
-        case .keyword(let keyword) where keyword == .catch: return false
-
-        default: return true
-        }
-    }
     
     private func changeAccessLevel(_ change: LineChange, in line: String, with substitution: String) -> String? {
 
@@ -239,7 +211,23 @@ public class Parser {
         }
     }
     
-    func tokenSequenceIsExtensionWithConformance(_ tokens: [Token]) -> Bool {
+    private func currentStructureAllowsInternalAccessControlModifiers(_ lineNumber: Int) -> Bool {
+        if structure.contains(oneOf: localScopeKeywords) { return false }
+        if structure.contains(Declaration(keyword: .var, openBrace: true)) { return false }
+        if structure.contains(Declaration(keyword: .let, openBrace: true)) { return false }
+        return true
+    }
+    
+    private func tokenIsAccessControlModifiableInFirstPosition(_ token: Token) -> Bool {
+        switch token {
+        case .singleCharacter: return false
+        case .identifier: return false
+        case .keyword(let keyword) where nonAccessKeywords.contains(keyword): return false
+        default: return true
+        }
+    }
+    
+    private func tokenSequenceIsExtensionWithConformance(_ tokens: [Token]) -> Bool {
         guard let startIndex = tokens.index(of: Token.keyword(.extension)) else { return false }
         var remainingTokens = tokens.dropFirst(startIndex + 1)
         guard tokens.count >= 3 else { return false }
@@ -257,6 +245,13 @@ private struct LineChange {
     let type: LineChangeType
     let cursor: String
     let current: Keyword?
+    
+    enum LineChangeType {
+        case substitute
+        case prefix
+        case postfix
+        case none
+    }
 }
 
 extension LineChange {
@@ -265,12 +260,7 @@ extension LineChange {
     }
 }
 
-private enum LineChangeType {
-    case substitute
-    case prefix
-    case postfix
-    case none
-}
+
 
 
 

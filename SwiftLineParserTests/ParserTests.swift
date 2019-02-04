@@ -568,8 +568,16 @@ public static var null: JSON { return JSON(NSNull()) }
     }
     
     func testUnownedKeyword() {
-        let test = "unowned let player: PlayerCore"
-        let expected = "unowned public let player: PlayerCore"
+        let test = """
+unowned let player: PlayerCore
+unowned(safe) let safeplayer: PlayerCore
+unowned(unsafe) let unsafeplayer: PlayerCore
+"""
+        let expected = """
+unowned public let player: PlayerCore
+unowned(safe) public let safeplayer: PlayerCore
+unowned(unsafe) public let unsafeplayer: PlayerCore
+"""
         multilineTest(test: test, expected: expected)
     }
 
@@ -1014,8 +1022,10 @@ for thing in things {
         multilineTest(test: test, expected: expected)
     }
     
-    func testErrorHandling() {
+    func testTryAndErrorHandling() {
         let test = """
+        try! doThis()
+        try? doThat()
         do {
             try Int.init("1234")
             let localScope = "Local scope"
@@ -1025,8 +1035,11 @@ for thing in things {
             let localScope = "Local scope"
             fatalError()
         }
+        throw
 """
         let expected = """
+        try! doThis()
+        try? doThat()
         do {
             try Int.init("1234")
             let localScope = "Local scope"
@@ -1036,6 +1049,216 @@ for thing in things {
             let localScope = "Local scope"
             fatalError()
         }
+        throw
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testControlFlowKeywords() {
+        let test = """
+break
+return
+continue
+fallthrough
+"""
+        let expected = """
+break
+return
+continue
+fallthrough
+"""
+        multilineTest(test: test, expected: expected)
+    }
+
+    func testDeferBlock() {
+        let test = """
+defer {
+let localProperty = "local string"
+}
+"""
+        let expected = """
+defer {
+let localProperty = "local string"
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testCompilerControlStatements() {
+        let test = """
+#if something
+let localPropertyA = "Local"
+
+#elseif somethingelse
+let localPropertyB = "Local"
+
+#else somethingelseentirely
+let localPropertyC = "Local"
+
+#endif
+
+if #available(1.0, 1.0, 1.0) {
+let localPropertyD = "Local"
+} else {
+let localPropertyE = "Local"
+}
+
+"""
+        let expected = """
+#if something
+public let localPropertyA = "Local"
+
+#elseif somethingelse
+public let localPropertyB = "Local"
+
+#else somethingelseentirely
+public let localPropertyC = "Local"
+
+#endif
+
+if #available(1.0, 1.0, 1.0) {
+public let localPropertyD = "Local"
+} else {
+public let localPropertyE = "Local"
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testSubscriptDefinition() {
+        let test = """
+subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        let expected = """
+public subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+
+    func testOperatorDefinition() {
+        let test = """
+prefix operator NotAnEmojiPlease
+postfix operator NotAnEmojiPlease
+infix operator NotAnEmojiPlease: DefaultPrecendence
+"""
+        let expected = """
+public prefix operator NotAnEmojiPlease
+public postfix operator NotAnEmojiPlease
+public infix operator NotAnEmojiPlease: DefaultPrecendence
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testPrecedenceGroupDefinition() {
+        let test = """
+precedencegroup SpecialPrecedence {
+    higherThan: TernaryPrecedence
+    lowerThan: DefaultPrecedence
+    associativity: right
+    assignment: true
+}
+"""
+        let expected = """
+precedencegroup SpecialPrecedence {
+    higherThan: TernaryPrecedence
+    lowerThan: DefaultPrecedence
+    associativity: right
+    assignment: true
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testMoreModifiers() {
+        let test = """
+class ViewController: NSViewController {
+
+    @objc dynamic let things: [String] = []
+
+    final class MyFinalClass {
+        let internalProperty: String = "Hello world!"
+    }
+
+    lazy var internalLazyThing: String = "Hello"
+
+    weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
+"""
+        let expected = """
+public class ViewController: NSViewController {
+    
+    @objc public dynamic let things: [String] = []
+    
+    public final class MyFinalClass {
+        let internalProperty: String = "Hello world!"
+    }
+    
+    public lazy var internalLazyThing: String = "Hello"
+    
+    public weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
+    func testOpenToPublic() {
+        let test = """
+open class ViewController: NSViewController {
+    
+    @objc open dynamic let things: [String] = []
+    
+    open class MyFinalClass {
+        let internalProperty: String = "Hello world!"
+    }
+    
+    open lazy var internalLazyThing: String = "Hello"
+    
+    open weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+    
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
+"""
+        let expected = """
+public class ViewController: NSViewController {
+    
+    @objc public dynamic let things: [String] = []
+    
+    public final class MyFinalClass {
+        let internalProperty: String = "Hello world!"
+    }
+    
+    public lazy var internalLazyThing: String = "Hello"
+    
+    public weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+}
 """
         multilineTest(test: test, expected: expected)
     }
