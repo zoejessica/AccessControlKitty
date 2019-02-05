@@ -2,7 +2,7 @@
 Xcode extension to change the access control level of Swift code selection
 
 ### Features
-- Works on selected Swift code to switch between `public`, `private`, `fileprivate`, `internal` or no access control modifier. Choose an option from the new Access Level of Selection at the bottom of Xcode's Editor menu:
+- Works on selected Swift code to switch between `public`, `private`, `fileprivate`, `internal` or no access control modifier. Choose an option from the new Access Level of Selection item at the bottom of Xcode's Editor menu:
 - Increment access levels in selected code. So, `private` and `fileprivate` code becomes `internal`, `internal` becomes `public`, and any `public` code stays as is. 
 - Decrement access levels. `private` code stays as is, `fileprivate` and `internal` become `private`, and `public` code becomes `internal`. 
 - Create API – changes all `internal` code to `public`, exposing it as API for your framework
