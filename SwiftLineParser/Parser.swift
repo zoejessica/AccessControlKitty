@@ -42,7 +42,7 @@ public class Parser {
         for i in lineNumbers where lineIsPrefixable[i] == true {
             let currentLine = lines[i]
             if let lineChange = lineChangeType[i],
-                case let (newLineChange, substitution) = substitution(for: lineChange, accessChange),
+                case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange),
                 let changedLine = changeAccessLevel(newLineChange, in: currentLine, with: substitution) {
                 newLines[i] = changedLine
             } else {
@@ -57,7 +57,9 @@ public class Parser {
         return newLines(at: lineNumbers, accessChange: .singleLevel(level))
     }
     
-    private func substitution(for line: LineChange, _ accessChange: AccessChange) -> (LineChange, String) {
+    // Overrides type of line change according to the particular menu command
+    // E.g. a fileprivate entity does not change when executing the Make API command
+    private func lineAlteration(for line: LineChange, _ accessChange: AccessChange) -> (LineChange, String) {
         
         let noSubstitution = (LineChange(type: .none, cursor: "", current: nil), "")
         let internalString = ""
@@ -130,7 +132,7 @@ public class Parser {
         // If any token on the line contains an access keyword, it's a substution:
         if let accessKeyword = lineTokens.containAccessKeyword {
 
-            lineChangeType[line] = LineChange(.substitute, accessKeyword.rawValue, accessKeyword)
+            lineChangeType[line] = LineChange(.substitute, at: accessKeyword, current: accessKeyword)
         
         } else {
         
@@ -138,21 +140,21 @@ public class Parser {
                 
             case .keyword(let keyword) where accessKeywords.contains(keyword):
 
-                lineChangeType[line] = LineChange(.substitute, keyword.rawValue, keyword)
+                lineChangeType[line] = LineChange(.substitute, at: keyword, current: keyword)
                 
             case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
 
-                lineChangeType[line] = LineChange(.postfix, keyword.rawValue, nil)
+                lineChangeType[line] = LineChange(.postfix, at: keyword, current: nil)
                 
             case .attribute(let attribute):
                 
                 if Array(lineTokens.dropFirst()).containAnyKeyword == false {
-                    lineChangeType[line] = LineChange(.none, "", nil)
+                    lineChangeType[line] = LineChange(.none, at: "", current: nil)
                 } else {
-                    lineChangeType[line] = LineChange(.postfix, attribute, nil)
+                    lineChangeType[line] = LineChange(.postfix, at: attribute, current: nil)
                 }
                 
-            case .keyword(let keyword): lineChangeType[line] = LineChange(.prefix, keyword.rawValue, nil)
+            case .keyword(let keyword): lineChangeType[line] = LineChange(.prefix, at: keyword, current: nil)
             
             default: break
             
@@ -204,8 +206,12 @@ private struct LineChange {
 }
 
 extension LineChange {
-    init(_ type: LineChangeType, _ cursor: String, _ current: Keyword?) {
+    init(_ type: LineChangeType, at cursor: String, current: Keyword?) {
         self = LineChange.init(type: type, cursor: cursor, current: current)
+    }
+    
+    init(_ type: LineChangeType, at keyword: Keyword, current: Keyword?) {
+        self = LineChange.init(type: type, cursor: keyword.rawValue, current: current)
     }
 }
 
