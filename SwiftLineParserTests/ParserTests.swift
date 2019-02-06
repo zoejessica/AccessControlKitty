@@ -1265,53 +1265,53 @@ public class ViewController: NSViewController {
         multilineTest(test: test, expected: expected)
     }
     
-    func testMakeAPIInEntityWithLowerThanInternalAccessShouldFail() {
-        let test = """
-private extension Human {
-    func callForServiceA() {
-        // tbd
-    }
-}
-fileprivate extension Human {
-    func callForServiceB() {
-        // tbd
-    }
-}
-extension Human {
-    func callForServiceC() {
-        // tbd
-    }
-}
-public extension Human {
-    func callForServiceD() {
-        // tbd
-    }
-}
-"""
-        let expected = """
-private extension Human {
-    func callForServiceA() {
-        // tbd
-    }
-}
-fileprivate extension Human {
-    func callForServiceB() {
-        // tbd
-    }
-}
-public extension Human {
-    public func callForServiceC() {
-        // tbd
-    }
-}
-public extension Human {
-    public func callForServiceD() {
-        // tbd
-    }
-}
-"""
-        multilineTest(test: test, expected: expected, accessChange: .makeAPI)
-    }
+//    func testMakeAPIInEntityWithLowerThanInternalAccessShouldFail() {
+//        let test = """
+//private extension Human {
+//    func callForServiceA() {
+//        // tbd
+//    }
+//}
+//fileprivate extension Human {
+//    func callForServiceB() {
+//        // tbd
+//    }
+//}
+//extension Human {
+//    func callForServiceC() {
+//        // tbd
+//    }
+//}
+//public extension Human {
+//    func callForServiceD() {
+//        // tbd
+//    }
+//}
+//"""
+//        let expected = """
+//private extension Human {
+//    func callForServiceA() {
+//        // tbd
+//    }
+//}
+//fileprivate extension Human {
+//    func callForServiceB() {
+//        // tbd
+//    }
+//}
+//public extension Human {
+//    public func callForServiceC() {
+//        // tbd
+//    }
+//}
+//public extension Human {
+//    public func callForServiceD() {
+//        // tbd
+//    }
+//}
+//"""
+//        multilineTest(test: test, expected: expected, accessChange: .makeAPI)
+//    }
     
     func testSomething() {
         let test = """

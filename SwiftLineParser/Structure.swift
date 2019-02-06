@@ -64,6 +64,13 @@ struct Structure: Equatable {
 
 extension Structure {
     
+    var allowsInternalAccessControlModifiers: Bool {
+        if contains(any: localScopeKeywords) { return false }
+        if contains(Declaration(keyword: .var, openBrace: true)) { return false }
+        if contains(Declaration(keyword: .let, openBrace: true)) { return false }
+        return true
+    }
+    
     var openStructures: Int {
         return declarations.filter { $0.openBrace == true }.count
     }

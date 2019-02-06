@@ -32,7 +32,7 @@ public class Parser {
         tokens = lines.map { lexer.analyse($0) }
         lineIsPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
         for (lineNumber, linetokens) in tokens.enumerated() {
-            lineIsPrefixable[lineNumber] = currentStructureAllowsInternalAccessControlModifiers(lineNumber)
+            lineIsPrefixable[lineNumber] = structure.allowsInternalAccessControlModifiers
             parseLine(lineNumber, linetokens)
         }
     }
@@ -205,13 +205,6 @@ public class Parser {
         default:
             return line
         }
-    }
-    
-    private func currentStructureAllowsInternalAccessControlModifiers(_ lineNumber: Int) -> Bool {
-        if structure.contains(any: localScopeKeywords) { return false }
-        if structure.contains(Declaration(keyword: .var, openBrace: true)) { return false }
-        if structure.contains(Declaration(keyword: .let, openBrace: true)) { return false }
-        return true
     }
     
     private func tokenIsAccessControlModifiableInFirstPosition(_ token: Token) -> Bool {
