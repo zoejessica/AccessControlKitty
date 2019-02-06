@@ -112,23 +112,23 @@ public class Parser {
         defer {
             structure.build(with: lineTokens)
             
-            if tokenSequenceIsExtensionWithConformance(lineTokens) {
+            if lineTokens.containExtensionWithConformance {
                 lineIsPrefixable[line] = false
             }
         }
         
-        if !tokenIsAccessControlModifiableInFirstPosition(firstToken) {
+        if !firstToken.isAccessControlModifiableInFirstPosition {
             lineIsPrefixable[line] = false
             return
         }
         
-        if tokenSequenceIsExtensionWithConformance(structure.tokens) {
+        if structure.tokens.containExtensionWithConformance {
             lineIsPrefixable[line] = false
             return
         }
         
         // If any token on the line contains an access keyword, it's a substution:
-        if let accessKeyword = tokensContainsAccessKeyword(lineTokens) {
+        if let accessKeyword = lineTokens.containAccessKeyword {
 
             lineChangeType[line] = LineChange(.substitute, accessKeyword.rawValue, accessKeyword)
         
@@ -146,7 +146,7 @@ public class Parser {
                 
             case .attribute(let attribute):
                 
-                if tokensContainAnyKeyword(lineTokens.dropFirst()) == false {
+                if Array(lineTokens.dropFirst()).containAnyKeyword == false {
                     lineChangeType[line] = LineChange(.none, "", nil)
                 } else {
                     lineChangeType[line] = LineChange(.postfix, attribute, nil)
@@ -158,24 +158,6 @@ public class Parser {
             
             }
         }        
-    }
-    
-    private func tokensContainAnyKeyword(_ tokens: ArraySlice<Token>) -> Bool {
-        for token in tokens {
-            if case Token.keyword(_) = token {
-                return true
-            }
-        }
-        return false
-    }
-    
-    private func tokensContainsAccessKeyword(_ tokens: [Token]) -> Keyword? {
-        for token in tokens {
-            if case let Token.keyword(keyword) = token, accessKeywords.contains(keyword) {
-                return keyword
-            }
-        }
-        return nil
     }
     
     private func changeAccessLevel(_ change: LineChange, in line: String, with substitution: String) -> String? {
@@ -205,28 +187,6 @@ public class Parser {
         default:
             return line
         }
-    }
-    
-    private func tokenIsAccessControlModifiableInFirstPosition(_ token: Token) -> Bool {
-        switch token {
-        case .singleCharacter: return false
-        case .identifier: return false
-        case .keyword(let keyword) where nonAccessModifiableKeywords.contains(keyword): return false
-        default: return true
-        }
-    }
-    
-    private func tokenSequenceIsExtensionWithConformance(_ tokens: [Token]) -> Bool {
-        guard let startIndex = tokens.index(of: Token.keyword(.extension)) else { return false }
-        var remainingTokens = tokens.dropFirst(startIndex + 1)
-        guard tokens.count >= 3 else { return false }
-        let first = remainingTokens.removeFirst()
-        guard case Token.identifier = first else { return false }
-        let second = remainingTokens.removeFirst()
-        guard case Token.singleCharacter(.colon) = second else { return false }
-        let third = remainingTokens.removeFirst()
-        guard case Token.identifier = third else { return false }
-        return true
     }
 }
 

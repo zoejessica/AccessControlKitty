@@ -54,6 +54,51 @@ extension Token {
     }
 }
 
+extension Token {
+    var isAccessControlModifiableInFirstPosition: Bool {
+        switch self {
+        case .singleCharacter: return false
+        case .identifier: return false
+        case .keyword(let keyword) where nonAccessModifiableKeywords.contains(keyword): return false
+        default: return true
+        }
+    }
+}
+
+extension Array where Element == Token {
+    
+    var containAccessKeyword: Keyword? {
+        for token in self {
+            if case let Token.keyword(keyword) = token, accessKeywords.contains(keyword) {
+                return keyword
+            }
+        }
+        return nil
+    }
+    
+    var containAnyKeyword:  Bool {
+        for token in self {
+            if case Token.keyword(_) = token {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var containExtensionWithConformance: Bool {
+        guard let startIndex = self.index(of: Token.keyword(.extension)) else { return false }
+        var remainingTokens = self.dropFirst(startIndex + 1)
+        guard self.count >= 3 else { return false }
+        let first = remainingTokens.removeFirst()
+        guard case Token.identifier = first else { return false }
+        let second = remainingTokens.removeFirst()
+        guard case Token.singleCharacter(.colon) = second else { return false }
+        let third = remainingTokens.removeFirst()
+        guard case Token.identifier = third else { return false }
+        return true
+    }
+}
+
 
 
 
