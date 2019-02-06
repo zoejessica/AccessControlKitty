@@ -1347,49 +1347,19 @@ extension Parser {
     }
 }
 
-/*
-
-struct TestStruct {
-    private let privateProperty = "Ooh la la"
-    fileprivate let fileprivateProperty = "Not so secret"
-    let property = "A bit hush hush"
-    internal let property = "Exactly the same amount of hush"
-    public let property "Open secret"
-}
-
-// Make api
-public struct TestStruct {
-    private let privateProperty = "Ooh la la"
-    fileprivate let fileprivateProperty = "Not so secret"
-    public let property = "A bit hush hush"
-    public let property = "Exactly the same amount of hush"
-    public let property "Open secret"
-}
-
-// Remove api
-struct TestStruct {
-    private let privateProperty = "Ooh la la"
-    fileprivate let fileprivateProperty = "Not so secret"
-    let property = "A bit hush hush"
-    internal let property = "Exactly the same amount of hush"
-    let property "Open secret"
-}
-
-// Increase access
-public struct TestStruct {
-    let privateProperty = "Ooh la la"
-    let fileprivateProperty = "Not so secret"
-    public let property = "A bit hush hush"
-    public let property = "Exactly the same amount of hush"
-    public let property "Open secret"
-}
-
-// Decrease access
-private struct TestStruct {
-    private let privateProperty = "Ooh la la"
-    private let fileprivateProperty = "Not so secret"
-    private let property = "A bit hush hush"
-    private let property = "Exactly the same amount of hush"
-    let property "Open secret"
-}
+/* TODO: introduce tests for new menu command that changes only set properties of variables and subscripts 
+ struct Cat {
+ let name: String
+ var whiskers: Int
+ let stripyness: Stripes
+ 
+ fileprivate(set) subscript(whiskery: Int) -> Int {
+ get {
+ return whiskers
+ }
+ set {
+ whiskers = whiskery
+ }
+ }
+ }
 */
