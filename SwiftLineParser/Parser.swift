@@ -103,34 +103,14 @@ public class Parser {
     var lineIsPrefixable: [Bool] // Overrides lineChangeType: if lineIsPrefixable == false, lineChangeType is ignored
     private var lineChangeType: [Int : LineChange] = [:]
     
-    private let nonAccessModifiableKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch, .defer]
-    private let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch, .defer, .subscript]
-    private let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch, .defer, .subscript]
-    private let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
-    private let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .unownedsafe, .unownedunsafe, .required, .convenience]
-    
     var structure: Structure = Structure(declarations: [])
-    
-    fileprivate func buildStructure(_ lineTokens: [Token]) {
-        for token in lineTokens {
-            switch token {
-            case .keyword(let keyword) where structureKeywords.contains(keyword) && !structure.starts(with: Keyword.protocol):
-                structure.append(.init(keyword: keyword, openBrace: false))
-            case .singleCharacter(let char) where char == .bracketOpen:
-                structure.openBrace()
-            case .singleCharacter(let char) where char == .bracketClose:
-                structure.closeBrace()
-            default: break
-            }
-        }
-    }
     
     private func parseLine(_ line: Int, _ lineTokens: [Token]) {
         
         guard let firstToken = lineTokens.first else { return }
         
         defer {
-            buildStructure(lineTokens)
+            structure.build(with: lineTokens)
             
             if tokenSequenceIsExtensionWithConformance(lineTokens) {
                 lineIsPrefixable[line] = false

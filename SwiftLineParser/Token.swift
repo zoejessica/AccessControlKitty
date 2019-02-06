@@ -36,6 +36,12 @@ enum Keyword: String, CaseIterable {
     `lazy`, `weak`
 }
 
+let nonAccessModifiableKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch, .defer]
+let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch, .defer, .subscript]
+let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch, .defer, .subscript]
+let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
+let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .unownedsafe, .unownedunsafe, .required, .convenience]
+
 extension Token {
     init?(_ singleCharacter: SingleCharacter?) {
         guard singleCharacter != nil else { return nil }

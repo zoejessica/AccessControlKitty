@@ -8,8 +8,61 @@
 
 import Foundation
 
+
+struct Declaration: Equatable {
+    let keyword: Keyword?
+    var openBrace: Bool
+}
+
 struct Structure: Equatable {
+    
     var declarations: [Declaration]
+    
+    mutating func build(with lineTokens: [Token]) {
+        for token in lineTokens {
+            switch token {
+            case .keyword(let keyword) where structureKeywords.contains(keyword) && !starts(with: Keyword.protocol):
+                append(.init(keyword: keyword, openBrace: false))
+            case .singleCharacter(let char) where char == .bracketOpen:
+                openBrace()
+            case .singleCharacter(let char) where char == .bracketClose:
+                closeBrace()
+            default: break
+            }
+        }
+    }
+    
+    private mutating func append(_ declaration: Declaration) {
+        if let last = declarations.last,
+            last == .init(keyword: .var, openBrace: false) || last == .init(keyword: .let, openBrace: false) {
+            _ = declarations.popLast()
+        }
+        declarations.append(declaration)
+    }
+    
+    private mutating func openBrace() {
+        guard var last = declarations.last, last.openBrace == false else {
+            declarations.append(.init(keyword: nil, openBrace: true))
+            return
+        }
+        last.openBrace = true
+        _ = declarations.popLast()
+        declarations.append(last)
+    }
+    
+    private mutating func closeBrace() {
+        if let last = declarations.last {
+            if last.openBrace == true  {
+                _ = declarations.popLast()
+            } else {
+                _ = declarations.popLast()
+                closeBrace()
+            }
+        }
+    }
+}
+
+extension Structure {
     
     var openStructures: Int {
         return declarations.filter { $0.openBrace == true }.count
@@ -57,38 +110,4 @@ struct Structure: Equatable {
             return false
         }
     }
-    
-    mutating func append(_ declaration: Declaration) {
-        if let last = declarations.last,
-            last == .init(keyword: .var, openBrace: false) || last == .init(keyword: .let, openBrace: false) {
-            _ = declarations.popLast()
-        }
-        declarations.append(declaration)
-    }
-    
-    mutating func openBrace() {
-        guard var last = declarations.last, last.openBrace == false else {
-            declarations.append(.init(keyword: nil, openBrace: true))
-            return
-        }
-        last.openBrace = true
-        _ = declarations.popLast()
-        declarations.append(last)
-    }
-    
-    mutating func closeBrace() {
-        if let last = declarations.last {
-            if last.openBrace == true  {
-                _ = declarations.popLast()
-            } else {
-                _ = declarations.popLast()
-                closeBrace()
-            }
-        }
-    }
-}
-
-struct Declaration: Equatable {
-    let keyword: Keyword?
-    var openBrace: Bool
 }
