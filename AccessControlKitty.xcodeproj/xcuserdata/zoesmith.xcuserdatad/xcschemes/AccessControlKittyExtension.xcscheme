@@ -68,6 +68,11 @@
                BlueprintName = "SwiftLineParserTests"
                ReferencedContainer = "container:AccessControlKitty.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ParserTests/testMakeAPIInEntityWithLowerThanInternalAccessShouldFail()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

@@ -23,164 +23,253 @@ class ParserTests: XCTestCase {
     }
     
     func testStructure() {
-        let lines = ["final class ViewController: NSViewController {",
-                     " @IBOutlet var textView: NSTextView!",
-                     "override func viewDidLoad() {",
-                     "super.viewDidLoad()",
-                     "let strings: [Highlight<NSAttributedString>] = markdown()",
-                     "let result = strings.map { $0.rendered }.join(separator: \"/\n\n\")",
-                     "textView.textStorage!.setAttributedString(result)",
-                     "}",
-                     "}"]
+        let test =
+        """
+        final class ViewController: NSViewController {
+        @IBOutlet var textView: NSTextView!
+        override func viewDidLoad() {
+        super.viewDidLoad()
+        let strings: [Highlight<NSAttributedString>] = markdown()
+        let result = strings.map { $0.rendered }.join(separator: " ")
+        textView.textStorage!.setAttributedString(result)
+        }
+        }
+        """
+        let expected =
+        """
+        public final class ViewController: NSViewController {
+        @IBOutlet public var textView: NSTextView!
+        public override func viewDidLoad() {
+        super.viewDidLoad()
+        let strings: [Highlight<NSAttributedString>] = markdown()
+        let result = strings.map { $0.rendered }.join(separator: " ")
+        textView.textStorage!.setAttributedString(result)
+        }
+        }
+        """
+        multilineTest(test: test, expected: expected)
         
-        let prefixable = [true, true, true, false, false, false, false, false, false]
-        let parser = Parser(lines: lines)
-        XCTAssertEqual(parser.lineIsPrefixable, prefixable)
     }
     
     func testEnum() {
-        let lines = ["enum Kind: Int {",
-       " case keyword",
-        "case string",
-        "case other",
-        
-       " init?(sourceKitType type: String) {",
-           " switch type {",
-            "case \"source.lang.swift.syntaxtype.keyword\": self = .keyword",
-           " case \"source.lang.swift.syntaxtype.string\": self = .string",
-           " default: self = .other",
-           " }",
-       " }",
-   " }"]
-        let prefixable = [true, false, false, false, true, false, false, false, false, false, false, false]
-        let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
+        let test =
+        """
+        enum Kind: Int {
+        case keyword
+        case string
+        case other
+
+        init?(sourceKitType type: String) {
+        switch type {
+        case source.lang.swift.syntaxtype.keyword: self = .keyword
+        case source.lang.swift.syntaxtype.string: self = .string
+        default: self = .other
+        }
+        }
+        }
+        """
+        let expected =
+        """
+        public enum Kind: Int {
+        case keyword
+        case string
+        case other
+
+        public init?(sourceKitType type: String) {
+        switch type {
+        case source.lang.swift.syntaxtype.keyword: self = .keyword
+        case source.lang.swift.syntaxtype.string: self = .string
+        default: self = .other
+        }
+        }
+        }
+        """
+        multilineTest(test: test, expected: expected)
     }
     
     func testFunc() {
-        let lines = ["func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {",
-        "let tempDir = NSURL(fileURLWithPath: NSTemporaryDirectory())",
-        "let tmpFile = tempDir.appendingPathComponent(UUID().uuidString + \".swift\")!",
-        "try! code.write(to: tmpFile, atomically: true, encoding: .utf8)]",
-        "return (range, Kind(sourceKitType: dict[\"type\"] as! String)!)"]
-        let prefixable = [true, false, false, false, false]
-        let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
+        let test =
+        """
+        func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {
+        let tempDir = NSURL(fileURLWithPath: NSTemporaryDirectory())
+        let tmpFile = tempDir.appendingPathComponent(UUID().uuidString + \".swift\")!
+        try! code.write(to: tmpFile, atomically: true, encoding: .utf8)]
+        return (range, Kind(sourceKitType: dict[\"type\"] as! String)!)
+        """
+        let expected =
+        """
+        public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {
+        let tempDir = NSURL(fileURLWithPath: NSTemporaryDirectory())
+        let tmpFile = tempDir.appendingPathComponent(UUID().uuidString + \".swift\")!
+        try! code.write(to: tmpFile, atomically: true, encoding: .utf8)]
+        return (range, Kind(sourceKitType: dict[\"type\"] as! String)!)
+        """
+        multilineTest(test: test, expected: expected)
     }
 
     
     func testPrePostSubstitutionFixing() {
-        let lines = ["public let strings: [Highlight<NSAttributedString>] = markdown()",
-                     "final class ViewController: NSViewController {",
-                     "@IBOutlet var textView: NSTextView!",
-                     "func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
-        let prefixable = [true, true, true, true]
-        let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [0, 1, 2, 3], level: .public)
-        let expectedNewLines = ["public let strings: [Highlight<NSAttributedString>] = markdown()",
-                                "public final class ViewController: NSViewController {",
-                                "@IBOutlet public var textView: NSTextView!",
-                                "public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
-        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
-        for (lineNumber, expectedLine) in expectedNewLines.enumerated() {
-            XCTAssertEqual(expectedLine, newLines[lineNumber])
-        }
+        let test =
+                    """
+                    public let strings: [Highlight<NSAttributedString>] = markdown()
+                    final class ViewController: NSViewController {
+                    @IBOutlet var textView: NSTextView!
+                    func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {
+                    """
+        let expected =
+                    """
+                    public let strings: [Highlight<NSAttributedString>] = markdown()
+                    public final class ViewController: NSViewController {
+                    @IBOutlet public var textView: NSTextView!
+                    public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {
+                    """
+        multilineTest(test: test, expected: expected)
     }
     
     func testPrePostSubstitutionFixingVars() {
-        let lines = ["public var strings: [Highlight<NSAttributedString>] = markdown()",
-                     "final class ViewController: NSViewController {",
-                     "@IBOutlet var textView: NSTextView!",
-                     "func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
-        let prefixable = [true, true, true, true]
-        let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [0, 1, 2, 3], level: .public)
-        let expectedNewLines = ["public var strings: [Highlight<NSAttributedString>] = markdown()",
-                                "public final class ViewController: NSViewController {",
-                                "@IBOutlet public var textView: NSTextView!",
-                                "public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
-        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
-        for (lineNumber, expectedLine) in expectedNewLines.enumerated() {
-            XCTAssertEqual(expectedLine, newLines[lineNumber])
-        }
+        let test =
+                    """
+                    public var strings: [Highlight<NSAttributedString>] = markdown()
+                    final class ViewController: NSViewController {
+                    @IBOutlet var textView: NSTextView!
+                    func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {
+                    """
+        
+        let expected =
+                    """
+                    public var strings: [Highlight<NSAttributedString>] = markdown()
+                    public final class ViewController: NSViewController {
+                    @IBOutlet public var textView: NSTextView!
+                    public func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {
+                    """
+        multilineTest(test: test, expected: expected)
     }
     
     func testPropertiesInsideStruct() {
-        let lines = ["struct Highlight<Result> where Result: Block & HighlightedCode {",
-            "let rendered: Result"]
-        let prefixable = [true, true]
-        let expectedNewLines = ["public struct Highlight<Result> where Result: Block & HighlightedCode {",
-                                "public let rendered: Result"]
-
-        let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [0, 1], level: .public)
-        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
-        for (lineNumber, expectedLine) in expectedNewLines.enumerated() {
-            XCTAssertEqual(expectedLine, newLines[lineNumber])
-        }
+        let test =
+        """
+        struct Highlight<Result> where Result: Block & HighlightedCode {
+        let rendered: Result
+        """
+        
+        let expected =
+        """
+        public struct Highlight<Result> where Result: Block & HighlightedCode {
+        public let rendered: Result
+        """
+        multilineTest(test: test, expected: expected)
     }
     
     func testPropertiesMethodsInsideProtocol() {
-        let lines = ["protocol HighlightedCode {",
-            "static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self",
-            "var whatever { get }",
-        "var another { get set }"]
-        let prefixable = [true, false, false, false]
-        let parser = Parser(lines: lines)
-        XCTAssertEqual(parser.lineIsPrefixable, prefixable)
-        XCTAssertEqual(parser.structure.declarations, [Declaration.init(keyword: .protocol, openBrace: true)])
+        let test =
+        """
+        protocol HighlightedCode {
+        static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self
+        var whatever { get }
+        var another { get set }
+        """
+        let expected =
+        """
+        public protocol HighlightedCode {
+        static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self
+        var whatever { get }
+        var another { get set }
+        """
+        multilineTest(test: test, expected: expected)
     }
     
     func testPropertiesMethodsInsideProtocolWithClosingBrace() {
-        let lines = ["protocol HighlightedCode {",
-                     "static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self",
-                     "var whatever { get }",
-                     "var whatever { get }",
-                     "var whatever { get }",
-                     "var another { get set }",
-                     "}"]
-        let prefixable = [true, false, false, false, false, false, false]
-        let parser = Parser(lines: lines)
-        XCTAssertEqual(parser.lineIsPrefixable, prefixable)
-        XCTAssertEqual(parser.structure.declarations, [])
+        let test =
+            """
+            protocol HighlightedCode {
+            static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self
+            var whatever { get }
+            var whatever { get }
+            var whatever { get }
+            var another { get set }
+            }
+            """
+        let expected =
+        """
+            public protocol HighlightedCode {
+            static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self
+            var whatever { get }
+            var whatever { get }
+            var whatever { get }
+            var another { get set }
+            }
+            """
+        multilineTest(test: test, expected: expected)
     }
     
     func testExtensionWithConformance() {
-        let lines = ["extension NSAttributedString: Block {",
-        "static func paragraph(text: String) -> Self {",
-        "return .init(string: text)",
-        "}"]
-        let prefixable = [false, true, false, false]
-        let parser = Parser(lines: lines)
-        XCTAssertEqual(prefixable, parser.lineIsPrefixable)
+        let test =
+            """
+        extension NSAttributedString: Block {
+        static func paragraph(text: String) -> Self {
+        return .init(string: text)
+        }
+        """
+        let expected =
+        """
+        extension NSAttributedString: Block {
+        static public func paragraph(text: String) -> Self {
+        return .init(string: text)
+        }
+        """
+        multilineTest(test: test, expected: expected)
     }
     
     func testInitAsMethodNotRecognized() {
-        let lines = [("extension NSAttributedString: HighlightedCode {", false),
-                     ("static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self {", true),
-                     (" let result = NSMutableAttributedString(string: text)", false),
-                     (" for highlight in tokens {", false),
-                     (" let range = NSRange(highlight.0, in: text)" , false),
-                     (" let color = highlight.1.color" , false),
-                     ("  result.addAttribute(.foregroundColor, value: color, range: range)", false),
-                     (" }", false),
-                     (" return .init(attributedString: result)", false),
-                     ("  }", false),
-                     (" }", false),
-                     
-                     (" extension NSAttributedString: Block {", false) ,
-                     ("  static func paragraph(text: String) -> Self {", true),
-                     ("  return .init(string: text)", false),
-                     ("   }", false) ,
-                     
-                     (" static func codeBlock(text: String, language: String?) -> Self {", true),
-                     ("  return .init(string: text)", false),
-                     (" }", false),
-                     ("  }", false)]
-        let parser = Parser(lines: lines.map { $0.0 })
-        for (index, line) in lines.enumerated() {
-            XCTAssertEqual(parser.lineIsPrefixable[index], line.1, "Line no.: \(index) \(line) was incorrectly parsed")
+        let test =
+        """
+        extension NSAttributedString: HighlightedCode {
+        static func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self {
+        let result = NSMutableAttributedString(string: text)
+        for highlight in tokens {
+        let range = NSRange(highlight.0, in: text)
+        let color = highlight.1.color
+        result.addAttribute(.foregroundColor, value: color, range: range)
         }
+        return .init(attributedString: result)
+        }
+        }
+
+        extension NSAttributedString: Block {
+        static func paragraph(text: String) -> Self {
+        return .init(string: text)
+        }
+
+        static func codeBlock(text: String, language: String?) -> Self {
+        return .init(string: text)
+        }
+        }
+        """
+        let expected =
+        """
+        extension NSAttributedString: HighlightedCode {
+        static public func highlight(text: String, tokens: [(Range<String.Index>, Kind)]) -> Self {
+        let result = NSMutableAttributedString(string: text)
+        for highlight in tokens {
+        let range = NSRange(highlight.0, in: text)
+        let color = highlight.1.color
+        result.addAttribute(.foregroundColor, value: color, range: range)
+        }
+        return .init(attributedString: result)
+        }
+        }
+
+        extension NSAttributedString: Block {
+        static public func paragraph(text: String) -> Self {
+        return .init(string: text)
+        }
+
+        static public func codeBlock(text: String, language: String?) -> Self {
+        return .init(string: text)
+        }
+        }
+        """
+        multilineTest(test: test, expected: expected)
     }
     
     func testDoubleAttributeMarking() {
@@ -277,37 +366,35 @@ class ParserTests: XCTestCase {
     
     func testEnumCases() {
         
-        let test = """
-                 enum Reps {
-                    case count(Int)
-                     case range(ClosedRange<Int>)
-                     case amrap
-                     case dropset(count: Int)
-                     case rpe(Int)
-                     case max(Int)
-                     case time(Int)
-                     case ladder([Int])
-                }
-                """
-        let lines = test.components(separatedBy: .newlines)
-        let prefixable: [Bool] = {
-            var a = Array.init(repeating: false, count: lines.count)
-            a[0] = true
-            return a
-        }()
-        let parser = Parser(lines: lines)
-        
-        for (index, line) in lines.enumerated() {
-            XCTAssertEqual(prefixable[index], parser.lineIsPrefixable[index], "Line no.: \(index) \(line) was incorrectly parsed")
-        }
+        let test =
+            """
+            enum Reps {
+            case count(Int)
+             case range(ClosedRange<Int>)
+             case amrap
+             case dropset(count: Int)
+             case rpe(Int)
+             case max(Int)
+             case time(Int)
+             case ladder([Int])
+            }
+            """
+        let expected =
+        """
+            public enum Reps {
+            case count(Int)
+             case range(ClosedRange<Int>)
+             case amrap
+             case dropset(count: Int)
+             case rpe(Int)
+             case max(Int)
+             case time(Int)
+             case ladder([Int])
+            }
+            """
+        multilineTest(test: test, expected: expected)
     }
-    
-//    func testBlankLineReturnsNil() {
-//        let lines = [""]
-//        let expectedNewLines: [String?] = [nil]
-//        let parser = Parser(lines: lines)
-//        XCTAssertEqual(parser.newLines(at: [0], level: .public)[0], expectedNewLines[0])
-//    }
+
     
     func testComputedVariables() {
         let test = """
