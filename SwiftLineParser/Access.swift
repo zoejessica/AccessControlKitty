@@ -25,6 +25,24 @@ public enum Access: String {
     case `open` = "open"
 }
 
+extension Access: Comparable {
+    
+    public static func <(_ lhs: Access, _ rhs: Access) -> Bool {
+        return lhs.order < rhs.order
+    }
+    
+    var order: Int {
+        switch self {
+        case .private: return -2
+        case .fileprivate: return -1
+        case .internal: return 0
+        case .remove: return 0
+        case .public: return 1
+        case .open: return 2
+        }
+    }
+}
+
 extension Access {
     init?(_ keyword: Keyword?) {
         guard let keyword = keyword, let a = Access.init(rawValue: keyword.rawValue) else {
