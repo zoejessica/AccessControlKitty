@@ -10,23 +10,6 @@ import Foundation
 
 public class Parser {
     
-    public enum AccessChange {
-        case singleLevel(Access)
-        case increaseAccess
-        case decreaseAccess
-        case makeAPI
-        case removeAPI
-    }
-    
-    public enum Access: String {
-        case `public` = "public"
-        case `private` = "private"
-        case `internal` = "internal"
-        case `fileprivate` = "fileprivate"
-        case remove = ""
-        case `open` = "open"
-    }
-    
     public init(lines: [String]) {
         self.lines = lines
         let lexer = Lexer()
@@ -133,7 +116,7 @@ public class Parser {
         // If any token on the line contains an access keyword, it's a substution:
         if let accessKeyword = lineTokens.containAccessKeyword {
 
-            lineChangeType[line] = LineChange(.substitute, at: accessKeyword, current: accessKeyword)
+            lineChangeType[line] = LineChange(.substitute, at: accessKeyword, current: .init(accessKeyword))
         
         } else {
         
@@ -196,7 +179,7 @@ public class Parser {
 private struct LineChange {
     let type: LineChangeType
     let cursor: String
-    let current: Keyword?
+    let current: Access?
     
     enum LineChangeType {
         case substitute
@@ -208,11 +191,11 @@ private struct LineChange {
 
 extension LineChange {
     init(_ type: LineChangeType, at cursor: String, current: Keyword?) {
-        self = LineChange.init(type: type, cursor: cursor, current: current)
+        self = LineChange.init(type: type, cursor: cursor, current: Access.init(current))
     }
     
     init(_ type: LineChangeType, at keyword: Keyword, current: Keyword?) {
-        self = LineChange.init(type: type, cursor: keyword.rawValue, current: current)
+        self = LineChange.init(type: type, cursor: keyword.rawValue, current: Access.init(current))
     }
 }
 

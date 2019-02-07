@@ -1324,7 +1324,7 @@ public extension Human {
     }
     
     
-    func multilineTest(test: String, expected: String, accessChange: Parser.AccessChange = .singleLevel(.public), file: StaticString = #file, line: UInt = #line) {
+    func multilineTest(test: String, expected: String, accessChange: AccessChange = .singleLevel(.public), file: StaticString = #file, line: UInt = #line) {
         let lines = test.components(separatedBy: .newlines)
         let expectedLines = expected.components(separatedBy: .newlines)
         let parser = Parser(lines: lines)

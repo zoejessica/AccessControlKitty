@@ -21,7 +21,7 @@ struct Structure: Equatable {
         self.currentLevel = .internal
     }
     
-    private(set) var currentLevel: Parser.Access
+    private(set) var currentLevel: Access
     
     private(set) var declarations: [Declaration]
     
@@ -29,7 +29,7 @@ struct Structure: Equatable {
         for token in lineTokens {
             switch token {
             case .keyword(let keyword) where accessKeywords.contains(keyword):
-                if let level = Parser.Access.init(rawValue: keyword.rawValue) {
+                if let level = Access.init(rawValue: keyword.rawValue) {
                     currentLevel = level
                 } else {
                     fatalError("\(keyword.rawValue) not recognized by Parser.Access") // could be open

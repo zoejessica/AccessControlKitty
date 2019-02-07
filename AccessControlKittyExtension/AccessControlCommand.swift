@@ -26,7 +26,7 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
             return
         }
         
-        guard let accessLevel = Parser.AccessChange.init(commandIdentifier: invocation.commandIdentifier) else {
+        guard let accessLevel = AccessChange.init(commandIdentifier: invocation.commandIdentifier) else {
             completionHandler(nil)
             return
             
@@ -36,7 +36,7 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
         completionHandler(nil)
     }
     
-    func changeAccessLevel(_ access: Parser.AccessChange, _ buffer: XCSourceTextBuffer) {
+    func changeAccessLevel(_ access: AccessChange, _ buffer: XCSourceTextBuffer) {
         guard let lines = buffer.lines as? [String] else { return }
         
         let selectedLineNumbers = selectedLines(in: buffer)
@@ -61,17 +61,17 @@ func lines(_ range: XCSourceTextRange, totalLines: Int) -> [Int] {
     }
 }
 
-extension Parser.AccessChange {
+extension AccessChange {
     init?(commandIdentifier: String) {
         guard let id = commandIdentifier.split(separator: ".").last,
             case let idString = String(id),
-            let accessChange = Parser.AccessChange.commandIdentifiers[idString] else {
+            let accessChange = AccessChange.commandIdentifiers[idString] else {
             return nil
         }
         self = accessChange
     }
     
-    static var commandIdentifiers: [String : Parser.AccessChange] {
+    static var commandIdentifiers: [String : AccessChange] {
         return [ "DecreaseAccess" : .decreaseAccess ,
                  "IncreaseAccess" : .increaseAccess,
                  "MakeAPI" : .makeAPI,
