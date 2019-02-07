@@ -15,13 +15,27 @@ public class Parser {
         let lexer = Lexer()
         tokens = lines.map { lexer.analyse($0) }
         lineIsPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
-        for (lineNumber, linetokens) in tokens.enumerated() {
-            lineIsPrefixable[lineNumber] = structure.allowsInternalAccessControlModifiers
-            parseLine(lineNumber, linetokens)
-        }
+ 
+
+
     }
     
     public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int : String] {
+        
+        for (lineNumber, linetokens) in tokens.enumerated() {
+            
+            let (lineChange, isPrefixable, intermediateStructure) = parseLine(in: structure, lineNumber, linetokens)
+            self.structure = intermediateStructure
+            lineIsPrefixable[lineNumber] = isPrefixable
+            lineChangeType[lineNumber] = lineChange
+            
+        }
+        
+        
+        
+        
+        
+        
         var newLines: [Int : String] = [:]
         for i in lineNumbers where lineIsPrefixable[i] == true {
             let currentLine = lines[i]
@@ -39,6 +53,8 @@ public class Parser {
     // Left here for existing tests
     func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
         return newLines(at: lineNumbers, accessChange: .singleLevel(level))
+        
+        
     }
     
     // Overrides type of line change according to the particular menu command
@@ -83,71 +99,9 @@ public class Parser {
         }
     }
     
-    private var lines: [String]
-    private var tokens: [[Token]]
-  
-    var lineIsPrefixable: [Bool] // Overrides lineChangeType: if lineIsPrefixable == false, lineChangeType is ignored
-    private var lineChangeType: [Int : LineChange] = [:]
-    
-    var structure = Structure()
-    
-    private func parseLine(_ line: Int, _ lineTokens: [Token]) {
-        
-        guard let firstToken = lineTokens.first else { return }
-        
-        defer {
-            structure.build(with: lineTokens)
-            
-            if lineTokens.containExtensionWithConformance {
-                lineIsPrefixable[line] = false
-            }
-        }
-        
-        if !firstToken.isAccessControlModifiableInFirstPosition {
-            lineIsPrefixable[line] = false
-            return
-        }
-        
-        if structure.tokens.containExtensionWithConformance {
-            lineIsPrefixable[line] = false
-            return
-        }
-        
-        // If any token on the line contains an access keyword, it's a substution:
-        if let accessKeyword = lineTokens.containAccessKeyword {
-
-            lineChangeType[line] = LineChange(.substitute, at: accessKeyword, current: .init(accessKeyword))
-        
-        } else {
-        
-            switch firstToken {
-                
-            case .keyword(let keyword) where accessKeywords.contains(keyword):
-
-                lineChangeType[line] = LineChange(.substitute, at: keyword, current: keyword)
-                
-            case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
-
-                lineChangeType[line] = LineChange(.postfix, at: keyword, current: nil)
-                
-            case .attribute(let attribute):
-                
-                if Array(lineTokens.dropFirst()).containAnyKeyword == false {
-                    lineChangeType[line] = LineChange(.none, at: "", current: nil)
-                } else {
-                    lineChangeType[line] = LineChange(.postfix, at: attribute, current: nil)
-                }
-                
-            case .keyword(let keyword): lineChangeType[line] = LineChange(.prefix, at: keyword, current: nil)
-            
-            default: break
-            
-            }
-        }        
-    }
     
     private func changeAccessLevel(_ change: LineChange, in line: String, with substitution: String) -> String? {
-
+        
         var line = line
         
         var searchWord = change.cursor
@@ -157,7 +111,7 @@ public class Parser {
         }
         
         guard let range = line.range(of: searchWord) else {
-            return nil            
+            return nil
         }
         
         switch change.type {
@@ -174,6 +128,16 @@ public class Parser {
             return line
         }
     }
+    
+    private var lines: [String]
+    private var tokens: [[Token]]
+  
+    private var lineIsPrefixable: [Bool] // Overrides lineChangeType: if lineIsPrefixable == false, lineChangeType is ignored
+    private var lineChangeType: [Int : LineChange] = [:]
+    
+    var structure = Structure()
+    
+    
 }
 
 private struct LineChange {
@@ -199,6 +163,81 @@ extension LineChange {
     }
 }
 
+
+extension Parser {
+    private func parseLine(in structure: Structure, _ line: Int, _ lineTokens: [Token]) -> (LineChange, Bool, Structure) {
+        
+        var structure = structure
+        var lineIsPrefixable = false
+        var lineChange: LineChange = LineChange(.none, at: "", current: nil)
+        
+        lineIsPrefixable = structure.allowsInternalAccessControlModifiers
+        
+        guard let firstToken = lineTokens.first else { return (lineChange, lineIsPrefixable, structure) }
+        
+        
+        if !firstToken.isAccessControlModifiableInFirstPosition {
+            lineIsPrefixable = false
+            
+            structure.build(with: lineTokens)
+            
+            if lineTokens.containExtensionWithConformance {
+                lineIsPrefixable = false
+            }
+            return  (lineChange, lineIsPrefixable, structure)
+        }
+        
+        if structure.tokens.containExtensionWithConformance {
+            lineIsPrefixable = false
+            
+            structure.build(with: lineTokens)
+            
+            if lineTokens.containExtensionWithConformance {
+                lineIsPrefixable = false
+            }
+            return (lineChange, lineIsPrefixable, structure)
+        }
+        
+        // If any token on the line contains an access keyword, it's a substution:
+        if let accessKeyword = lineTokens.containAccessKeyword {
+            
+            lineChange = LineChange(.substitute, at: accessKeyword, current: .init(accessKeyword))
+            
+        } else {
+            
+            switch firstToken {
+                
+            case .keyword(let keyword) where accessKeywords.contains(keyword):
+                
+                lineChange = LineChange(.substitute, at: keyword, current: keyword)
+                
+            case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
+                
+                lineChange = LineChange(.postfix, at: keyword, current: nil)
+                
+            case .attribute(let attribute):
+                
+                if Array(lineTokens.dropFirst()).containAnyKeyword == false {
+                    lineChange = LineChange(.none, at: "", current: nil)
+                } else {
+                    lineChange = LineChange(.postfix, at: attribute, current: nil)
+                }
+                
+            case .keyword(let keyword): lineChange = LineChange(.prefix, at: keyword, current: nil)
+                
+            default: break
+                
+            }
+        }
+        
+        structure.build(with: lineTokens)
+        
+        if lineTokens.containExtensionWithConformance {
+            lineIsPrefixable = false
+        }
+        return (lineChange, lineIsPrefixable, structure)
+    }
+}
 
 
 
