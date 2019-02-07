@@ -24,6 +24,7 @@ public class Parser {
         case `internal` = "internal"
         case `fileprivate` = "fileprivate"
         case remove = ""
+        case `open` = "open"
     }
     
     public init(lines: [String]) {
@@ -105,7 +106,7 @@ public class Parser {
     var lineIsPrefixable: [Bool] // Overrides lineChangeType: if lineIsPrefixable == false, lineChangeType is ignored
     private var lineChangeType: [Int : LineChange] = [:]
     
-    var structure: Structure = Structure(declarations: [])
+    var structure = Structure()
     
     private func parseLine(_ line: Int, _ lineTokens: [Token]) {
         

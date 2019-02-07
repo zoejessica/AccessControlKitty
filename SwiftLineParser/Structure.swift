@@ -16,11 +16,24 @@ struct Declaration: Equatable {
 
 struct Structure: Equatable {
     
-    var declarations: [Declaration]
+    init() {
+        self.declarations = []
+        self.currentLevel = .internal
+    }
+    
+    private(set) var currentLevel: Parser.Access
+    
+    private(set) var declarations: [Declaration]
     
     mutating func build(with lineTokens: [Token]) {
         for token in lineTokens {
             switch token {
+            case .keyword(let keyword) where accessKeywords.contains(keyword):
+                if let level = Parser.Access.init(rawValue: keyword.rawValue) {
+                    currentLevel = level
+                } else {
+                    fatalError("\(keyword.rawValue) not recognized by Parser.Access") // could be open
+                }
             case .keyword(let keyword) where structureKeywords.contains(keyword) && !starts(with: Keyword.protocol):
                 append(.init(keyword: keyword, openBrace: false))
             case .singleCharacter(let char) where char == .bracketOpen:
@@ -29,6 +42,7 @@ struct Structure: Equatable {
                 closeBrace()
             default: break
             }
+            print(debugDescription)
         }
     }
     
@@ -58,6 +72,9 @@ struct Structure: Equatable {
                 _ = declarations.popLast()
                 closeBrace()
             }
+        }
+        if declarations.count == 0 {
+            currentLevel = .internal
         }
     }
 }

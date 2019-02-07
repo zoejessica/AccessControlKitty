@@ -26,3 +26,17 @@ extension SingleCharacter: CustomDebugStringConvertible {
 extension Keyword: CustomDebugStringConvertible {
     var debugDescription: String { return rawValue }
 }
+
+extension Declaration: CustomDebugStringConvertible {
+    var debugDescription: String {
+        let brace = openBrace ? "{" : ""
+        return "\(keyword?.rawValue ?? "") \(brace)"
+    }
+}
+
+extension Structure: CustomDebugStringConvertible {
+    var debugDescription: String {
+        let d = declarations.map { $0.debugDescription }.joined(separator: " ")
+        return "\(currentLevel.rawValue): \(d)"
+    }
+}
