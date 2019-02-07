@@ -275,7 +275,7 @@ class ParserTests: XCTestCase {
     func testDoubleAttributeMarking() {
         let test = "@IBOutlet private var Thing : UISwitch"
         let expected = "@IBOutlet public var Thing : UISwitch"
-        multilineTest(test: test, expected: expected)        
+        multilineTest(test: test, expected: expected)
     }
     
     func testRemoval() {
@@ -334,28 +334,27 @@ class ParserTests: XCTestCase {
     }
     
     func testLastLineOfStructWithoutParens() {
-        let lines = [
-        "@testable import Parser",
-        "",
-        "struct CloudKitIdentifiers {",
-        "let container: String",
-        "let placesZone : String",
-        "let databaseSubscriptionID: String",
-        "let placesZoneSubscriptionID  : String",
-        "}"]
-        let expectedNewLines = [
-            nil, "",
-            "public struct CloudKitIdentifiers {",
-            "public let container: String",
-            "public let placesZone : String",
-            "public let databaseSubscriptionID: String",
-            "public let placesZoneSubscriptionID  : String"]
-        let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [1 , 2, 3 ,4, 5, 6], level: .public)
-        for (index, expectedline) in expectedNewLines.enumerated() {
-            XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
-        }
-        
+        let test =
+        """
+@testable import Parser
+
+struct CloudKitIdentifiers {
+let container: String
+let placesZone : String
+let databaseSubscriptionID: String
+let placesZoneSubscriptionID  : String
+"""
+        let expected =
+        """
+@testable import Parser
+
+public struct CloudKitIdentifiers {
+public let container: String
+public let placesZone : String
+public let databaseSubscriptionID: String
+public let placesZoneSubscriptionID  : String
+"""
+        multilineTest(test: test, expected: expected)
     }
     
     func testEnumCases() {
@@ -1444,3 +1443,6 @@ extension Parser {
  }
  }
 */
+
+
+

@@ -22,6 +22,8 @@ public class Parser {
     
     public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int : String] {
         
+        var newLines: [Int : String] = [:]
+        
         for (lineNumber, linetokens) in tokens.enumerated() {
             
             let (lineChange, isPrefixable, intermediateStructure) = parseLine(in: structure, lineNumber, linetokens)
@@ -29,22 +31,17 @@ public class Parser {
             lineIsPrefixable[lineNumber] = isPrefixable
             lineChangeType[lineNumber] = lineChange
             
-        }
-        
-        
-        
-        
-        
-        
-        var newLines: [Int : String] = [:]
-        for i in lineNumbers where lineIsPrefixable[i] == true {
-            let currentLine = lines[i]
-            if let lineChange = lineChangeType[i],
-                case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange),
-                let changedLine = changeAccessLevel(newLineChange, in: currentLine, with: substitution) {
-                newLines[i] = changedLine
-            } else {
-                newLines[i] = currentLine
+            if lineIsPrefixable[lineNumber] {
+                
+                let unmodifiedLine = lines[lineNumber]
+                
+                if let lineChange = lineChangeType[lineNumber],
+                    case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange),
+                    let changedLine = changeAccessLevel(newLineChange, in: unmodifiedLine, with: substitution) {
+                    newLines[lineNumber] = changedLine
+                } else {
+                    newLines[lineNumber] = unmodifiedLine
+                }
             }
         }
         return newLines
