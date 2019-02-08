@@ -70,7 +70,31 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "ParserTests/testIncrementInEntityWithLowerThanInternalAccessShouldFail()">
+               </Test>
+               <Test
                   Identifier = "ParserTests/testMakeAPIInEntityWithLowerThanInternalAccessShouldFail()">
+               </Test>
+               <Test
+                  Identifier = "ParserTests/testRemoveAPIInEntityWithLowerThanInternalAccessShouldFail()">
+               </Test>
+               <Test
+                  Identifier = "ParserTests/testSubscriptSetterDecrement()">
+               </Test>
+               <Test
+                  Identifier = "ParserTests/testSubscriptSetterIncrement()">
+               </Test>
+               <Test
+                  Identifier = "ParserTests/testSubscriptSetterMakeAPI()">
+               </Test>
+               <Test
+                  Identifier = "ParserTests/testSubscriptSetterRemoveAPI()">
+               </Test>
+               <Test
+                  Identifier = "ParserTests/testSubscriptSetterSetAllToPublic()">
+               </Test>
+               <Test
+                  Identifier = "ParserTests/testVarSetterIncrement()">
                </Test>
             </SkippedTests>
          </TestableReference>

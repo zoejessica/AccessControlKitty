@@ -60,7 +60,7 @@ public class Parser {
         
         
         let currentLevel = structure.currentLevel
-        let noSubstitution = (LineChange(type: .none, cursor: "", current: nil), "")
+        let noSubstitution = (LineChange(type: .none, cursor: ""), "")
         let internalString = ""
         
         switch accessChange {
@@ -142,7 +142,6 @@ public class Parser {
 private struct LineChange {
     let type: LineChangeType
     let cursor: String
-    let current: Access?
     
     enum LineChangeType {
         case substitute
@@ -153,12 +152,12 @@ private struct LineChange {
 }
 
 extension LineChange {
-    init(_ type: LineChangeType, at cursor: String, current: Keyword?) {
-        self = LineChange.init(type: type, cursor: cursor, current: Access.init(current))
+    init(_ type: LineChangeType, at cursor: String) {
+        self = LineChange.init(type: type, cursor: cursor)
     }
     
-    init(_ type: LineChangeType, at keyword: Keyword, current: Keyword?) {
-        self = LineChange.init(type: type, cursor: keyword.rawValue, current: Access.init(current))
+    init(_ type: LineChangeType, at keyword: Keyword) {
+        self = LineChange.init(type: type, cursor: keyword.rawValue)
     }
 }
 
@@ -168,7 +167,7 @@ extension Parser {
         
         var structure = structure
         var lineIsPrefixable = false
-        var lineChange: LineChange = LineChange(.none, at: "", current: nil)
+        var lineChange: LineChange = LineChange(.none, at: "")
         
         lineIsPrefixable = structure.allowsInternalAccessControlModifiers
         
@@ -200,7 +199,7 @@ extension Parser {
         // If any token on the line contains an access keyword, it's a substution:
         if let accessKeyword = lineTokens.containAccessKeyword {
             
-            lineChange = LineChange(.substitute, at: accessKeyword, current: .init(accessKeyword))
+            lineChange = LineChange(.substitute, at: accessKeyword)
             
         } else {
             
@@ -208,21 +207,21 @@ extension Parser {
                 
             case .keyword(let keyword) where accessKeywords.contains(keyword):
                 
-                lineChange = LineChange(.substitute, at: keyword, current: keyword)
+                lineChange = LineChange(.substitute, at: keyword)
                 
             case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
                 
-                lineChange = LineChange(.postfix, at: keyword, current: nil)
+                lineChange = LineChange(.postfix, at: keyword)
                 
             case .attribute(let attribute):
                 
                 if Array(lineTokens.dropFirst()).containAnyKeyword == false {
-                    lineChange = LineChange(.none, at: "", current: nil)
+                    lineChange = LineChange(.none, at: "")
                 } else {
-                    lineChange = LineChange(.postfix, at: attribute, current: nil)
+                    lineChange = LineChange(.postfix, at: attribute)
                 }
                 
-            case .keyword(let keyword): lineChange = LineChange(.prefix, at: keyword, current: nil)
+            case .keyword(let keyword): lineChange = LineChange(.prefix, at: keyword)
                 
             default: break
                 
