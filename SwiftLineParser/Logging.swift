@@ -30,13 +30,14 @@ extension Keyword: CustomDebugStringConvertible {
 extension Declaration: CustomDebugStringConvertible {
     var debugDescription: String {
         let brace = openBrace ? "{" : ""
-        return "\(keyword?.rawValue ?? "") \(brace)"
+        return "\(keyword?.rawValue ?? "")—\(brace)"
     }
 }
 
 extension Structure: CustomDebugStringConvertible {
     var debugDescription: String {
         let d = declarations.map { $0.debugDescription }.joined(separator: " ")
-        return "\(currentLevel.rawValue): \(d)"
+        let l = levels.map { $0.rawValue }.joined(separator: " > ")
+        return "\(l): \(d)"
     }
 }

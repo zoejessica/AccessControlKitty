@@ -36,7 +36,7 @@ public class Parser {
                 let unmodifiedLine = lines[lineNumber]
                 
                 if let lineChange = lineChangeType[lineNumber],
-                    case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange),
+                    case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange, in: structure),
                     let changedLine = changeAccessLevel(newLineChange, in: unmodifiedLine, with: substitution) {
                     newLines[lineNumber] = changedLine
                 } else {
@@ -56,8 +56,10 @@ public class Parser {
     
     // Overrides type of line change according to the particular menu command
     // E.g. a fileprivate entity does not change when executing the Make API command
-    private func lineAlteration(for line: LineChange, _ accessChange: AccessChange) -> (LineChange, String) {
+    private func lineAlteration(for line: LineChange, _ accessChange: AccessChange, in structure: Structure) -> (LineChange, String) {
         
+        
+        let currentLevel = structure.currentLevel
         let noSubstitution = (LineChange(type: .none, cursor: "", current: nil), "")
         let internalString = ""
         
@@ -65,32 +67,32 @@ public class Parser {
         case .singleLevel(let level): return (line, level.rawValue)
         
         case .makeAPI:
-            switch line.current {
-            case nil, .internal?: return (line, Keyword.public.rawValue)
+            switch currentLevel {
+            case nil, .internal: return (line, Keyword.public.rawValue)
             default: return noSubstitution
             }
         
         case .removeAPI:
-            switch line.current {
-            case .public?: return (line, internalString)
+            switch currentLevel {
+            case .public: return (line, internalString)
             default: return noSubstitution
             }
             
         case .increaseAccess:
-            switch line.current {
-            case .public?: return noSubstitution
-            case .internal?, nil: return (line, Keyword.public.rawValue)
-            case .fileprivate?: return (line, internalString)
-            case .private?: return (line, internalString)
+            switch currentLevel {
+            case .public: return noSubstitution
+            case .internal, nil: return (line, Keyword.public.rawValue)
+            case .fileprivate: return (line, internalString)
+            case .private: return (line, internalString)
             default: fatalError()
             }
             
         case .decreaseAccess:
-            switch line.current {
-            case .public?: return (line, internalString)
-            case .internal?, nil: return (line, Keyword.private.rawValue)
-            case .fileprivate?: return (line, Keyword.private.rawValue)
-            case .private?: return noSubstitution
+            switch currentLevel {
+            case .public: return (line, internalString)
+            case .internal, nil: return (line, Keyword.private.rawValue)
+            case .fileprivate: return (line, Keyword.private.rawValue)
+            case .private: return noSubstitution
             default: fatalError()
             }
         }

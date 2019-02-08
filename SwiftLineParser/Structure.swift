@@ -10,53 +10,86 @@ import Foundation
 
 
 struct Declaration: Equatable {
+    let access: Access?
     let keyword: Keyword?
     var openBrace: Bool
+}
+
+extension Declaration {
+    var isVariableWithoutClosure: Bool {
+        if openBrace == false && (keyword == .var || keyword == .let) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var isVariableWithClosure: Bool {
+        if openBrace == true && (keyword == .var || keyword == .let) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 struct Structure: Equatable {
     
     init() {
         self.declarations = []
-        self.currentLevel = .internal
     }
     
-    private(set) var currentLevel: Access
+    var currentLevel: Access {
+        get {
+            return declarations.last(where: {
+                $0.access != nil
+            })?.access ?? .internal
+        }
+    }
     
+    var levels: [Access] {
+        return declarations.compactMap { return $0.access }
+    }
     private(set) var declarations: [Declaration]
     
     mutating func build(with lineTokens: [Token]) {
+        
+        var lineaccess: Access?
+        
         for token in lineTokens {
+
             switch token {
+
             case .keyword(let keyword) where accessKeywords.contains(keyword):
-                if let level = Access.init(rawValue: keyword.rawValue) {
-                    currentLevel = level
-                } else {
-                    fatalError("\(keyword.rawValue) not recognized by Parser.Access") // could be open
-                }
+
+                    lineaccess = Access(keyword)
+                
             case .keyword(let keyword) where structureKeywords.contains(keyword) && !starts(with: Keyword.protocol):
-                append(.init(keyword: keyword, openBrace: false))
+
+                if let last = declarations.last, last.isVariableWithoutClosure {
+                    _ = declarations.popLast()
+                }
+                
+                declarations.append(.init(access: lineaccess, keyword: keyword, openBrace: false))
+                
             case .singleCharacter(let char) where char == .bracketOpen:
-                openBrace()
+                openBrace(level: lineaccess)
             case .singleCharacter(let char) where char == .bracketClose:
                 closeBrace()
+                
             default: break
+                
             }
+            
+            
+            
             print(debugDescription)
         }
     }
     
-    private mutating func append(_ declaration: Declaration) {
-        if let last = declarations.last,
-            last == .init(keyword: .var, openBrace: false) || last == .init(keyword: .let, openBrace: false) {
-            _ = declarations.popLast()
-        }
-        declarations.append(declaration)
-    }
-    
-    private mutating func openBrace() {
+    private mutating func openBrace(level: Access?) {
         guard var last = declarations.last, last.openBrace == false else {
-            declarations.append(.init(keyword: nil, openBrace: true))
+            declarations.append(.init(access: level, keyword: nil, openBrace: true))
             return
         }
         last.openBrace = true
@@ -73,9 +106,6 @@ struct Structure: Equatable {
                 closeBrace()
             }
         }
-        if declarations.count == 0 {
-            currentLevel = .internal
-        }
     }
 }
 
@@ -83,8 +113,8 @@ extension Structure {
     
     var allowsInternalAccessControlModifiers: Bool {
         if contains(any: localScopeKeywords) { return false }
-        if contains(Declaration(keyword: .var, openBrace: true)) { return false }
-        if contains(Declaration(keyword: .let, openBrace: true)) { return false }
+//        if contains(Keyword.protocol) { return false }
+        if declarations.contains(where: { $0.isVariableWithClosure }) { return false }
         return true
     }
     
