@@ -1393,6 +1393,257 @@ public extension Human {
         multilineTest(test: test, expected: expected, accessChange: .makeAPI)
     }
     
+    func testRemoveAPIInEntityWithLowerThanInternalAccessShouldFail() {
+        let test = """
+private extension Human {
+    func callForServiceA() {
+        // tbd
+    }
+}
+fileprivate extension Human {
+    func callForServiceB() {
+        // tbd
+    }
+}
+extension Human {
+    public func callForServiceC() {
+        // tbd
+    }
+}
+public extension Human {
+    func callForServiceD() {
+        // tbd
+    }
+}
+"""
+        let expected = """
+private extension Human {
+    func callForServiceA() {
+        // tbd
+    }
+}
+fileprivate extension Human {
+    func callForServiceB() {
+        // tbd
+    }
+}
+extension Human {
+    func callForServiceC() {
+        // tbd
+    }
+}
+extension Human {
+    func callForServiceD() {
+        // tbd
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .removeAPI)
+    }
+    
+func testIncrementInEntityWithLowerThanInternalAccessShouldFail() {
+        let test = """
+private extension Human {
+    func callForServiceA() {
+        // tbd
+    }
+}
+fileprivate extension Human {
+    func callForServiceB() {
+        // tbd
+    }
+}
+extension Human {
+    func callForServiceC() {
+        // tbd
+    }
+}
+public extension Human {
+    func callForServiceD() {
+        // tbd
+    }
+}
+"""
+        let expected = """
+extension Human {
+    func callForServiceA() {
+        // tbd
+    }
+}
+extension Human {
+    func callForServiceB() {
+        // tbd
+    }
+}
+public extension Human {
+    public func callForServiceC() {
+        // tbd
+    }
+}
+public extension Human {
+    public func callForServiceD() {
+        // tbd
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .increaseAccess)
+    }
+    
+    
+    func testSubscriptSetterIncrement() {
+        let test = """
+private(set) subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        let expected = """
+internal(set) public subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .increaseAccess)
+    }
+    
+    func testSubscriptSetterDecrement() {
+        let test = """
+internal(set) public subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        let expected = """
+private(set) subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .decreaseAccess)
+    }
+
+    func testSubscriptSetterMakeAPI() {
+        let test = """
+internal(set) subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+private(set) internal subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        let expected = """
+internal(set) public subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+private(set) public subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .makeAPI)
+    }
+    
+    func testSubscriptSetterRemoveAPI() {
+        let test = """
+internal(set) public subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        let expected = """
+subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .removeAPI)
+    }
+    
+    func testSubscriptSetterSetAllToPublic() {
+        let test = """
+private(set) internal subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        let expected = """
+public subscript (Int) -> String {
+    get {
+        let localPropertyA = "Local"
+    }
+    set {
+        let localPropertyB = "Local"
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .singleLevel(.public))
+    }
+    
+    func testVarSetterIncrement() {
+        let test = """
+private(set) var example: String {
+    return "An example"
+}
+private(set) fileprivate var example: String = "Another example"
+internal(set) public var example: String = "Yet another example"
+"""
+        let expected = """
+internal(set) public var example: String {
+    return "An example"
+}
+internal var example: String = "Another example"
+public var example: String = "Yet another example"
+"""
+        multilineTest(test: test, expected: expected, accessChange: .increaseAccess)
+    }
+    
     func testSomething() {
         let test = """
 
