@@ -1666,7 +1666,7 @@ public var example: String = "Yet another example"
                 XCTAssertNotNil(parsedLines[index], "Line \(index) incorrectly ignored (\"\(lines[index])\")", file: file, line: line)
             }
             if let parsedLine = parsedLines[index] {
-                XCTAssertEqual(expectedline, parsedLine, "Line no.: \(index) \(lines[index]) was incorrectly parsed", file: file, line: line)
+                XCTAssertEqual(parsedLine, expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed", file: file, line: line)
             }
         }
     }

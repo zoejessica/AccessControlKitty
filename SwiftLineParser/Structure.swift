@@ -41,9 +41,12 @@ struct Structure: Equatable {
     
     var currentLevel: Access {
         get {
-            return declarations.last(where: {
-                $0.access != nil
-            })?.access ?? .internal
+            if let explicitAccess = declarations.last?.access {
+                return explicitAccess
+            } else if let implicitAccess = declarations.last(where: { $0.access != nil })?.access {
+                return min(implicitAccess, Access.internal) // implict access levels even in public entity is always internal
+            }
+            return .internal // default
         }
     }
     

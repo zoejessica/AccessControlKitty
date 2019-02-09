@@ -73,9 +73,6 @@
                   Identifier = "ParserTests/testIncrementInEntityWithLowerThanInternalAccessShouldFail()">
                </Test>
                <Test
-                  Identifier = "ParserTests/testMakeAPIInEntityWithLowerThanInternalAccessShouldFail()">
-               </Test>
-               <Test
                   Identifier = "ParserTests/testRemoveAPIInEntityWithLowerThanInternalAccessShouldFail()">
                </Test>
                <Test
