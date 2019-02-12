@@ -50,9 +50,6 @@ struct Structure: Equatable {
         }
     }
     
-    var levels: [Access] {
-        return declarations.compactMap { return $0.access }
-    }
     private(set) var declarations: [Declaration]
     
     mutating func build(with lineTokens: [Token]) {

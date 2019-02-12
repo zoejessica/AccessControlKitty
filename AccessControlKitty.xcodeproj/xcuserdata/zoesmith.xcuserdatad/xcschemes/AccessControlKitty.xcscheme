@@ -37,6 +37,11 @@
                BlueprintName = "SwiftLineParserTests"
                ReferencedContainer = "container:AccessControlKitty.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ParserTests/testVarSetterIncrement()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

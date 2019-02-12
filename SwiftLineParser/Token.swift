@@ -33,7 +33,8 @@ enum Keyword: String, CaseIterable {
     `unowned`, unownedsafe = "unowned(safe)", unownedunsafe = "unowned(unsafe)",
     `convenience`, `do`, `catch`, `defer`, `subscript`,
     `prefix`, `postfix`, `infix`,
-    `lazy`, `weak`
+    `lazy`, `weak`,
+    privateset = "private(set)", fileprivateset = "fileprivate(set)", internalset = "internal(set)"
 }
 
 let nonAccessModifiableKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch, .defer]
@@ -41,6 +42,7 @@ let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .prot
 let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch, .defer, .subscript]
 let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]
 let postfixableFunctionKeywords: [Keyword] = [.static, .unowned, .unownedsafe, .unownedunsafe, .required, .convenience]
+let setterAccessKeywords: [Keyword] = [.privateset, .fileprivateset, .internalset]
 
 extension Token {
     init?(_ singleCharacter: SingleCharacter?) {
@@ -70,6 +72,15 @@ extension Array where Element == Token {
     var containAccessKeyword: Keyword? {
         for token in self {
             if case let Token.keyword(keyword) = token, accessKeywords.contains(keyword) {
+                return keyword
+            }
+        }
+        return nil
+    }
+
+    var containSetterAccessKeyword: Keyword? {
+        for token in self {
+            if case let Token.keyword(keyword) = token, setterAccessKeywords.contains(keyword) {
                 return keyword
             }
         }

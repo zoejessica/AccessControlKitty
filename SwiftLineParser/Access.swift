@@ -45,9 +45,29 @@ extension Access: Comparable {
 
 extension Access {
     init?(_ keyword: Keyword?) {
-        guard let keyword = keyword, let a = Access.init(rawValue: keyword.rawValue) else {
+        guard let keyword = keyword else {
             return nil
         }
-        self = a        
+        
+        if let a = Access.init(rawValue: keyword.rawValue) {
+            self = a
+        } else if keyword ==  .privateset { self = .private }
+        else if keyword == .fileprivateset { self = .fileprivate }
+        else if keyword == .internalset { self = .internal }
+        else { return nil }
+    }
+}
+
+extension Access {
+    var setterString: String? {
+        switch self {
+        case .private:
+            return Keyword.privateset.rawValue
+        case .internal:
+            return Keyword.internalset.rawValue
+        case .fileprivate:
+            return Keyword.fileprivateset.rawValue
+        default: return nil
+        }
     }
 }

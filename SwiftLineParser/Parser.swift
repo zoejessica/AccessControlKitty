@@ -15,9 +15,6 @@ public class Parser {
         let lexer = Lexer()
         tokens = lines.map { lexer.analyse($0) }
         lineIsPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
- 
-
-
     }
     
     public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int : String] {
@@ -37,8 +34,13 @@ public class Parser {
                 
                 if let lineChange = lineChangeType[lineNumber],
                     case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange, in: structure),
-                    let changedLine = changeAccessLevel(newLineChange, in: unmodifiedLine, with: substitution) {
-                    newLines[lineNumber] = changedLine
+
+                    let changedLine = unmodifiedLine.modifyLine(newLineChange, with: substitution) {
+                    
+                    // Further alter the line for the setter: must include the actual changedLine here
+                    let setterChangedLine = changedLine.setterAlteration(for: newLineChange, accessChange, in: structure)
+                    
+                    newLines[lineNumber] = setterChangedLine
                 } else {
                     newLines[lineNumber] = unmodifiedLine
                 }
@@ -68,30 +70,30 @@ public class Parser {
         
         case .makeAPI:
             switch currentLevel {
-            case nil, .internal: return (line, Keyword.public.rawValue)
+            case nil, .internal: return (line, line.substitution(target: .public))
             default: return noSubstitution
             }
         
         case .removeAPI:
             switch currentLevel {
-            case .public: return (line, internalString)
+            case .public: return (line, line.substitution(target: .internal))
             default: return noSubstitution
             }
             
         case .increaseAccess:
             switch currentLevel {
             case .public: return noSubstitution
-            case .internal, nil: return (line, Keyword.public.rawValue)
-            case .fileprivate: return (line, internalString)
-            case .private: return (line, internalString)
+            case .internal, nil: return (line, line.substitution(target: .public))
+            case .fileprivate: return (line, line.substitution(target: .internal))
+            case .private: return (line, line.substitution(target: .internal))
             default: fatalError()
             }
             
         case .decreaseAccess:
             switch currentLevel {
             case .public: return (line, internalString)
-            case .internal, nil: return (line, Keyword.private.rawValue)
-            case .fileprivate: return (line, Keyword.private.rawValue)
+            case .internal, nil: return (line, line.substitution(target: .private))
+            case .fileprivate: return (line, line.substitution(target: .private))
             case .private: return noSubstitution
             default: fatalError()
             }
@@ -99,34 +101,8 @@ public class Parser {
     }
     
     
-    private func changeAccessLevel(_ change: LineChange, in line: String, with substitution: String) -> String? {
-        
-        var line = line
-        
-        var searchWord = change.cursor
-        
-        if case .substitute = change.type, substitution == "" {
-            searchWord = searchWord + " "
-        }
-        
-        guard let range = line.range(of: searchWord) else {
-            return nil
-        }
-        
-        switch change.type {
-        case .none: return nil
-        case .substitute:
-            return line.replacingCharacters(in: range, with: substitution)
-        case .postfix where substitution != "":
-            line.insert(contentsOf: " \(substitution)", at: range.upperBound)
-            return line
-        case .prefix where substitution != "":
-            line.insert(contentsOf: "\(substitution) ", at: range.lowerBound)
-            return line
-        default:
-            return line
-        }
-    }
+    
+
     
     private var lines: [String]
     private var tokens: [[Token]]
@@ -143,8 +119,10 @@ private struct LineChange {
     let type: LineChangeType
     let cursor: String
     
-    enum LineChangeType {
+    enum LineChangeType: Equatable {
         case substitute
+        case setterSubstitute(setterAccess: Access)
+        case setterPostfix(setterAccess: Access)
         case prefix
         case postfix
         case none
@@ -159,6 +137,20 @@ extension LineChange {
     init(_ type: LineChangeType, at keyword: Keyword) {
         self = LineChange.init(type: type, cursor: keyword.rawValue)
     }
+    
+    func substitution(target access: Access) -> String {
+        switch access {
+        case (.internal): return ""
+        default: return access.rawValue
+        }
+    }
+    
+    /*
+ //        case (.setterSubstitute, .public): return ""
+ //        case (.setterSubstitute, .internal): return Keyword.internalset.rawValue
+ //        case (.setterSubstitute, .fileprivate): return Keyword.fileprivateset.rawValue
+ //        case (.setterSubstitute, .private): return Keyword.privateset.rawValue*/
+
 }
 
 
@@ -196,11 +188,23 @@ extension Parser {
             return (lineChange, lineIsPrefixable, structure)
         }
         
+        
+        // If there is a setter access keyword, it's a setter subsitutiton, check it
+        // before general line tokens because you need to check whether it's a
+        // fileprivate(set) public var ... for example
+        if let setterKeyword = lineTokens.containSetterAccessKeyword, let setter = Access(setterKeyword) {
+            if let accessKeyword = lineTokens.containAccessKeyword {
+                lineChange = LineChange(.setterSubstitute(setterAccess: setter), at: accessKeyword)
+            } else {
+                lineChange = LineChange(.setterPostfix(setterAccess: setter), at: setterKeyword)
+            }
+        }
+        
         // If any token on the line contains an access keyword, it's a substution:
-        if let accessKeyword = lineTokens.containAccessKeyword {
+        else if let accessKeyword = lineTokens.containAccessKeyword {
             
             lineChange = LineChange(.substitute, at: accessKeyword)
-            
+        
         } else {
             
             switch firstToken {
@@ -236,6 +240,113 @@ extension Parser {
         return (lineChange, lineIsPrefixable, structure)
     }
 }
+
+extension String {
+
+    fileprivate func modifyLine(_ change: LineChange, with substitution: String) -> String? {
+        
+        var line = self
+        
+        var searchWord = change.cursor
+        
+        // These two cases might be fixed by using remove function on String
+        if case .substitute = change.type, substitution == "" {
+            searchWord = searchWord + " "
+        }
+        
+        if case .setterSubstitute = change.type, substitution == "" {
+            searchWord = searchWord + " "
+        }
+        
+        guard let range = line.range(of: searchWord) else {
+            return nil
+        }
+        
+        switch change.type {
+        case .none: return nil
+        case .substitute, .setterSubstitute:
+            return line.replacingCharacters(in: range, with: substitution)
+        case .postfix where substitution != "", .setterPostfix where substitution != "":
+            line.insert(contentsOf: " \(substitution)", at: range.upperBound)
+            return line
+        case .prefix where substitution != "":
+            line.insert(contentsOf: "\(substitution) ", at: range.lowerBound)
+            return line
+        default:
+            return line
+        }
+    }
+    
+    fileprivate func setterAlteration(for line: LineChange, _ accessChange: AccessChange, in structure: Structure) -> String {
+        switch line.type {
+        case .setterPostfix(setterAccess: let currentSetterAccess):
+            return self.alteration(setter: currentSetterAccess, access: accessChange, currentStructureLevel: structure.currentLevel)
+        case .setterSubstitute(setterAccess: let currentSetterAccess):
+            return self.alteration(setter: currentSetterAccess, access: accessChange, currentStructureLevel: structure.currentLevel)
+        default: return self
+        }
+    }
+    
+    private func alteredSetter(_ setter: Access, target: Access) -> String {
+        guard let setterString = setter.setterString, target <= .internal, let targetString = target.setterString else {
+            return self
+        }
+        
+        guard setter != target else {
+            return removingSetter(setter)
+        }
+        
+        guard let range = range(of: setterString) else {
+            return self
+        }
+        
+        return replacingCharacters(in: range, with: targetString)
+    }
+    
+    private func removingSetter(_ setter: Access) -> String {
+        guard let setterString = setter.setterString else { return self }
+        guard let range = range(of: setterString) else { return self }
+        let rangeWithFollowingSpace = self.range(of: (setterString + " ")) ?? range
+        var copy = self
+        copy.removeSubrange(rangeWithFollowingSpace)
+        return copy
+    }
+    
+    private func alteration(setter: Access, access: AccessChange, currentStructureLevel: Access) -> String {
+    
+        switch access {
+            
+        case .increaseAccess:
+            switch setter {
+            case .private, .fileprivate: return self.alteredSetter(setter, target: .internal)
+            default: return self
+            }
+
+        case .decreaseAccess:
+            switch setter {
+            case .fileprivate, .internal: return self.alteredSetter(setter, target: .private)
+            default: return self
+            }
+            
+        case .makeAPI:
+            return self
+            
+        case .removeAPI:
+            switch setter {
+            case .internal: return self.alteredSetter(setter, target: .internal)
+            default: return self
+            }
+            
+        case .singleLevel:
+            return self.removingSetter(setter)
+            
+        }
+        
+        
+}
+}
+
+
 
 
 

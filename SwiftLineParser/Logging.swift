@@ -37,7 +37,6 @@ extension Declaration: CustomDebugStringConvertible {
 extension Structure: CustomDebugStringConvertible {
     var debugDescription: String {
         let d = declarations.map { $0.debugDescription }.joined(separator: " ")
-        let l = levels.map { $0.rawValue }.joined(separator: " > ")
-        return "\(l): \(d)"
+        return "\(currentLevel): \(d)"
     }
 }

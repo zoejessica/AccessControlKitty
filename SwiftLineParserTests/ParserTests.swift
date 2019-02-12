@@ -1415,6 +1415,11 @@ public extension Human {
         // tbd
     }
 }
+public extension Human {
+    public func callForServiceD() {
+        // tbd
+    }
+}
 """
         let expected = """
 private extension Human {
@@ -1429,6 +1434,11 @@ fileprivate extension Human {
 }
 extension Human {
     func callForServiceC() {
+        // tbd
+    }
+}
+extension Human {
+    func callForServiceD() {
         // tbd
     }
 }
@@ -1441,15 +1451,15 @@ extension Human {
         multilineTest(test: test, expected: expected, accessChange: .removeAPI)
     }
     
-func testIncrementInEntityWithLowerThanInternalAccessShouldFail() {
+func testIncrementInEntityWithLowerThanInternalImplicitAccessShouldFail() {
         let test = """
 private extension Human {
-    func callForServiceA() {
+    func implicitPrivate() {
         // tbd
     }
 }
 fileprivate extension Human {
-    func callForServiceB() {
+    func implicitFilePrivate() {
         // tbd
     }
 }
@@ -1459,19 +1469,19 @@ extension Human {
     }
 }
 public extension Human {
-    func callForServiceD() {
+    func implicitPublic() {
         // tbd
     }
 }
 """
         let expected = """
 extension Human {
-    func callForServiceA() {
+    func implicitPrivate() {
         // tbd
     }
 }
 extension Human {
-    func callForServiceB() {
+    func implicitFilePrivate() {
         // tbd
     }
 }
@@ -1481,7 +1491,7 @@ public extension Human {
     }
 }
 public extension Human {
-    public func callForServiceD() {
+    public func implicitPublic() {
         // tbd
     }
 }
