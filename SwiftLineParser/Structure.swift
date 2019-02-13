@@ -80,10 +80,7 @@ struct Structure: Equatable {
             default: break
                 
             }
-            
-            
-            
-            print(debugDescription)
+            // print(debugDescription) // This is a good place to debug structure builds
         }
     }
     

@@ -53,12 +53,12 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="xwg-QT-Lyf">
-                                <rect key="frame" x="18" y="113" width="268" height="102"/>
+                                <rect key="frame" x="18" y="113" width="262" height="102"/>
                                 <textFieldCell key="cell" selectable="YES" id="DZl-pY-R0p">
                                     <font key="font" metaFont="system"/>
                                     <string key="title">2. Restart Xcode.
 
-When working with a Swift file, you'll find the new menu item Change Access Level at the bottom of the Editor menu. Run a command on selected code. </string>
+When working with a Swift file, you'll find the new menu item Access Level of Selection at the bottom of the Editor menu. Run a command on selected code. </string>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -82,9 +82,9 @@ When working with a Swift file, you'll find the new menu item Change Access Leve
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="extension" id="vPV-RK-I14"/>
                             </imageView>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yaL-7M-3vL">
-                                <rect key="frame" x="292" y="0.0" width="569" height="215"/>
+                                <rect key="frame" x="304" y="0.0" width="557" height="215"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="569" id="1gg-WO-gzr"/>
+                                    <constraint firstAttribute="width" constant="557" id="1gg-WO-gzr"/>
                                     <constraint firstAttribute="height" constant="215" id="PyP-2q-SIc"/>
                                 </constraints>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="menuselection" id="VRG-1e-gG5"/>
@@ -103,7 +103,7 @@ When working with a Swift file, you'll find the new menu item Change Access Leve
                             <constraint firstItem="yaL-7M-3vL" firstAttribute="top" secondItem="xwg-QT-Lyf" secondAttribute="top" id="XmW-4c-fws"/>
                             <constraint firstItem="txI-KJ-qaT" firstAttribute="top" secondItem="BpS-xC-AUp" secondAttribute="top" id="dMb-ij-NGP"/>
                             <constraint firstItem="QGu-Ka-SQo" firstAttribute="leading" secondItem="BpS-xC-AUp" secondAttribute="leading" id="gvS-vG-oUw"/>
-                            <constraint firstItem="yaL-7M-3vL" firstAttribute="leading" secondItem="xwg-QT-Lyf" secondAttribute="trailing" constant="8" id="lBs-Jt-1eo"/>
+                            <constraint firstItem="yaL-7M-3vL" firstAttribute="leading" secondItem="xwg-QT-Lyf" secondAttribute="trailing" constant="26" id="lBs-Jt-1eo"/>
                             <constraint firstItem="1PT-wc-OKc" firstAttribute="top" secondItem="P0q-Hw-jzT" secondAttribute="top" constant="20" id="x3x-3o-nMq"/>
                             <constraint firstItem="BpS-xC-AUp" firstAttribute="leading" secondItem="1PT-wc-OKc" secondAttribute="leading" id="yuP-Yg-1G9"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1PT-wc-OKc" secondAttribute="trailing" constant="20" symbolic="YES" id="zBL-Rh-Jop"/>
