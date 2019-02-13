@@ -115,44 +115,31 @@ extension Parser {
         
         var structure = structure
         var lineIsPrefixable = false
-        var lineChange: LineChange = LineChange(.none, at: "")
+        var lineChange: LineChange = LineChange(.none, at: "") // default if tokens are empty
         
         lineIsPrefixable = structure.allowsInternalAccessControlModifiers
         
-        guard let firstToken = lineTokens.first else { return (lineChange, lineIsPrefixable, structure) }
-        
-        
-        if !firstToken.isAccessControlModifiableInFirstPosition {
-            lineIsPrefixable = false
-            
-            structure.build(with: lineTokens)
-            
-            if lineTokens.containExtensionWithConformance {
-                lineIsPrefixable = false
-            }
-            return  (lineChange, lineIsPrefixable, structure)
-        }
-        
-        if structure.tokens.containExtensionWithConformance {
-            lineIsPrefixable = false
-            
-            structure.build(with: lineTokens)
-            
-            if lineTokens.containExtensionWithConformance {
-                lineIsPrefixable = false
-            }
+        guard let firstToken = lineTokens.first else {
             return (lineChange, lineIsPrefixable, structure)
         }
         
-        
+        if !firstToken.isAccessControlModifiableInFirstPosition ||
+            structure.tokens.containExtensionWithConformance {
+            lineIsPrefixable = false
+            structure.build(with: lineTokens)
+            return  (lineChange, lineIsPrefixable, structure)
+        }
+
         // If there is a setter access keyword, it's a setter subsitutiton, check it
         // before general line tokens because you need to check whether it's a
         // fileprivate(set) public var ... for example
-        if let setterKeyword = lineTokens.containSetterAccessKeyword, let setter = Access(setterKeyword) {
+        if let setterKeyword = lineTokens.containSetterAccessKeyword,
+            let setter = Access(setterKeyword) {
+            
             if let accessKeyword = lineTokens.containAccessKeyword {
-                lineChange = LineChange(.setterSubstitute(setterAccess: setter), at: accessKeyword)
+                lineChange = LineChange(.setterSubstitute(setter), at: accessKeyword)
             } else {
-                lineChange = LineChange(.setterPostfix(setterAccess: setter), at: setterKeyword)
+                lineChange = LineChange(.setterPostfix(setter), at: setterKeyword)
             }
         }
         

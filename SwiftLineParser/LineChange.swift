@@ -14,8 +14,8 @@ struct LineChange {
     
     enum LineChangeType: Equatable {
         case substitute
-        case setterSubstitute(setterAccess: Access)
-        case setterPostfix(setterAccess: Access)
+        case setterSubstitute(Access) // records the access level of the setter
+        case setterPostfix(Access) // records the access level of the setter
         case prefix
         case postfix
         case none
