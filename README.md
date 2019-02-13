@@ -9,6 +9,7 @@ Xcode extension to change the access control level of Swift code selection
 - Remove API – similarly, changes all `public` code to be `internal`, removing its visibility as API
 - Set all appropriate access modifiers to one level
 - Remove access notation entirely
+- Setters with overriden access levels (for example, `private(set) internal var`) are treated separately: when incrementing/decrementing access, or making/removing API, overridden setters maintain their current access level. If the underlying property ends up with the same access level as the overriden setter, the explicit override is removed. When setting code to a single access level, the explicit setter override is removed so the entire entity is set to the desired level. 
 
 ### Unfeatures
 - It’s not particularly smart, so for example it doesn’t know if a function can’t be made public because it relies on an internal type. Or if a subclass can't be made public because its superclass isn't public. And it certainly can't reason about anything going on in any other file. It just takes into account which bits of Swift code *could*, all other things being equal, have an access control modifier. 

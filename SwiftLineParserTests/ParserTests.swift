@@ -1501,6 +1501,9 @@ public extension Human {
     
     
     func testSubscriptSetterIncrement() {
+        
+        // Increments underlying property; leaves setter alone
+        
         let test = """
 private(set) subscript (Int) -> String {
     get {
@@ -1512,7 +1515,7 @@ private(set) subscript (Int) -> String {
 }
 """
         let expected = """
-internal(set) public subscript (Int) -> String {
+private(set) public subscript (Int) -> String {
     get {
         let localPropertyA = "Local"
     }
@@ -1523,6 +1526,10 @@ internal(set) public subscript (Int) -> String {
 """
         multilineTest(test: test, expected: expected, accessChange: .increaseAccess)
     }
+    
+    // Decrements underlying property
+    // coalesces with setter if appropriate
+    // otherwise leaves as is: 
     
     func testSubscriptSetterDecrement() {
         let test = """
@@ -1536,7 +1543,7 @@ internal(set) public subscript (Int) -> String {
 }
 """
         let expected = """
-private(set) subscript (Int) -> String {
+subscript (Int) -> String {
     get {
         let localPropertyA = "Local"
     }
@@ -1635,24 +1642,214 @@ public subscript (Int) -> String {
 """
         multilineTest(test: test, expected: expected, accessChange: .singleLevel(.public))
     }
+  
+    
+    // Incrementing access :
+    
+    // increment the underlying property
+    // leave the setter alone
+    
     
     func testVarSetterIncrement() {
         let test = """
 private(set) var example: String {
-    return "An example"
+get {
+return "An example"
 }
-private(set) fileprivate var example: String = "Another example"
-internal(set) public var example: String = "Yet another example"
+set {
+example = newValue
+}
+
+}
+private(set) fileprivate var exampleA: String = "A"
+private(set) internal var exampleB: String = "B"
+private(set) var exampleC: String = "C"
+private(set) public var exampleD: String = "D"
+
+fileprivate(set) var exampleE: String = "E"
+fileprivate(set) internal var exampleF: String = "F"
+fileprivate(set) public var exampleG: String = "G"
+
+internal(set) public var exampleH: String = "H"
 """
         let expected = """
-internal(set) public var example: String {
-    return "An example"
+private(set) public var example: String {
+get {
+return "An example"
 }
-internal var example: String = "Another example"
-public var example: String = "Yet another example"
+set {
+example = newValue
+}
+
+}
+private(set) var exampleA: String = "A"
+private(set) public var exampleB: String = "B"
+private(set) public var exampleC: String = "C"
+private(set) public var exampleD: String = "D"
+
+fileprivate(set) public var exampleE: String = "E"
+fileprivate(set) public var exampleF: String = "F"
+fileprivate(set) public var exampleG: String = "G"
+
+internal(set) public var exampleH: String = "H"
 """
         multilineTest(test: test, expected: expected, accessChange: .increaseAccess)
     }
+    
+    // Decrementing access :
+    
+    // Decrease the underlying property
+    // Coalesce the setter if the setter and property end up the same
+    // Otherwise leave as is
+
+    func testVarSetterDecrement() {
+        let test = """
+private(set) var example: String {
+get {
+return "An example"
+}
+set {
+example = newValue
+}
+
+}
+private(set) fileprivate var exampleA: String = "A"
+private(set) internal var exampleB: String = "B"
+private(set) var exampleC: String = "C"
+private(set) public var exampleD: String = "D"
+
+fileprivate(set) var exampleE: String = "E"
+fileprivate(set) internal var exampleF: String = "F"
+fileprivate(set) public var exampleG: String = "G"
+
+internal(set) public var exampleH: String = "H"
+"""
+        let expected = """
+private var example: String {
+get {
+return "An example"
+}
+set {
+example = newValue
+}
+
+}
+private var exampleA: String = "A"
+private var exampleB: String = "B"
+private var exampleC: String = "C"
+private(set) var exampleD: String = "D"
+
+private var exampleE: String = "E"
+private var exampleF: String = "F"
+fileprivate(set) var exampleG: String = "G"
+
+var exampleH: String = "H"
+"""
+        multilineTest(test: test, expected: expected, accessChange: .decreaseAccess)
+    }
+
+    func testVarSetterMakeAPI() {
+        let test = """
+private(set) var example: String {
+    return "An example"
+}
+private(set) fileprivate var example: String = "A"
+private(set) internal var example: String = "B"
+private(set) var example: String = "C"
+private(set) public var example: String = "D"
+
+fileprivate(set) var example: String = "E"
+fileprivate(set) internal var example: String = "F"
+fileprivate(set) public var example: String = "G"
+
+internal(set) public var example: String = "A"
+"""
+        let expected = """
+private(set) public var example: String {
+    return "An example"
+}
+private(set) fileprivate var example: String = "A"
+private(set) public var example: String = "B"
+private(set) public var example: String = "C"
+private(set) public var example: String = "D"
+
+fileprivate(set) public var example: String = "E"
+fileprivate(set) public var example: String = "F"
+fileprivate(set) public var example: String = "G"
+
+internal(set) public var example: String = "A"
+"""
+        multilineTest(test: test, expected: expected, accessChange: .makeAPI)
+    }
+ 
+    func testVarSetterRemoveAPI() {
+        let test = """
+private(set) var example: String {
+    return "An example"
+}
+private(set) fileprivate var example: String = "A"
+private(set) internal var example: String = "B"
+private(set) var example: String = "C"
+private(set) public var example: String = "D"
+
+fileprivate(set) var example: String = "E"
+fileprivate(set) internal var example: String = "F"
+fileprivate(set) public var example: String = "G"
+
+internal(set) public var example: String = "A"
+"""
+        let expected = """
+private(set) var example: String {
+    return "An example"
+}
+private(set) fileprivate var example: String = "A"
+private(set) internal var example: String = "B"
+private(set) var example: String = "C"
+private(set) var example: String = "D"
+
+fileprivate(set) var example: String = "E"
+fileprivate(set) internal var example: String = "F"
+fileprivate(set) var example: String = "G"
+
+var example: String = "A"
+"""
+        multilineTest(test: test, expected: expected, accessChange: .removeAPI)
+    }
+
+    func testVarSetterAllPrivate() {
+        let test = """
+private(set) var example: String {
+    return "An example"
+}
+private(set) fileprivate var example: String = "A"
+private(set) internal var example: String = "B"
+private(set) var example: String = "C"
+private(set) public var example: String = "D"
+
+fileprivate(set) var example: String = "E"
+fileprivate(set) internal var example: String = "F"
+fileprivate(set) public var example: String = "G"
+
+internal(set) public var example: String = "A"
+"""
+        let expected = """
+private var example: String {
+    return "An example"
+}
+private var example: String = "A"
+private var example: String = "B"
+private var example: String = "C"
+private var example: String = "D"
+
+private var example: String = "E"
+private var example: String = "F"
+private var example: String = "G"
+
+private var example: String = "A"
+"""
+        multilineTest(test: test, expected: expected, accessChange: .singleLevel(.private))
+    }
+    
     
     func testSomething() {
         let test = """

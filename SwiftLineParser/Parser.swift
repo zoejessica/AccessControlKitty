@@ -33,12 +33,12 @@ public class Parser {
                 let unmodifiedLine = lines[lineNumber]
                 
                 if let lineChange = lineChangeType[lineNumber],
-                    case let (newLineChange, substitution) = resolvedLineChange(previous: lineChange, accessChange, in: structure),
+                    case let (newLineChange, substitution, target) = resolvedLineChange(previous: lineChange, accessChange, in: structure),
 
                     let changedLine = unmodifiedLine.modifyingAccess(newLineChange, with: substitution) {
                     
                     // Further alter the line for the setter: must include the actual changedLine here
-                    let setterChangedLine = changedLine.modifyingSetter(newLineChange, accessChange)
+                    let setterChangedLine = changedLine.modifyingSetter(newLineChange, accessChange, targetLevel: target)
                     
                     newLines[lineNumber] = setterChangedLine
                 } else {
@@ -58,42 +58,42 @@ public class Parser {
     
     // Overrides type of line change according to the particular menu command
     // E.g. a fileprivate entity does not change when executing the Make API command
-    private func resolvedLineChange(previous line: LineChange, _ accessChange: AccessChange, in structure: Structure) -> (LineChange, String) {
+    private func resolvedLineChange(previous line: LineChange, _ accessChange: AccessChange, in structure: Structure) -> (LineChange, String, Access) {
         
         
         let currentLevel = structure.currentLevel
-        let noSubstitution = (LineChange(type: .none, cursor: ""), "")
+        let noSubstitution = (LineChange(type: .none, cursor: ""), "", currentLevel)
         let internalString = ""
         
         switch accessChange {
-        case .singleLevel(let level): return (line, level.rawValue)
+        case .singleLevel(let level): return (line, level.rawValue, level)
         
         case .makeAPI:
             switch currentLevel {
-            case nil, .internal: return (line, line.substitution(target: .public))
+            case nil, .internal: return (line, line.substitution(target: .public), .public)
             default: return noSubstitution
             }
         
         case .removeAPI:
             switch currentLevel {
-            case .public: return (line, line.substitution(target: .internal))
+            case .public: return (line, line.substitution(target: .internal), .internal)
             default: return noSubstitution
             }
             
         case .increaseAccess:
             switch currentLevel {
             case .public: return noSubstitution
-            case .internal, nil: return (line, line.substitution(target: .public))
-            case .fileprivate: return (line, line.substitution(target: .internal))
-            case .private: return (line, line.substitution(target: .internal))
+            case .internal, nil: return (line, line.substitution(target: .public), .public)
+            case .fileprivate: return (line, line.substitution(target: .internal), .internal)
+            case .private: return (line, line.substitution(target: .internal), .internal)
             default: fatalError()
             }
             
         case .decreaseAccess:
             switch currentLevel {
-            case .public: return (line, internalString)
-            case .internal, nil: return (line, line.substitution(target: .private))
-            case .fileprivate: return (line, line.substitution(target: .private))
+            case .public: return (line, internalString, .internal)
+            case .internal, nil: return (line, line.substitution(target: .private), .private)
+            case .fileprivate: return (line, line.substitution(target: .private), .private)
             case .private: return noSubstitution
             default: fatalError()
             }

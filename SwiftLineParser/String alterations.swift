@@ -44,29 +44,32 @@ extension String {
         }
     }
     
-    func modifyingSetter(_ line: LineChange, _ accessChange: AccessChange) -> String {
+    func modifyingSetter(_ line: LineChange, _ accessChange: AccessChange, targetLevel: Access) -> String {
         switch line.type {
         case .setterPostfix(setterAccess: let currentSetterAccess):
-            return self.modifyingSetter(current: currentSetterAccess, access: accessChange)
+            return self.modifyingSetterForTarget(current: currentSetterAccess, access: accessChange, targetLevel: targetLevel)
         case .setterSubstitute(setterAccess: let currentSetterAccess):
-            return self.modifyingSetter(current: currentSetterAccess, access: accessChange)
+            return self.modifyingSetterForTarget(current: currentSetterAccess, access: accessChange, targetLevel: targetLevel)
         default: return self
         }
     }
     
-    private func modifyingSetter(current setter: Access, access: AccessChange) -> String {
+    private func modifyingSetterForTarget(current setter: Access, access: AccessChange, targetLevel: Access) -> String {
+        
+        guard setter != targetLevel else {
+            return self.removingSetter(setter)
+        }
         
         switch access {
             
         case .increaseAccess:
-            switch setter {
-            case .private, .fileprivate: return self.alteringSetter(setter, target: .internal)
-            default: return self
-            }
+            return self 
             
         case .decreaseAccess:
+            
             switch setter {
-            case .fileprivate, .internal: return self.alteringSetter(setter, target: .private)
+            case .fileprivate where targetLevel == .private: return self.removingSetter(setter)
+            case .fileprivate, .internal: return self
             default: return self
             }
             
