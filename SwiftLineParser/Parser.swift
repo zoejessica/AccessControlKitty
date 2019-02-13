@@ -33,7 +33,7 @@ public class Parser {
                 let unmodifiedLine = lines[lineNumber]
                 
                 if let lineChange = lineChangeType[lineNumber],
-                    case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange, in: structure),
+                    case let (newLineChange, substitution) = resolvedLineChange(previous: lineChange, accessChange, in: structure),
 
                     let changedLine = unmodifiedLine.modifyingAccess(newLineChange, with: substitution) {
                     
@@ -58,7 +58,7 @@ public class Parser {
     
     // Overrides type of line change according to the particular menu command
     // E.g. a fileprivate entity does not change when executing the Make API command
-    private func lineAlteration(for line: LineChange, _ accessChange: AccessChange, in structure: Structure) -> (LineChange, String) {
+    private func resolvedLineChange(previous line: LineChange, _ accessChange: AccessChange, in structure: Structure) -> (LineChange, String) {
         
         
         let currentLevel = structure.currentLevel
