@@ -10,7 +10,7 @@ import Foundation
 
 extension String {
     
-    func modifyingAccess(_ change: LineChange, with substitution: String) -> String? {
+    func modifyingAccess(_ change: LineChange, with substitution: String) -> String {
         
         var line = self
         
@@ -26,11 +26,11 @@ extension String {
         }
         
         guard let range = line.range(of: searchWord) else {
-            return nil
+            return self
         }
         
         switch change.type {
-        case .none: return nil
+        case .none: return self
         case .substitute, .setterSubstitute:
             return line.replacingCharacters(in: range, with: substitution)
         case .postfix where substitution != "", .setterPostfix where substitution != "":

@@ -26,34 +26,20 @@ public class Parser {
             let (lineChange, isPrefixable, intermediateStructure) = parseLine(in: structure, lineNumber, linetokens)
             self.structure = intermediateStructure
             lineIsPrefixable[lineNumber] = isPrefixable
-            lineChangeType[lineNumber] = lineChange
             
-            if lineIsPrefixable[lineNumber] {
-                
-                let unmodifiedLine = lines[lineNumber]
-                
-                if let lineChange = lineChangeType[lineNumber],
-                    case let (newLineChange, substitution, target) = resolvedLineChange(previous: lineChange, accessChange, in: structure),
-
-                    let changedLine = unmodifiedLine.modifyingAccess(newLineChange, with: substitution) {
-                    
-                    // Further alter the line for the setter: must include the actual changedLine here
-                    let setterChangedLine = changedLine.modifyingSetter(newLineChange, accessChange, targetLevel: target)
-                    
-                    newLines[lineNumber] = setterChangedLine
-                } else {
-                    newLines[lineNumber] = unmodifiedLine
-                }
+            guard lineIsPrefixable[lineNumber] else {
+                continue
             }
+            
+            let unmodifiedLine = lines[lineNumber]
+            
+            let (newLineChange, substitution, target) = resolvedLineChange(previous: lineChange, accessChange, in: structure)
+            let changedLine = unmodifiedLine.modifyingAccess(newLineChange, with: substitution)
+            // Further alter the line for the setter: must include the actual changedLine here
+            let setterChangedLine = changedLine.modifyingSetter(newLineChange, accessChange, targetLevel: target)
+            newLines[lineNumber] = setterChangedLine
         }
         return newLines
-    }
-    
-    // Left here for existing tests
-    func newLines(at lineNumbers: [Int], level: Access) -> [Int : String] {
-        return newLines(at: lineNumbers, accessChange: .singleLevel(level))
-        
-        
     }
     
     // Overrides type of line change according to the particular menu command
@@ -104,7 +90,7 @@ public class Parser {
     private var tokens: [[Token]]
   
     private var lineIsPrefixable: [Bool] // Overrides lineChangeType: if lineIsPrefixable == false, lineChangeType is ignored
-    private var lineChangeType: [Int : LineChange] = [:]
+//    private var lineChangeType: [Int : LineChange] = [:]
     
     var structure = Structure()
 }
@@ -145,33 +131,25 @@ extension Parser {
         
         // If any token on the line contains an access keyword, it's a substution:
         else if let accessKeyword = lineTokens.containAccessKeyword {
-            
             lineChange = LineChange(.substitute, at: accessKeyword)
         
         } else {
             
             switch firstToken {
-                
-            case .keyword(let keyword) where accessKeywords.contains(keyword):
-                
-                lineChange = LineChange(.substitute, at: keyword)
-                
+            
             case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
-                
                 lineChange = LineChange(.postfix, at: keyword)
                 
-            case .attribute(let attribute):
+            case .attribute(let attribute) where Array(lineTokens.dropFirst()).containAnyKeyword == true:
+                lineChange = LineChange(.postfix, at: attribute)
                 
-                if Array(lineTokens.dropFirst()).containAnyKeyword == false {
-                    lineChange = LineChange(.none, at: "")
-                } else {
-                    lineChange = LineChange(.postfix, at: attribute)
-                }
+            case .attribute:
+                lineChange = LineChange(.none, at: "")
                 
-            case .keyword(let keyword): lineChange = LineChange(.prefix, at: keyword)
-                
+            case .keyword(let keyword):
+                lineChange = LineChange(.prefix, at: keyword)
+            
             default: break
-                
             }
         }
         
@@ -180,6 +158,7 @@ extension Parser {
         if lineTokens.containExtensionWithConformance {
             lineIsPrefixable = false
         }
+        
         return (lineChange, lineIsPrefixable, structure)
     }
 }

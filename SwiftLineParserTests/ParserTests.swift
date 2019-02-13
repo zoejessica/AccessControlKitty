@@ -288,7 +288,7 @@ class ParserTests: XCTestCase {
                                                                "@IBOutlet var textView: NSTextView!",
                                                                "func highlightSyntax(code: String) throws -> [(Range<String.Index>, Kind)] {"]
         let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [0, 1, 2, 3], level: .remove)
+        let newLines = parser.newLines(at: [0, 1, 2, 3], accessChange: .singleLevel(.remove))
         for (index, expectedline) in expectedNewLines.enumerated() {
             XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
         }
@@ -302,7 +302,7 @@ class ParserTests: XCTestCase {
         let expectedNewLines = [
             "required public init?(coder aDecoder: NSCoder) {", nil, nil]
         let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [0, 1, 2], level: .public)
+        let newLines = parser.newLines(at: [0, 1, 2], accessChange: .singleLevel(.public))
         for (index, expectedline) in expectedNewLines.enumerated() {
             XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
         }
@@ -316,7 +316,7 @@ class ParserTests: XCTestCase {
             "public typealias WriteToState<State> = ((inout State) -> ()) -> ()"
         ]
         let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [0], level: .public)
+        let newLines = parser.newLines(at: [0], accessChange: .singleLevel(.public))
         for (index, expectedline) in expectedNewLines.enumerated() {
             XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
         }
@@ -327,7 +327,7 @@ class ParserTests: XCTestCase {
                  "strongReferences.append(contentsOf: element.strongReferences)"]
     let expectedNewLines = ["public mutating func nest<X>(_ element: FormElement<X, State>) {", nil]
         let parser = Parser(lines: lines)
-        let newLines = parser.newLines(at: [0], level: .public)
+        let newLines = parser.newLines(at: [0], accessChange: .singleLevel(.public))
         for (index, expectedline) in expectedNewLines.enumerated() {
             XCTAssertEqual(newLines[index], expectedline, "Line no.: \(index) \(lines[index]) was incorrectly parsed")
         }
@@ -1878,29 +1878,6 @@ private var example: String = "A"
         }
     }
 }
-
-extension Parser {
-    func newLines(at lineNumbers: Range<Int>, level: Access) -> [Int : String] {
-        return newLines(at: Array(lineNumbers), level: level)
-    }
-}
-
-/* TODO: introduce tests for new menu command that changes only set properties of variables and subscripts 
- struct Cat {
- let name: String
- var whiskers: Int
- let stripyness: Stripes
- 
- fileprivate(set) subscript(whiskery: Int) -> Int {
- get {
- return whiskers
- }
- set {
- whiskers = whiskery
- }
- }
- }
-*/
 
 
 
