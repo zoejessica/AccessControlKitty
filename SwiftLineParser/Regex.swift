@@ -42,3 +42,7 @@ let tokenList: [(String, TokenGenerator)] = [
     ("^[a-zA-Z0-9]*", { Token(Keyword.init(rawValue: $0)) ?? .identifier($0) }),
     ("[.]init", { Token.identifier($0) })
     ]
+
+// .*? means match any character as few times as possible
+let stringRegex = try! NSRegularExpression(pattern: "\".*?\"[^\"]", options: [])
+let multiLineRegex = try! NSRegularExpression(pattern: "\"\"\"\n", options: [])

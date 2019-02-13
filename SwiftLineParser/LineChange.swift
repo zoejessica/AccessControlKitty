@@ -1,0 +1,40 @@
+//
+//  LineChange.swift
+//  SwiftLineParser
+//
+//  Created by Zoe Smith on 13/2/19.
+//  Copyright © 2019 Hot Beverage. All rights reserved.
+//
+
+import Foundation
+
+struct LineChange {
+    let type: LineChangeType
+    let cursor: String
+    
+    enum LineChangeType: Equatable {
+        case substitute
+        case setterSubstitute(setterAccess: Access)
+        case setterPostfix(setterAccess: Access)
+        case prefix
+        case postfix
+        case none
+    }
+}
+
+extension LineChange {
+    init(_ type: LineChangeType, at cursor: String) {
+        self = LineChange.init(type: type, cursor: cursor)
+    }
+    
+    init(_ type: LineChangeType, at keyword: Keyword) {
+        self = LineChange.init(type: type, cursor: keyword.rawValue)
+    }
+    
+    func substitution(target access: Access) -> String {
+        switch access {
+        case (.internal): return ""
+        default: return access.rawValue
+        }
+    }
+}
