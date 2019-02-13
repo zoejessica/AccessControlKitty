@@ -35,10 +35,10 @@ public class Parser {
                 if let lineChange = lineChangeType[lineNumber],
                     case let (newLineChange, substitution) = lineAlteration(for: lineChange, accessChange, in: structure),
 
-                    let changedLine = unmodifiedLine.modifyLine(newLineChange, with: substitution) {
+                    let changedLine = unmodifiedLine.modifyingAccess(newLineChange, with: substitution) {
                     
                     // Further alter the line for the setter: must include the actual changedLine here
-                    let setterChangedLine = changedLine.setterAlteration(for: newLineChange, accessChange, in: structure)
+                    let setterChangedLine = changedLine.modifyingSetter(newLineChange, accessChange)
                     
                     newLines[lineNumber] = setterChangedLine
                 } else {
@@ -106,7 +106,7 @@ public class Parser {
     private var lineIsPrefixable: [Bool] // Overrides lineChangeType: if lineIsPrefixable == false, lineChangeType is ignored
     private var lineChangeType: [Int : LineChange] = [:]
     
-    var structure = Structure()   
+    var structure = Structure()
 }
 
 

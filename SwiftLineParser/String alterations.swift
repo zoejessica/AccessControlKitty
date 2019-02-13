@@ -10,19 +10,19 @@ import Foundation
 
 extension String {
     
-    func modifyLine(_ change: LineChange, with substitution: String) -> String? {
+    func modifyingAccess(_ change: LineChange, with substitution: String) -> String? {
         
         var line = self
         
         var searchWord = change.cursor
         
         // These two cases might be fixed by using remove function on String
-        if case .substitute = change.type, substitution == "" {
-            searchWord = searchWord + " "
-        }
-        
-        if case .setterSubstitute = change.type, substitution == "" {
-            searchWord = searchWord + " "
+        if substitution == "" {
+            switch change.type {
+            case .substitute, .setterSubstitute:
+                searchWord = searchWord + " "
+            default: break
+            }
         }
         
         guard let range = line.range(of: searchWord) else {
@@ -44,17 +44,48 @@ extension String {
         }
     }
     
-    func setterAlteration(for line: LineChange, _ accessChange: AccessChange, in structure: Structure) -> String {
+    func modifyingSetter(_ line: LineChange, _ accessChange: AccessChange) -> String {
         switch line.type {
         case .setterPostfix(setterAccess: let currentSetterAccess):
-            return self.alteration(setter: currentSetterAccess, access: accessChange, currentStructureLevel: structure.currentLevel)
+            return self.modifyingSetter(current: currentSetterAccess, access: accessChange)
         case .setterSubstitute(setterAccess: let currentSetterAccess):
-            return self.alteration(setter: currentSetterAccess, access: accessChange, currentStructureLevel: structure.currentLevel)
+            return self.modifyingSetter(current: currentSetterAccess, access: accessChange)
         default: return self
         }
     }
     
-    private func alteredSetter(_ setter: Access, target: Access) -> String {
+    private func modifyingSetter(current setter: Access, access: AccessChange) -> String {
+        
+        switch access {
+            
+        case .increaseAccess:
+            switch setter {
+            case .private, .fileprivate: return self.alteringSetter(setter, target: .internal)
+            default: return self
+            }
+            
+        case .decreaseAccess:
+            switch setter {
+            case .fileprivate, .internal: return self.alteringSetter(setter, target: .private)
+            default: return self
+            }
+            
+        case .makeAPI:
+            return self
+            
+        case .removeAPI:
+            switch setter {
+            case .internal: return self.alteringSetter(setter, target: .internal)
+            default: return self
+            }
+            
+        case .singleLevel:
+            return self.removingSetter(setter)
+            
+        }
+    }
+    
+    private func alteringSetter(_ setter: Access, target: Access) -> String {
         guard let setterString = setter.setterString, target <= .internal, let targetString = target.setterString else {
             return self
         }
@@ -77,36 +108,5 @@ extension String {
         var copy = self
         copy.removeSubrange(rangeWithFollowingSpace)
         return copy
-    }
-    
-    private func alteration(setter: Access, access: AccessChange, currentStructureLevel: Access) -> String {
-        
-        switch access {
-            
-        case .increaseAccess:
-            switch setter {
-            case .private, .fileprivate: return self.alteredSetter(setter, target: .internal)
-            default: return self
-            }
-            
-        case .decreaseAccess:
-            switch setter {
-            case .fileprivate, .internal: return self.alteredSetter(setter, target: .private)
-            default: return self
-            }
-            
-        case .makeAPI:
-            return self
-            
-        case .removeAPI:
-            switch setter {
-            case .internal: return self.alteredSetter(setter, target: .internal)
-            default: return self
-            }
-            
-        case .singleLevel:
-            return self.removingSetter(setter)
-            
-        }
     }
 }
