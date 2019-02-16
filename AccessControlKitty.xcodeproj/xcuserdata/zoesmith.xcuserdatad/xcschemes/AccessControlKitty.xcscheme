@@ -43,6 +43,16 @@
                </Test>
             </SkippedTests>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EDE6D94822183992002AF4BB"
+               BuildableName = "AccessControlKittyTests.xctest"
+               BlueprintName = "AccessControlKittyTests"
+               ReferencedContainer = "container:AccessControlKitty.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

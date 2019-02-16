@@ -95,6 +95,16 @@
                </Test>
             </SkippedTests>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EDE6D94822183992002AF4BB"
+               BuildableName = "AccessControlKittyTests.xctest"
+               BlueprintName = "AccessControlKittyTests"
+               ReferencedContainer = "container:AccessControlKitty.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -122,7 +132,7 @@
       <RemoteRunnable
          runnableDebuggingMode = "0"
          BundleIdentifier = "com.apple.dt.Xcode"
-         RemotePath = "/Applications/Xcode-beta.app">
+         RemotePath = "/Applications/Xcode.app">
       </RemoteRunnable>
       <MacroExpansion>
          <BuildableReference

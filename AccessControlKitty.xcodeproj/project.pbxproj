@@ -32,6 +32,9 @@
 		ED18F85820948921002BD062 /* AccessControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F85720948921002BD062 /* AccessControlCommand.swift */; };
 		ED9CA45521F945F2004898AD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9CA45421F945F2004898AD /* ViewController.swift */; };
 		ED9CA47421FA7B97004898AD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED9CA47221FA7B97004898AD /* Main.storyboard */; };
+		EDE6D94C22183992002AF4BB /* AccessControlKittyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE6D94B22183992002AF4BB /* AccessControlKittyTests.swift */; };
+		EDE6D9582218405F002AF4BB /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE6D9572218405F002AF4BB /* XcodeKit.framework */; };
+		EDE6D959221846C3002AF4BB /* AccessControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F85720948921002BD062 /* AccessControlCommand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +65,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = ED18F826209488C1002BD062;
 			remoteInfo = SwiftLineParser;
+		};
+		EDE6D94E22183992002AF4BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED18F7F32094886B002BD062 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED18F7FA2094886B002BD062;
+			remoteInfo = AccessControlKitty;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -121,6 +131,10 @@
 		ED18F85720948921002BD062 /* AccessControlCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlCommand.swift; sourceTree = "<group>"; };
 		ED9CA45421F945F2004898AD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		ED9CA47321FA7B97004898AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EDE6D94922183992002AF4BB /* AccessControlKittyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccessControlKittyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDE6D94B22183992002AF4BB /* AccessControlKittyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessControlKittyTests.swift; sourceTree = "<group>"; };
+		EDE6D94D22183992002AF4BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDE6D9572218405F002AF4BB /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +170,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDE6D94622183992002AF4BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDE6D9582218405F002AF4BB /* XcodeKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -166,6 +188,7 @@
 				ED18F8142094889C002BD062 /* AccessControlKittyExtension */,
 				ED18F828209488C1002BD062 /* SwiftLineParser */,
 				ED18F839209488D5002BD062 /* SwiftLineParserTests */,
+				EDE6D94A22183992002AF4BB /* AccessControlKittyTests */,
 				ED18F8112094889C002BD062 /* Frameworks */,
 				ED18F7FC2094886B002BD062 /* Products */,
 			);
@@ -178,6 +201,7 @@
 				ED18F8102094889C002BD062 /* AccessControlKittyExtension.appex */,
 				ED18F827209488C1002BD062 /* SwiftLineParser.framework */,
 				ED18F838209488D5002BD062 /* SwiftLineParserTests.xctest */,
+				EDE6D94922183992002AF4BB /* AccessControlKittyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -198,6 +222,7 @@
 		ED18F8112094889C002BD062 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EDE6D9572218405F002AF4BB /* XcodeKit.framework */,
 				ED18F8122094889C002BD062 /* Cocoa.framework */,
 			);
 			name = Frameworks;
@@ -241,6 +266,15 @@
 				ED18F83C209488D5002BD062 /* Info.plist */,
 			);
 			path = SwiftLineParserTests;
+			sourceTree = "<group>";
+		};
+		EDE6D94A22183992002AF4BB /* AccessControlKittyTests */ = {
+			isa = PBXGroup;
+			children = (
+				EDE6D94B22183992002AF4BB /* AccessControlKittyTests.swift */,
+				EDE6D94D22183992002AF4BB /* Info.plist */,
+			);
+			path = AccessControlKittyTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,13 +366,31 @@
 			productReference = ED18F838209488D5002BD062 /* SwiftLineParserTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		EDE6D94822183992002AF4BB /* AccessControlKittyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDE6D95222183992002AF4BB /* Build configuration list for PBXNativeTarget "AccessControlKittyTests" */;
+			buildPhases = (
+				EDE6D94522183992002AF4BB /* Sources */,
+				EDE6D94622183992002AF4BB /* Frameworks */,
+				EDE6D94722183992002AF4BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EDE6D94F22183992002AF4BB /* PBXTargetDependency */,
+			);
+			name = AccessControlKittyTests;
+			productName = AccessControlKittyTests;
+			productReference = EDE6D94922183992002AF4BB /* AccessControlKittyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		ED18F7F32094886B002BD062 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0930;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Hot Beverage";
 				TargetAttributes = {
@@ -357,6 +409,10 @@
 					ED18F837209488D5002BD062 = {
 						CreatedOnToolsVersion = 9.3;
 						LastSwiftMigration = 1010;
+					};
+					EDE6D94822183992002AF4BB = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = ED18F7FA2094886B002BD062;
 					};
 				};
 			};
@@ -377,6 +433,7 @@
 				ED18F80F2094889C002BD062 /* AccessControlKittyExtension */,
 				ED18F826209488C1002BD062 /* SwiftLineParser */,
 				ED18F837209488D5002BD062 /* SwiftLineParserTests */,
+				EDE6D94822183992002AF4BB /* AccessControlKittyTests */,
 			);
 		};
 /* End PBXProject section */
@@ -406,6 +463,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		ED18F836209488D5002BD062 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDE6D94722183992002AF4BB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -459,6 +523,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDE6D94522183992002AF4BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDE6D94C22183992002AF4BB /* AccessControlKittyTests.swift in Sources */,
+				EDE6D959221846C3002AF4BB /* AccessControlCommand.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -481,6 +554,11 @@
 			isa = PBXTargetDependency;
 			target = ED18F826209488C1002BD062 /* SwiftLineParser */;
 			targetProxy = ED18F85B2094A35A002BD062 /* PBXContainerItemProxy */;
+		};
+		EDE6D94F22183992002AF4BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED18F7FA2094886B002BD062 /* AccessControlKitty */;
+			targetProxy = EDE6D94E22183992002AF4BB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -794,6 +872,55 @@
 			};
 			name = Release;
 		};
+		EDE6D95022183992002AF4BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				FRAMEWORK_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/**";
+				INFOPLIST_FILE = AccessControlKittyTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+					/Applications/Xcode.app/Contents/Developer/Library/Frameworks,
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.AccessControlKittyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccessControlKitty.app/Contents/MacOS/AccessControlKitty";
+			};
+			name = Debug;
+		};
+		EDE6D95122183992002AF4BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				FRAMEWORK_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/**";
+				INFOPLIST_FILE = AccessControlKittyTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+					/Applications/Xcode.app/Contents/Developer/Library/Frameworks,
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.AccessControlKittyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccessControlKitty.app/Contents/MacOS/AccessControlKitty";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -838,6 +965,15 @@
 			buildConfigurations = (
 				ED18F841209488D5002BD062 /* Debug */,
 				ED18F842209488D5002BD062 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDE6D95222183992002AF4BB /* Build configuration list for PBXNativeTarget "AccessControlKittyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDE6D95022183992002AF4BB /* Debug */,
+				EDE6D95122183992002AF4BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
