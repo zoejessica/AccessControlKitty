@@ -39,5 +39,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let url = URL(string: "https://github.com/zoejessica/AccessControlKitty")!
         NSWorkspace.shared.open(url)
     }
+    
+    @IBAction func readme(_ sender: Any) {
+        let url = URL(string: "https://github.com/zoejessica/AccessControlKitty/blob/master/README.md")!
+        NSWorkspace.shared.open(url)
+    }
 }
 

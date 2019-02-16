@@ -131,22 +131,34 @@ When working with a Swift file, you'll find the new menu item Access Level of Se
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="iDg-2q-ZsH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="Xjn-0X-y4v"/>
-                                        <menuItem isSeparatorItem="YES" id="3JC-M5-b1a"/>
                                         <menuItem title="Services" id="8j9-v8-Afp">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Services" systemMenu="services" id="vYh-U3-vBz"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4ID-aM-avK"/>
-                                        <menuItem title="Hide AccessControlKitty" keyEquivalent="h" id="R5q-U2-DDz" userLabel="Hide AccessControlKitty"/>
+                                        <menuItem title="Hide AccessControlKitty" keyEquivalent="h" id="R5q-U2-DDz" userLabel="Hide AccessControlKitty">
+                                            <connections>
+                                                <action selector="hide:" target="Z2X-f0-ecj" id="HHG-jO-zl8"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Hide Others" keyEquivalent="h" id="8kR-Fh-Enu">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="hideOtherApplications:" target="Z2X-f0-ecj" id="xT5-XU-HrW"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem title="Show All" id="gdO-2X-Ys2">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="unhideAllApplications:" target="Z2X-f0-ecj" id="hWd-FI-OW5"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Hi2-tX-MLa"/>
-                                        <menuItem title="Quit AccessControlKitty" keyEquivalent="q" id="mTb-rc-r6O" userLabel="Quit AccessControlKitty"/>
+                                        <menuItem title="Quit AccessControlKitty" keyEquivalent="q" id="mTb-rc-r6O" userLabel="Quit AccessControlKitty">
+                                            <connections>
+                                                <action selector="terminate:" target="Z2X-f0-ecj" id="wBU-ae-5Xg"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -154,6 +166,12 @@ When working with a Swift file, you'll find the new menu item Access Level of Se
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="KWA-Pm-wCO">
                                     <items>
+                                        <menuItem title="Readme" id="Y9c-vJ-V39" userLabel="Documentation">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="readme:" target="suA-cX-fko" id="kLn-iK-tfl"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Feedback" id="vgU-Ia-jIH" userLabel="Feedback">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
@@ -166,7 +184,7 @@ When working with a Swift file, you'll find the new menu item Access Level of Se
                                                 <action selector="githubProject:" target="suA-cX-fko" id="AOU-W4-E4E"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Open a Github Issue..." id="dI5-Jj-bWe" userLabel="Open a Github Issue">
+                                        <menuItem title="Open Github Issue" id="dI5-Jj-bWe" userLabel="Open a Github Issue">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openAGithubIssue:" target="suA-cX-fko" id="h9m-rT-RNi"/>
