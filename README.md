@@ -18,7 +18,7 @@ Xcode extension to change the access control level of Swift code selection
 - It also doesn’t support `open` or `final` for the moment, mostly because it’s a bit more work and just ship it already, and partly because I sort of feel those notations should require a bit more forethought when planning a framework. 
 
 ### To install:
-[Available to download now on the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12), free as in beer. If you prefer to noodle around yourself: 
+[Available to download now on the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12). If you prefer to noodle around yourself: 
 
 - Download the Xcode project
 - Archive the Mac app target
