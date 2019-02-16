@@ -3,7 +3,7 @@
 //  AccessControlKitty
 //
 //  Created by Zoe Smith on 23/1/19.
-//  Copyright © 2019 Hot Beverage. All rights reserved.
+//  Copyright © 2018-9 Zoë Smith. Distributed under the MIT License.
 //
 
 import Cocoa

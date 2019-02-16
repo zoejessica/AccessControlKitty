@@ -3,7 +3,7 @@
 //  SwiftLineParserTests
 //
 //  Created by Zoe Smith on 4/21/18.
-//  Copyright © 2018 Hot Beverage. All rights reserved.
+//  Copyright © 2018-9 Zoë Smith. Distributed under the MIT License.
 //
 
 import XCTest
