@@ -10,7 +10,8 @@
             <objects>
                 <windowController id="7m1-jh-TMi" sceneMemberID="viewController">
                     <window key="window" title="AccessControlKitty Installation" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="e6F-3q-XlY">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowCollectionBehavior key="collectionBehavior" fullScreenNone="YES"/>
                         <windowPositionMask key="initialPositionMask" rightStrut="YES" topStrut="YES"/>
                         <rect key="contentRect" x="790" y="548" width="451" height="242"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
@@ -26,7 +27,7 @@
                 </windowController>
                 <customObject id="zW1-hE-saW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="124" y="147"/>
+            <point key="canvasLocation" x="59" y="237"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="b5d-w3-Oe1">
@@ -140,6 +141,31 @@
                                         <menuItem title="Quit AccessControlKitty" keyEquivalent="q" id="mTb-rc-r6O" userLabel="Quit AccessControlKitty">
                                             <connections>
                                                 <action selector="terminate:" target="Z2X-f0-ecj" id="wBU-ae-5Xg"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Window" id="iQs-Nj-HW4">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Window" systemMenu="window" id="gLw-iC-grq">
+                                    <items>
+                                        <menuItem title="Minimize" keyEquivalent="m" id="vjd-Wl-XOC">
+                                            <connections>
+                                                <action selector="performMiniaturize:" target="Z2X-f0-ecj" id="TVO-vR-2KH"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Zoom" id="Wei-yc-gHI">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="performZoom:" target="Z2X-f0-ecj" id="m4Z-fq-ASe"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="Wpa-gz-gFl"/>
+                                        <menuItem title="Bring All to Front" id="0G2-O9-Y9b">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="arrangeInFront:" target="Z2X-f0-ecj" id="byR-ZF-uhr"/>
                                             </connections>
                                         </menuItem>
                                     </items>
