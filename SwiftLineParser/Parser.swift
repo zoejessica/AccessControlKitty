@@ -35,7 +35,8 @@ public class Parser {
             
             let (newLineChange, substitution, target) = resolvedLineChange(previous: lineChange, accessChange, in: structure)
             let changedLine = unmodifiedLine.modifyingAccess(newLineChange, with: substitution)
-            // Further alter the line for the setter: must include the actual changedLine here
+
+            // Further alter the line for setter overrides
             let setterChangedLine = changedLine.modifyingSetter(newLineChange, accessChange, targetLevel: target)
             newLines[lineNumber] = setterChangedLine
         }
@@ -162,24 +163,3 @@ extension Parser {
         return (lineChange, lineIsPrefixable, structure)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

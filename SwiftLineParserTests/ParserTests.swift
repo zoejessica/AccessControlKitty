@@ -1850,6 +1850,53 @@ private var example: String = "A"
         multilineTest(test: test, expected: expected, accessChange: .singleLevel(.private))
     }
     
+    func testStaticVariableInheritanceInPublicExtension() {
+        let test = """
+// Base type is public
+public struct MyStruct {}
+
+// Here, the extension is declared public, so each top level member
+// "inherits" that access level.
+public extension MyStruct {
+    // This is public even if it is not annotated
+    static var firstValue: String { return "public" }
+    
+    // This is also public but the compiler will warn.
+    public static var secondValue: String { return "public but warned" }
+    
+    // This class is also public via "inheritance"
+    class PublicSubclass {
+        // However, its members must be annotated. This is public
+        public static let publicValue = "public"
+        // This defaults to internal
+        static let internalValue = "internal"
+    }
+}
+"""
+        let expected = """
+// Base type is public
+struct MyStruct {}
+
+// Here, the extension is declared public, so each top level member
+// "inherits" that access level.
+extension MyStruct {
+    // This is public even if it is not annotated
+    static var firstValue: String { return "public" }
+    
+    // This is also public but the compiler will warn.
+    static var secondValue: String { return "public but warned" }
+    
+    // This class is also public via "inheritance"
+    class PublicSubclass {
+        // However, its members must be annotated. This is public
+        static let publicValue = "public"
+        // This defaults to internal
+        static let internalValue = "internal"
+    }
+}
+"""
+        multilineTest(test: test, expected: expected, accessChange: .decreaseAccess)
+    }
     
     func testSomething() {
         let test = """
