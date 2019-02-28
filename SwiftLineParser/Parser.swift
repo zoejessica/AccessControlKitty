@@ -130,14 +130,20 @@ extension Parser {
             }
         }
         
-        // If any token on the line contains an access keyword, it's a substution:
+        // If any token on the line contains an access keyword, assume it's a substution:
         else if let accessKeyword = lineTokens.containAccessKeyword {
             lineChange = LineChange(.substitute, at: accessKeyword)
         
         } else {
             
             switch firstToken {
-            
+                
+            case .keyword(let keyword) where operatorFixKeywords.contains(keyword)
+                && lineTokens.dropFirst().first != nil
+                && Token.keyword(.operator) == lineTokens.dropFirst().first!:
+                
+                lineIsPrefixable = false
+               
             case .keyword(let keyword) where postfixableFunctionKeywords.contains(keyword):
                 lineChange = LineChange(.postfix, at: keyword)
                 
