@@ -1248,9 +1248,9 @@ postfix operator NotAnEmojiPlease
 infix operator NotAnEmojiPlease: DefaultPrecendence
 """
         let expected = """
-public prefix operator NotAnEmojiPlease
-public postfix operator NotAnEmojiPlease
-public infix operator NotAnEmojiPlease: DefaultPrecendence
+prefix operator NotAnEmojiPlease
+postfix operator NotAnEmojiPlease
+infix operator NotAnEmojiPlease: DefaultPrecendence
 """
         multilineTest(test: test, expected: expected)
     }

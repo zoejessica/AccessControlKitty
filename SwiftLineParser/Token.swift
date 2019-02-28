@@ -37,7 +37,7 @@ enum Keyword: String, CaseIterable {
     privateset = "private(set)", fileprivateset = "fileprivate(set)", internalset = "internal(set)"
 }
 
-let nonAccessModifiableKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch, .defer]
+let nonAccessModifiableKeywords: [Keyword] = [.case, .for, .while, .repeat, .do, .catch, .defer, .prefix, .infix, .postfix]
 let localScopeKeywords: [Keyword] = [.func, ._init, .for, .while, .repeat, .protocol, .do, .catch, .defer, .subscript]
 let structureKeywords: [Keyword] = [ .protocol, .class, .struct, .enum, .extension, .func, ._init, .var, .let, .for, .while, .repeat, .do, .catch, .defer, .subscript]
 let accessKeywords: [Keyword] = [.public, .private, .fileprivate, .internal, .open]

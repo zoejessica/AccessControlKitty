@@ -879,13 +879,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
-				FRAMEWORK_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = "${DEVELOPER_FRAMEWORKS_DIR}";
 				INFOPLIST_FILE = AccessControlKittyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
-					/Applications/Xcode.app/Contents/Developer/Library/Frameworks,
+					"${DEVELOPER_FRAMEWORKS_DIR}",
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -904,13 +904,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
-				FRAMEWORK_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = "${DEVELOPER_FRAMEWORKS_DIR}";
 				INFOPLIST_FILE = AccessControlKittyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
-					/Applications/Xcode.app/Contents/Developer/Library/Frameworks,
+					"${DEVELOPER_FRAMEWORKS_DIR}",
 				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.AccessControlKittyTests;
