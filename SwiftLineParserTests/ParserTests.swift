@@ -1255,6 +1255,23 @@ infix operator NotAnEmojiPlease: DefaultPrecendence
         multilineTest(test: test, expected: expected)
     }
     
+    func testPrefixForOperatorFunctionDefinitions() {
+        let test = """
+prefix operator ^
+prefix func ^ <Root, Value>(_ kp: KeyPath<Root, Value>) -> (Root) -> Value {
+    return get(kp)
+}
+"""
+
+        let expected = """
+prefix operator ^
+public prefix func ^ <Root, Value>(_ kp: KeyPath<Root, Value>) -> (Root) -> Value {
+    return get(kp)
+}
+"""
+        multilineTest(test: test, expected: expected)
+    }
+    
     func testPrecedenceGroupDefinition() {
         let test = """
 precedencegroup SpecialPrecedence {
@@ -1897,6 +1914,8 @@ extension MyStruct {
 """
         multilineTest(test: test, expected: expected, accessChange: .decreaseAccess)
     }
+    
+    
     
     func testSomething() {
         let test = """
