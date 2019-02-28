@@ -6,6 +6,10 @@
 //  Copyright © 2018-9 Zoë Smith. Distributed under the MIT License.
 //
 
+
+// Helped a lot by a series of blog posts by Harlan Haskins on lexing and parsing in Swift: 
+// https://harlanhaskins.com/2017/01/08/building-a-compiler-with-swift-in-llvm-part-1-introduction-and-the-lexer.html
+
 import Foundation
 
 protocol WordTag {}

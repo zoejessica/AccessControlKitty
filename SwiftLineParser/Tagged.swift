@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Uses ideas from https://github.com/pointfreeco/swift-tagged
 
 public struct Tagged<Tag, RawValue> {
     public let rawValue: RawValue
