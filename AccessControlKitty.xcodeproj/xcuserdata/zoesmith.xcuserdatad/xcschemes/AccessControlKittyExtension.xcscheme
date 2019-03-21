@@ -2,7 +2,7 @@
 <Scheme
    LastUpgradeVersion = "0930"
    wasCreatedForAppExtension = "YES"
-   version = "2.0">
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -72,27 +72,6 @@
                <Test
                   Identifier = "ParserTests/testIncrementInEntityWithLowerThanInternalAccessShouldFail()">
                </Test>
-               <Test
-                  Identifier = "ParserTests/testRemoveAPIInEntityWithLowerThanInternalAccessShouldFail()">
-               </Test>
-               <Test
-                  Identifier = "ParserTests/testSubscriptSetterDecrement()">
-               </Test>
-               <Test
-                  Identifier = "ParserTests/testSubscriptSetterIncrement()">
-               </Test>
-               <Test
-                  Identifier = "ParserTests/testSubscriptSetterMakeAPI()">
-               </Test>
-               <Test
-                  Identifier = "ParserTests/testSubscriptSetterRemoveAPI()">
-               </Test>
-               <Test
-                  Identifier = "ParserTests/testSubscriptSetterSetAllToPublic()">
-               </Test>
-               <Test
-                  Identifier = "ParserTests/testVarSetterIncrement()">
-               </Test>
             </SkippedTests>
          </TestableReference>
          <TestableReference
@@ -127,13 +106,12 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      launchAutomaticallySubstyle = "2">
-      <RemoteRunnable
+      allowLocationSimulation = "YES">
+      <PathRunnable
          runnableDebuggingMode = "0"
          BundleIdentifier = "com.apple.dt.Xcode"
-         RemotePath = "/Applications/Xcode.app">
-      </RemoteRunnable>
+         FilePath = "/Applications/Xcode.app">
+      </PathRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -143,6 +121,12 @@
             ReferencedContainer = "container:AccessControlKitty.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "/Users/zoesmith/Documents/SampleCode/samplecode.xcodeproj"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

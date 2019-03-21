@@ -17,7 +17,7 @@ public class Parser {
         lineIsPrefixable = Array<Bool>.init(repeating: true, count: lines.count)
     }
     
-    public func newLines(at lineNumbers: [Int], accessChange: AccessChange) -> [Int : String] {
+    public func newLines(at lineNumbersToAlter: [Int], accessChange: AccessChange) -> [Int : String] {
         
         var newLines: [Int : String] = [:]
         
@@ -27,7 +27,7 @@ public class Parser {
             self.structure = intermediateStructure
             lineIsPrefixable[lineNumber] = isPrefixable
             
-            guard lineIsPrefixable[lineNumber] else {
+            guard lineNumbersToAlter.contains(lineNumber), lineIsPrefixable[lineNumber] else {
                 continue
             }
             

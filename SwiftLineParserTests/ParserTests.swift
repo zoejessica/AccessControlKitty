@@ -1915,6 +1915,105 @@ extension MyStruct {
         multilineTest(test: test, expected: expected, accessChange: .decreaseAccess)
     }
     
+    func testPublicExtensionInheritance() {
+  
+// MAKE LINES 2 && 5 PUBLIC
+
+let test =
+"""
+public struct PublicStruct {}
+public extension PublicStruct {
+static var first: String { return "Implicit public" }
+public static var second: String { return "Explicit public" }
+class PublicSubclass {
+static var subfirst: String { return "Internal" }
+public static var subsecond: String { return "Public" }
+}
+}
+"""
+
+let expectedPublic =
+"""
+public struct PublicStruct {}
+public extension PublicStruct {
+static var first: String { return "Implicit public" }
+public static var second: String { return "Explicit public" }
+class PublicSubclass {
+public static var subfirst: String { return "Internal" }
+public static var subsecond: String { return "Public" }
+}
+}
+"""
+         multilineTest(test: test, expected: expectedPublic, linesToChange: [2, 5], accessChange: .singleLevel(.public))
+}
+ /*
+ MAKE INTERNAL
+ public struct PublicStruct {}
+ public extension PublicStruct {
+ internal static var first: String { return "Implicit public" }
+ public static var second: String { return "Explicit public" }
+ class PublicSubclass {
+ static var subfirst: String { return "Internal" }
+ public static var subsecond: String { return "Public" }
+ }
+ }
+ 
+ MAKE API
+ public struct PublicStruct {}
+ public extension PublicStruct {
+ static var first: String { return "Implicit public" }
+ public static var second: String { return "Explicit public" }
+ class PublicSubclass {
+ public static var subfirst: String { return "Internal" }
+ public static var subsecond: String { return "Public" }
+ }
+ }
+ 
+ REMOVE API
+ public struct PublicStruct {}
+ public extension PublicStruct {
+ internal static var first: String { return "Implicit public" }
+ public static var second: String { return "Explicit public" }
+ class PublicSubclass {
+ static var subfirst: String { return "Internal" }
+ public static var subsecond: String { return "Public" }
+ }
+ }
+ */
+    
+ 
+ 
+    func testChangeOnlySelectedLines() {
+            let test = """
+open class ViewController: NSViewController {
+@objc open dynamic let things: [String] = []
+open class MyFinalClass {
+let internalProperty: String = "Hello world!"
+}
+open lazy var internalLazyThing: String = "Hello"
+open weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+open override func viewDidLoad() {
+super.viewDidLoad()
+}
+}
+"""
+        let expected = """
+public class ViewController: NSViewController {
+@objc open dynamic let things: [String] = []
+public class MyFinalClass {
+let internalProperty: String = "Hello world!"
+}
+open lazy var internalLazyThing: String = "Hello"
+public weak var internalWeakLazyThing: NSNumber? = NSNumber(value: 50)
+open override func viewDidLoad() {
+super.viewDidLoad()
+}
+}
+"""
+            multilineTest(test: test, expected: expected, linesToChange: [0,2,6])
+        }
+        
+    
     
     
     func testSomething() {
@@ -1928,11 +2027,14 @@ extension MyStruct {
     }
     
     
-    func multilineTest(test: String, expected: String, accessChange: AccessChange = .singleLevel(.public), file: StaticString = #file, line: UInt = #line) {
+    func multilineTest(test: String, expected: String, linesToChange: [Int]? = nil, accessChange: AccessChange = .singleLevel(.public), file: StaticString = #file, line: UInt = #line) {
+
         let lines = test.components(separatedBy: .newlines)
+        let changing = linesToChange ?? Array(0..<lines.count)
+
         let expectedLines = expected.components(separatedBy: .newlines)
         let parser = Parser(lines: lines)
-        let parsedLines = parser.newLines(at: Array(0..<lines.count), accessChange: accessChange)
+        let parsedLines = parser.newLines(at: changing, accessChange: accessChange)
         for (index, expectedline) in expectedLines.enumerated() {
             if expectedline != lines[index] {
                 // Parsed line should exist if the expected line is different
