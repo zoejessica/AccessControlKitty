@@ -1,7 +1,7 @@
 # AccessControlKitty
 Xcode extension to change the access control level of Swift code selection
 
-[Download from the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12) - does not reflect latest bug fixes yet as App Review is "challenging". 
+[Download from the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12)
 
 ### Features
 - Works on selected Swift code to switch between `public`, `private`, `fileprivate`, `internal` or no access control modifier. Choose an option from the new Access Level of Selection item at the bottom of Xcode's Editor menu:
@@ -18,7 +18,7 @@ Xcode extension to change the access control level of Swift code selection
 - It also doesn’t support `open` or `final` for the moment, mostly because it’s a bit more work and just ship it already, and partly because I sort of feel those notations should require a bit more forethought when planning a framework. 
 
 ### To install:
-[Available to download now on the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12), but does not reflect latest bug fixes.
+[Available to download now on the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12).
 
 For the latest version:  
 
