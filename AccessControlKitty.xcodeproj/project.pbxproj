@@ -739,7 +739,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AccessControlKittyExtension/AccessControlKittyExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
 				INFOPLIST_FILE = AccessControlKittyExtension/Info.plist;
@@ -750,6 +750,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.accesscontrolkitty.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 			};
@@ -759,7 +760,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AccessControlKittyExtension/AccessControlKittyExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
 				INFOPLIST_FILE = AccessControlKittyExtension/Info.plist;
@@ -770,6 +772,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.accesscontrolkitty.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 			};
@@ -780,8 +783,8 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 9;
 				DEFINES_MODULE = YES;
@@ -799,6 +802,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.SwiftLineParser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -813,11 +817,11 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 9;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 9KT5BGB8MA;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 9;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -831,6 +835,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.SwiftLineParser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -842,7 +847,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
 				INFOPLIST_FILE = SwiftLineParserTests/Info.plist;
@@ -853,6 +858,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.SwiftLineParserTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -861,7 +867,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
 				INFOPLIST_FILE = SwiftLineParserTests/Info.plist;
@@ -872,6 +879,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = hotbeverage.SwiftLineParserTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
@@ -880,7 +888,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
 				FRAMEWORK_SEARCH_PATHS = "${DEVELOPER_FRAMEWORKS_DIR}";
@@ -895,6 +904,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.AccessControlKittyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccessControlKitty.app/Contents/MacOS/AccessControlKitty";
@@ -905,7 +915,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9KT5BGB8MA;
 				FRAMEWORK_SEARCH_PATHS = "${DEVELOPER_FRAMEWORKS_DIR}";
@@ -919,6 +930,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.hotbeverage.AccessControlKittyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccessControlKitty.app/Contents/MacOS/AccessControlKitty";
