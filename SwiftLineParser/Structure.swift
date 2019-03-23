@@ -44,16 +44,7 @@ struct Structure: Equatable {
             if let explicitAccess = declarations.last?.access {
                 return explicitAccess
             } else if let implicitAccess = declarations.last(where: { $0.access != nil })?.access {
-                // Usually the implict access level, even in a public entity, is internal
-                // However, in a public extension, the top level members are implicitly public
-                // (although properties on those top level members do not get this level)
-
-                let publicExtensionDeclaration = Declaration(access: .public, keyword: .extension, openBrace: true)
-                if declarations == [publicExtensionDeclaration] {
-                    return .public
-                } else {
-                    return min(implicitAccess, Access.internal)
-                }
+                return min(implicitAccess, Access.internal) // implict access levels even in public entity is always internal
             }
             return .internal // default
         }
