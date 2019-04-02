@@ -16,6 +16,7 @@ Xcode extension to change the access control level of Swift code selection
 ### Caveats
 - It’s not particularly smart, so for example it doesn’t know if a function can’t be made public because it relies on an internal type. Or if a subclass can't be made public because its superclass isn't public. And it certainly can't reason about anything going on in any other file. It just operates on the bits of selected Swift code that *could*, grammatically speaking, have an access control modifier. 
 - It also doesn’t support `open` or `final` for the moment, mostly because it’s a bit more work and just ship it already, and partly because I sort of feel those notations should require a bit more forethought when planning a framework. 
+- **Next on the list are the (new I think) warnings in Swift 5 about redundant `public` declarations of top level members in `public` extensions. Work in progress, to come shortly 😅**
 
 ### To install:
 [Available to download now on the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12).
