@@ -21,7 +21,7 @@ Xcode extension to change the access control level of Swift code selection
 ### To install:
 [Available to download now on the Mac App Store](https://itunes.apple.com/us/app/accesscontrolkitty/id1450391666?mt=12).
 
-For the latest version:  
+The MAS and github versions are currently in sync woohoo! But if you want to install yourself:   
 
 - Download the Xcode project
 - Archive the Mac app target
