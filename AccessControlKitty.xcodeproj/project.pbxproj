@@ -32,6 +32,7 @@
 		ED18F85820948921002BD062 /* AccessControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F85720948921002BD062 /* AccessControlCommand.swift */; };
 		ED9CA45521F945F2004898AD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9CA45421F945F2004898AD /* ViewController.swift */; };
 		ED9CA47421FA7B97004898AD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED9CA47221FA7B97004898AD /* Main.storyboard */; };
+		EDA14492225A193200901BBB /* AccessControlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA14491225A193200901BBB /* AccessControlError.swift */; };
 		EDE6D94C22183992002AF4BB /* AccessControlKittyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE6D94B22183992002AF4BB /* AccessControlKittyTests.swift */; };
 		EDE6D9582218405F002AF4BB /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE6D9572218405F002AF4BB /* XcodeKit.framework */; };
 		EDE6D959221846C3002AF4BB /* AccessControlCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED18F85720948921002BD062 /* AccessControlCommand.swift */; };
@@ -131,6 +132,7 @@
 		ED18F85720948921002BD062 /* AccessControlCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlCommand.swift; sourceTree = "<group>"; };
 		ED9CA45421F945F2004898AD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		ED9CA47321FA7B97004898AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EDA14491225A193200901BBB /* AccessControlError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessControlError.swift; sourceTree = "<group>"; };
 		EDE6D94922183992002AF4BB /* AccessControlKittyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccessControlKittyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDE6D94B22183992002AF4BB /* AccessControlKittyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessControlKittyTests.swift; sourceTree = "<group>"; };
 		EDE6D94D22183992002AF4BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				ED18F85720948921002BD062 /* AccessControlCommand.swift */,
+				EDA14491225A193200901BBB /* AccessControlError.swift */,
 				ED18F8192094889C002BD062 /* Info.plist */,
 				ED18F81A2094889C002BD062 /* AccessControlKittyExtension.entitlements */,
 			);
@@ -492,6 +495,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDA14492225A193200901BBB /* AccessControlError.swift in Sources */,
 				ED18F85820948921002BD062 /* AccessControlCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
