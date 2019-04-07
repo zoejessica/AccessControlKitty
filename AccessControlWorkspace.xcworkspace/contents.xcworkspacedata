@@ -8,9 +8,6 @@
       location = "group:LICENSE.txt">
    </FileRef>
    <FileRef
-      location = "group:AccessControlParsingPlayground.playground">
-   </FileRef>
-   <FileRef
       location = "container:AccessControlKitty.xcodeproj">
    </FileRef>
 </Workspace>
