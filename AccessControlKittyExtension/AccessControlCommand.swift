@@ -22,7 +22,7 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
     func perform(with invocation: XCSourceEditorCommandInvocation, completionHandler: @escaping (Error?) -> Void ) -> Void {
         // Implement your command here, invoking the completion handler when done. Pass it nil on success, and an NSError on failure.
         guard (invocation.buffer.contentUTI == "com.apple.dt.playground") || (invocation.buffer.contentUTI == "public.swift-source") else {
-            completionHandler(nil)
+            completionHandler(AccessControlError.unsupportedContentType)
             return
         }
         
@@ -32,14 +32,23 @@ class AccessControlCommand: NSObject, XCSourceEditorCommand {
             
         }
         
-        changeAccessLevel(accessLevel, invocation.buffer)
-        completionHandler(nil)
+        do {
+            try changeAccessLevel(accessLevel, invocation.buffer)
+            completionHandler(nil)
+        } catch {
+            completionHandler(error)
+        }
     }
     
-    func changeAccessLevel(_ access: AccessChange, _ buffer: XCSourceTextBuffer) {
+    func changeAccessLevel(_ access: AccessChange, _ buffer: XCSourceTextBuffer) throws {
         guard let lines = buffer.lines as? [String] else { return }
         
         let selectedLineNumbers = selectedLines(in: buffer)
+        
+        guard !selectedLineNumbers.isEmpty else {
+            throw AccessControlError.noSelection
+        }
+        
         let parser = Parser(lines: lines)
         let changedSelections = parser.newLines(at: Array(selectedLineNumbers), accessChange: access)
         for lineNumber in selectedLineNumbers {
