@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10265C76266CBD16006095A2 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDE6D9572218405F002AF4BB /* XcodeKit.framework */; };
+		10265C77266CBD16006095A2 /* XcodeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDE6D9572218405F002AF4BB /* XcodeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ED0062C22208E6FB00FC48B2 /* SwiftLineParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED18F827209488C1002BD062 /* SwiftLineParser.framework */; };
 		ED03E642220610D100957094 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED03E641220610D100957094 /* Structure.swift */; };
 		ED03E644220BB24500957094 /* Access.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED03E643220BB24500957094 /* Access.swift */; };
@@ -77,6 +79,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		10265C78266CBD17006095A2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				10265C77266CBD16006095A2 /* XcodeKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ED18F8212094889C002BD062 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -152,6 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10265C76266CBD16006095A2 /* XcodeKit.framework in Frameworks */,
 				ED0062C22208E6FB00FC48B2 /* SwiftLineParser.framework in Frameworks */,
 				ED18F8132094889C002BD062 /* Cocoa.framework in Frameworks */,
 			);
@@ -322,6 +336,7 @@
 				ED18F80C2094889C002BD062 /* Sources */,
 				ED18F80D2094889C002BD062 /* Frameworks */,
 				ED18F80E2094889C002BD062 /* Resources */,
+				10265C78266CBD17006095A2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
